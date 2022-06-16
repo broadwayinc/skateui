@@ -1,0 +1,33 @@
+:host {
+  background: $color-primary;
+  height: 45px;
+  display: inline-block;
+  color: #fff;
+  border-radius: $radius;
+  font-size: $font-size;
+  padding: 0 14px;
+  font-weight: bold;
+  cursor: pointer;
+  vertical-align: middle;
+  text-align: center;
+}
+
+:host([disabled]) {
+  background-color: #BFBFBF;
+  color: #434343;
+}
+
+
+.disabled {
+  background-color: red;
+}
+
+.enabled {
+  background-color: green;
+}
+
+slot {
+  display: table-cell;
+  vertical-align: middle;
+  height: inherit;
+}
