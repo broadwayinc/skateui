@@ -1,4 +1,4 @@
-import { Component, Element, Host, h, Listen, State, Prop, Watch } from '@stencil/core';
+import { Component, Element, Host, h, Listen, State, Prop } from '@stencil/core';
 
 @Component({
   tag: 'sui-nav',
@@ -9,7 +9,7 @@ export class SuiNav {
   @Element() host: HTMLElement;
   @State() oldPosition = 0;
   @State() newPosition= 0;
-  @Prop() isHidden = false;
+  @Prop({reflect: true, attribute: 'hide'}) isHidden = false;
   @Prop() disableHiding: boolean;
   @Prop({reflect: true}) sticky: boolean;
   
@@ -22,11 +22,6 @@ export class SuiNav {
       }
       this.oldPosition = this.getYPosition();
     }
-  }
-
-  @Watch('isHidden')
-  toggleHidden() {
-    this.isHidden ? this.host.setAttribute('isHidden', '') : this.host.removeAttribute('isHidden');
   }
 
   getYPosition() {
