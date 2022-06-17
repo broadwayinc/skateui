@@ -11,6 +11,7 @@ export class SuiNav {
   @State() newPosition= 0;
   @Prop() isHidden = false;
   @Prop() disableHiding: boolean;
+  @Prop({reflect: true}) sticky: boolean;
   
   @Listen('scroll', {target: 'window'})
   scroll() {

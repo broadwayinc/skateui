@@ -10,7 +10,8 @@
 | Property        | Attribute        | Description | Type      | Default     |
 | --------------- | ---------------- | ----------- | --------- | ----------- |
 | `disableHiding` | `disable-hiding` |             | `boolean` | `undefined` |
-| `isHidden`      | `is-hidden`      |             | `boolean` | `false`     |
+| `isHidden`      | `hide`           |             | `boolean` | `false`     |
+| `sticky`        | `sticky`         |             | `boolean` | `undefined` |
 
 
 ----------------------------------------------
