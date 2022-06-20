@@ -1,11 +1,11 @@
 import { newE2EPage } from '@stencil/core/testing';
 
-describe('sui-nav', () => {
+describe('sui-sticky', () => {
   it('renders', async () => {
     const page = await newE2EPage();
-    await page.setContent('<sui-nav></sui-nav>');
+    await page.setContent('<sui-sticky></sui-sticky>');
 
-    const element = await page.find('sui-nav');
+    const element = await page.find('sui-sticky');
     expect(element).toHaveClass('hydrated');
   });
 });
