@@ -21,6 +21,12 @@ export namespace Components {
         "middle": string;
     }
     interface SuiButton {
+        "disabled": any;
+    }
+    interface SuiPopup {
+        "show": boolean;
+    }
+    interface SuiSticky {
     }
 }
 declare global {
@@ -36,9 +42,23 @@ declare global {
         prototype: HTMLSuiButtonElement;
         new (): HTMLSuiButtonElement;
     };
+    interface HTMLSuiPopupElement extends Components.SuiPopup, HTMLStencilElement {
+    }
+    var HTMLSuiPopupElement: {
+        prototype: HTMLSuiPopupElement;
+        new (): HTMLSuiPopupElement;
+    };
+    interface HTMLSuiStickyElement extends Components.SuiSticky, HTMLStencilElement {
+    }
+    var HTMLSuiStickyElement: {
+        prototype: HTMLSuiStickyElement;
+        new (): HTMLSuiStickyElement;
+    };
     interface HTMLElementTagNameMap {
         "my-component": HTMLMyComponentElement;
         "sui-button": HTMLSuiButtonElement;
+        "sui-popup": HTMLSuiPopupElement;
+        "sui-sticky": HTMLSuiStickyElement;
     }
 }
 declare namespace LocalJSX {
@@ -57,10 +77,18 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface SuiButton {
+        "disabled"?: any;
+    }
+    interface SuiPopup {
+        "show"?: boolean;
+    }
+    interface SuiSticky {
     }
     interface IntrinsicElements {
         "my-component": MyComponent;
         "sui-button": SuiButton;
+        "sui-popup": SuiPopup;
+        "sui-sticky": SuiSticky;
     }
 }
 export { LocalJSX as JSX };
@@ -69,6 +97,8 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
             "sui-button": LocalJSX.SuiButton & JSXBase.HTMLAttributes<HTMLSuiButtonElement>;
+            "sui-popup": LocalJSX.SuiPopup & JSXBase.HTMLAttributes<HTMLSuiPopupElement>;
+            "sui-sticky": LocalJSX.SuiSticky & JSXBase.HTMLAttributes<HTMLSuiStickyElement>;
         }
     }
 }
