@@ -1,18 +1,18 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { SuiNav } from '../sui-nav';
+import { SuiSticky } from '../sui-sticky';
 
-describe('sui-nav', () => {
+describe('sui-sticky', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [SuiNav],
-      html: `<sui-nav></sui-nav>`,
+      components: [SuiSticky],
+      html: `<sui-sticky></sui-sticky>`,
     });
     expect(page.root).toEqualHtml(`
-      <sui-nav>
+      <sui-sticky>
         <mock:shadow-root>
           <slot></slot>
         </mock:shadow-root>
-      </sui-nav>
+      </sui-sticky>
     `);
   });
 });
