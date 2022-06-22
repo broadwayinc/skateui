@@ -1,79 +1,52 @@
-import { Component, h, Element, State, Listen, Prop, Host } from '@stencil/core';
+import { Component, h, Element, Listen, Host, Prop } from '@stencil/core';
 import { getElementAttributes } from '../../utils/utils';
 
 @Component({
   tag: 'sui-button',
   styleUrl: 'sui-button.scss',
-  shadow: true,
+  scoped: true,
 })
 export class SuiButton {
   @Element() host: HTMLElement;
-  @State() form: HTMLFormElement = null;
-  @State() button = document.createElement('button');
-  @State() properties: Record<string,any>;
-  @State() focus: boolean = false;
+  @Prop() disabled: any;
+  button: HTMLButtonElement;
+  properties: Record<string, any>;
 
-  @Prop({reflect: true}) disabled: any = null;
-
+  @Listen('click', {
+    capture: true
+  })
+  clickEventHandler(event: Event) {
+    if (event.target === this.host) {
+      event.stopPropagation();
+      this.button.dispatchEvent(new PointerEvent(event.type, event));
+    }
+  }
   componentWillRender() {
     this.host.tabIndex = 0;
   }
+  componentDidRender() {
+    if (this.host.autofocus) this.host.focus();
 
-  @Listen('click')
-  click(e) {
-    if(this.disabled !== null) {
-      e.stopImmediatePropagation();
-    } else {
-      if(this.form) {
-        if(this.properties.type === 'reset') {
-          this.form.reset();
-        } else {
-          let formAttrs = {
-            formaction: 'action', 
-            formenctype: 'encoding', 
-            formmethod: 'method', 
-            formtarget: 'target',
-            formnovalidate: 'noValidate'
-          }
-          for (const attr in formAttrs) {
-            if(this.properties[attr]) {
-              this.form[formAttrs[attr]] = this.properties[attr];
-            }
-          }
-
-          this.form.submit();
-        }
+    this.properties = getElementAttributes(this.host.attributes);
+    for (let k in this.properties) {
+      let exclude = ['class', 'id', 'onclick'];
+      if (!exclude.includes(k)) {
+        this.button.setAttribute(k , this.properties[k]);
       }
     }
+  }
+
+  componentDidUpdate() {
+    this.properties = getElementAttributes(this.host.attributes);
   }
 
   render() {
     return (
-      <Host>
-        <slot></slot>
+      <Host >
+        <button ref={(el) => this.button = el} tabindex="-1">
+          <slot></slot>
+        </button>
       </Host>
     );
-  }
-
-  componentDidLoad() {
-    this.properties = getElementAttributes(this.host.attributes);
-    this.disabled = 'disabled' in this.properties ? true : null;
-    if(this.properties.role) {
-      this.host.setAttribute("role", this.properties.role);
-    } else {
-      this.host.setAttribute("role", 'button');
-    }
-    if(this.properties.form) {
-      let form = document.getElementById(this.properties.form);
-      if(form instanceof HTMLFormElement) {
-        this.form = form;
-      }
-    } else {
-      this.form = this.host.closest('form');
-    }
-
-    if('autofocus' in this.properties && this.disabled === null) {
-      this.host.focus();
-    }
   }
 }
