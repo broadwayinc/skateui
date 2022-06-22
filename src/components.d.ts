@@ -44,12 +44,6 @@ declare global {
         prototype: HTMLSuiButtonElement;
         new (): HTMLSuiButtonElement;
     };
-    interface HTMLSuiPopupElement extends Components.SuiPopup, HTMLStencilElement {
-    }
-    var HTMLSuiPopupElement: {
-        prototype: HTMLSuiPopupElement;
-        new (): HTMLSuiPopupElement;
-    };
     interface HTMLSuiStickyElement extends Components.SuiSticky, HTMLStencilElement {
     }
     var HTMLSuiStickyElement: {
@@ -59,7 +53,6 @@ declare global {
     interface HTMLElementTagNameMap {
         "my-component": HTMLMyComponentElement;
         "sui-button": HTMLSuiButtonElement;
-        "sui-popup": HTMLSuiPopupElement;
         "sui-sticky": HTMLSuiStickyElement;
     }
 }
@@ -81,15 +74,11 @@ declare namespace LocalJSX {
     interface SuiButton {
         "disabled"?: any;
     }
-    interface SuiPopup {
-        "show"?: boolean;
-    }
     interface SuiSticky {
     }
     interface IntrinsicElements {
         "my-component": MyComponent;
         "sui-button": SuiButton;
-        "sui-popup": SuiPopup;
         "sui-sticky": SuiSticky;
     }
 }
@@ -99,7 +88,6 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
             "sui-button": LocalJSX.SuiButton & JSXBase.HTMLAttributes<HTMLSuiButtonElement>;
-            "sui-popup": LocalJSX.SuiPopup & JSXBase.HTMLAttributes<HTMLSuiPopupElement>;
             "sui-sticky": LocalJSX.SuiSticky & JSXBase.HTMLAttributes<HTMLSuiStickyElement>;
         }
     }

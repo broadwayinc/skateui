@@ -17,18 +17,16 @@
   color: #434343;
 }
 
-
-.disabled {
-  background-color: red;
+button {
+  background: transparent;
+  border: 0;
+  height: 100%;
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  cursor: inherit;
 }
 
-.enabled {
-  background-color: green;
-}
-
-slot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: inherit;
+button:focus-visible {
+  outline: none;
 }
