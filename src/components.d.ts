@@ -24,7 +24,7 @@ export namespace Components {
         "disabled": any;
     }
     interface SuiPopup {
-        "close": (e: Event) => Promise<void>;
+        "close": () => Promise<void>;
         "open": () => Promise<void>;
         "show": boolean;
     }

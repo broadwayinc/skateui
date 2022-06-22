@@ -14,7 +14,7 @@
 
 ## Methods
 
-### `close(e: Event) => Promise<void>`
+### `close() => Promise<void>`
 
 
 

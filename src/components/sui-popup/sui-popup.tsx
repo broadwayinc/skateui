@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, Prop, Method } from '@stencil/core';
+import { Component, Host, h, Element, Prop, Method, State, Listen } from '@stencil/core';
 
 @Component({
   tag: 'sui-popup',
@@ -8,6 +8,12 @@ import { Component, Host, h, Element, Prop, Method } from '@stencil/core';
 export class SuiPopup {
   @Element() host: HTMLElement;
   @Prop({reflect: true}) show: boolean = false;
+  @State() eventQueue: string = null;
+
+  @Listen('click')
+  click(e) {
+    if(this.eventQueue === 'close' && e.target === this.host) this.show = false;
+  }
 
   @Method()
   async open() {
@@ -15,10 +21,8 @@ export class SuiPopup {
   }
 
   @Method()
-  async close(e: Event) {
-    console.log(e.target);
-    e.stopPropagation();
-    this.show = false;
+  async close() {
+    this.eventQueue = 'close';
   }
 
   render() {
