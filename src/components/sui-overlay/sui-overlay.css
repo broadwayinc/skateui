@@ -1,0 +1,93 @@
+:host {
+  position: absolute;
+  overflow: hidden;
+  left: -100%;
+  right: 100%;
+  top: 0;
+  bottom: 0;
+  transition-delay: 0.4s;
+}
+
+:host[show] {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition-delay: 0s;
+}
+
+:host .sui-overlay-overlay {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0,0,0,0);
+  transition: background-color 0.4s;
+}
+
+:host[show] .sui-overlay-overlay {
+  background-color: rgba(0,0,0,.3);
+}
+
+:host[from=top] .sui-overlay-overlay,
+:host[from=bottom] .sui-overlay-overlay { 
+  display: flex;
+  flex-direction: column;
+}
+
+:host[from=bottom] .sui-overlay-overlay {
+  justify-content: flex-end;
+}
+
+:host[from=right] .sui-overlay-wrapper {
+  flex-direction: row-reverse;
+}
+
+:host[from=left] .sui-overlay-wrapper,
+:host[from=right] .sui-overlay-wrapper {
+  height: 100%;
+}
+
+.sui-overlay-wrapper {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+}
+
+.top, .bottom, .left, .right {
+  position: relative;
+  transition: top 0.4s, bottom 0.4s, right 0.4s, left 0.4s;
+}
+
+.left {
+  left: -100%;
+}
+
+:host[show] .left {
+  left: 0;
+}
+
+.right {
+  right: -100%;
+}
+
+:host[show] .right {
+  right: 0;
+}
+
+.top {
+  top: -100%;
+}
+
+:host[show] .top {
+  top: 0;
+}
+
+.bottom {
+  bottom: -100%;
+}
+
+:host[show] .bottom {
+  bottom: 0;
+}

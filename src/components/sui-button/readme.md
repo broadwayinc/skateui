@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property   | Attribute  | Description | Type  | Default |
-| ---------- | ---------- | ----------- | ----- | ------- |
-| `disabled` | `disabled` |             | `any` | `null`  |
+| Property   | Attribute  | Description | Type  | Default     |
+| ---------- | ---------- | ----------- | ----- | ----------- |
+| `disabled` | `disabled` |             | `any` | `undefined` |
 
 
 ----------------------------------------------
