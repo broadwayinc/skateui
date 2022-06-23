@@ -1,18 +1,18 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { SuiPopup } from '../sui-popup';
+import { SuiOverlay } from '../sui-overlay';
 
-describe('sui-popup', () => {
+describe('sui-overlay', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [SuiPopup],
-      html: `<sui-popup></sui-popup>`,
+      components: [SuiOverlay],
+      html: `<sui-overlay></sui-overlay>`,
     });
     expect(page.root).toEqualHtml(`
-      <sui-popup>
+      <sui-overlay>
         <mock:shadow-root>
           <slot></slot>
         </mock:shadow-root>
-      </sui-popup>
+      </sui-overlay>
     `);
   });
 });

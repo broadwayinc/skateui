@@ -1,4 +1,4 @@
-# sui-popup
+# sui-overlay
 
 
 
@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type      | Default |
-| -------- | --------- | ----------- | --------- | ------- |
-| `show`   | `show`    |             | `boolean` | `false` |
+| Property | Attribute | Description | Type      | Default  |
+| -------- | --------- | ----------- | --------- | -------- |
+| `from`   | `from`    |             | `string`  | `'left'` |
+| `show`   | `show`    |             | `boolean` | `false`  |
 
 
 ## Methods
