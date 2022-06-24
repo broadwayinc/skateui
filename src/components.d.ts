@@ -25,7 +25,6 @@ export namespace Components {
     }
     interface SuiOverlay {
         "close": () => Promise<void>;
-        "from": string;
         "open": () => Promise<void>;
         "show": boolean;
     }
@@ -83,7 +82,6 @@ declare namespace LocalJSX {
         "disabled"?: any;
     }
     interface SuiOverlay {
-        "from"?: string;
         "show"?: boolean;
     }
     interface SuiSticky {
