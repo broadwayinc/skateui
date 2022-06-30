@@ -1,4 +1,4 @@
-import { Component, h, Element, Listen } from '@stencil/core';
+import { Component, h, Element, Listen, Host } from '@stencil/core';
 import { getElementAttributes } from '../../utils/utils';
 
 @Component({
@@ -28,9 +28,11 @@ export class SuiButton {
 
   render() {
     return (
-      <div>
-        <slot></slot>
-      </div>
+      <Host role="button">
+        <div>
+          <slot></slot>
+        </div>
+      </Host>
     );
   }
 }
