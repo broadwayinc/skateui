@@ -23,8 +23,8 @@
 :host([disabled]),
 :host([disabled]:hover),
 :host([disabled]:active) {
-  color: #434343;
-  background-color: #BFBFBF;
+  color: rgba(0, 0, 0, 0.25);
+  background-color: #d9d9d9;
   box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
