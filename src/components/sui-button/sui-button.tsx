@@ -1,52 +1,36 @@
-import { Component, h, Element, Listen, Host, Prop } from '@stencil/core';
+import { Component, h, Element, Listen } from '@stencil/core';
 import { getElementAttributes } from '../../utils/utils';
 
 @Component({
   tag: 'sui-button',
   styleUrl: 'sui-button.scss',
-  scoped: true,
+  shadow: true
 })
 export class SuiButton {
   @Element() host: HTMLElement;
-  @Prop() disabled: any;
-  button: HTMLButtonElement;
-  properties: Record<string, any>;
 
   @Listen('click', {
     capture: true
   })
-  clickEventHandler(event: Event) {
-    if (event.target === this.host) {
-      event.stopPropagation();
-      this.button.dispatchEvent(new PointerEvent(event.type, event));
-    }
-  }
-  componentWillRender() {
-    this.host.tabIndex = 0;
-  }
-  componentDidRender() {
-    if (this.host.autofocus) this.host.focus();
+  clickEventHandler() {
+    let dummyButton = document.createElement('button');
+    dummyButton.hidden = true;
 
-    this.properties = getElementAttributes(this.host.attributes);
-    for (let k in this.properties) {
-      let exclude = ['class', 'id', 'onclick'];
-      if (!exclude.includes(k)) {
-        this.button.setAttribute(k , this.properties[k]);
-      }
+    let properties = getElementAttributes(this.host.attributes)
+    for (let k in properties) {
+      dummyButton.setAttribute(k, properties[k]);
     }
-  }
 
-  componentDidUpdate() {
-    this.properties = getElementAttributes(this.host.attributes);
+    this.host.parentElement.insertBefore(dummyButton, this.host);
+    dummyButton.click();
+    dummyButton.remove();
   }
 
   render() {
     return (
-      <Host >
-        <button ref={(el) => this.button = el} tabindex="-1">
-          <slot></slot>
-        </button>
-      </Host>
+      <div>
+        <slot></slot>
+      </div>
     );
   }
 }
