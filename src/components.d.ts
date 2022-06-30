@@ -21,7 +21,6 @@ export namespace Components {
         "middle": string;
     }
     interface SuiButton {
-        "disabled": any;
     }
     interface SuiOverlay {
         "close": () => Promise<void>;
@@ -79,7 +78,6 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface SuiButton {
-        "disabled"?: any;
     }
     interface SuiOverlay {
         "show"?: boolean;
