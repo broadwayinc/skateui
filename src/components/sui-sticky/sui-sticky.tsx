@@ -36,16 +36,16 @@ export class SuiSticky {
     if (direction === 'down' && this.positionY > this.sticky.clientHeight * -1) {
       window.requestAnimationFrame(() => {
         this.positionY -= (newPosition - oldPosition) * 0.6;
+        if (this.positionY < this.sticky.clientHeight * -1) {
+          this.positionY = this.sticky.clientHeight * -1;
+        }
       });
-      if (this.positionY < this.sticky.clientHeight * -1) {
-        this.positionY = this.sticky.clientHeight * -1;
-      }
     } else if (direction === 'up') {
       window.requestAnimationFrame(() => {
         this.positionY += (oldPosition - newPosition) * 0.6;
+        if (this.positionY > 0) this.positionY = 0;
       });
     }
-    if (this.positionY > 0) this.positionY = 0;
   }
 
   setPosition() {
