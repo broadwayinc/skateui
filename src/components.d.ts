@@ -23,6 +23,7 @@ export namespace Components {
     interface SuiButton {
     }
     interface SuiInput {
+        "checked": any;
     }
     interface SuiOverlay {
         "close": () => Promise<void>;
@@ -89,6 +90,7 @@ declare namespace LocalJSX {
     interface SuiButton {
     }
     interface SuiInput {
+        "checked"?: any;
     }
     interface SuiOverlay {
         "show"?: boolean;
