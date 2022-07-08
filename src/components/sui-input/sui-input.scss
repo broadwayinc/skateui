@@ -55,7 +55,6 @@
       right: 0;
       top: 0;
       bottom: 0;
-      border-radius: inherit;
     }
 
     &::after {
@@ -67,11 +66,23 @@
       right: 0px;
       top: 0;
       bottom: 0;
+    }
+  }
+}
+
+:host([type=radio]) {
+  border-radius: 50%;
+
+  .options-inner {
+
+    &::before,
+    &::after {
       border-radius: inherit;
     }
   }
 }
 
+:host([type=radio]:hover),
 :host([type=checkbox]:hover) {
   .options-parent:before {
     opacity: 0.1;
@@ -80,6 +91,7 @@
   }
 }
 
+:host([type=radio]:active),
 :host([type=checkbox]:active) {
   .options-parent:before {
     opacity: 0.3;
