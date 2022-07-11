@@ -14,7 +14,10 @@ export class SuiInput {
 
   @Listen('click')
   click() {
-    this.checked = this.checked || this.checked === '' ? null : ''; 
+    if(this.input.type === 'checkbox' || this.input.type === 'radio') {
+      this.input.click();
+      this.checked = this.input.checked;
+    }
     this.input.focus();
   }
 
@@ -31,7 +34,7 @@ export class SuiInput {
 
     this.input.addEventListener('focus', () => {
       this.input.style.outline = 'none';
-    })
+    });
 
     let properties = getElementAttributes(this.host.attributes)
     for (let k in properties) {
