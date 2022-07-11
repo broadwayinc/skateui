@@ -30,7 +30,6 @@ export class SuiInput {
     this.input.style.color = 'inherit';
     this.input.style.font = 'inherit';
     this.input.style.fontSize = '1em';
-    this.input.style.appearance = 'none';
 
     this.input.addEventListener('focus', () => {
       this.input.style.outline = 'none';
@@ -41,6 +40,12 @@ export class SuiInput {
       if(k !== 'style') {
         this.input.setAttribute(k, properties[k]);
       }
+    }
+
+    if(this.input.type === 'checkbox' || this.input.type === 'radio') {
+      this.input.style.display = 'none';
+    } else {
+      this.input.style.appearance = 'none';
     }
 
     host.appendChild(this.input);
