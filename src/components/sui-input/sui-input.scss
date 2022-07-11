@@ -82,8 +82,8 @@
   }
 }
 
-:host([type=radio]:hover),
-:host([type=checkbox]:hover) {
+:host([type=radio]:not([disabled]):hover),
+:host([type=checkbox]:not([disabled]):hover) {
   .options-parent:before {
     opacity: 0.1;
     background: currentColor;
@@ -91,8 +91,8 @@
   }
 }
 
-:host([type=radio]:active),
-:host([type=checkbox]:active) {
+:host([type=radio]:not([disabled]):active),
+:host([type=checkbox]:not([disabled]):active) {
   .options-parent:before {
     opacity: 0.3;
     background: currentColor;
@@ -104,6 +104,7 @@
   .options-inner {
     color: inherit;
     background-color: currentColor;
+    border-color: transparent;
 
     &::before,
     &::after {
@@ -120,5 +121,28 @@
       border-bottom: 1.5px solid #fff;
       border-right: 1.5px solid #fff;
     }
+  }
+}
+
+:host([type=radio][checked]) .options-parent::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 40%;
+  height: 40%;
+  color: inherit;
+  background-color: currentColor;
+  border-radius: inherit;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 0.3px solid #595959;
+  box-shadow: inset 0.5px 0.5px 0.7px #FFFFFF;
+}
+
+:host([type=checkbox][disabled]),
+:host([type=radio][disabled]) {
+  .options-parent {
+    color: rgba(0, 0, 0, .25);
   }
 }
