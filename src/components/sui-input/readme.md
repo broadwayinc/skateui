@@ -12,6 +12,13 @@
 | `checked` | `checked` |             | `any` | `undefined` |
 
 
+## Shadow Parts
+
+| Part      | Description |
+| --------- | ----------- |
+| `"check"` |             |
+
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
