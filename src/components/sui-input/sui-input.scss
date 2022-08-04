@@ -7,6 +7,7 @@
   white-space: nowrap;
   border-radius: 2px;
   vertical-align: middle;
+  box-sizing: border-box;
 }
 
 :host([type=checkbox]),
@@ -96,6 +97,10 @@
   }
 }
 
+:host([type=checkbox][dark]) {
+  color: #fff;
+}
+
 // Hover designs
 :host([type=radio]:not([disabled]):hover),
 :host([type=checkbox]:not([disabled]):hover) {
@@ -150,6 +155,10 @@
     width: 100%;
     height: 100%;
   }
+}
+
+:host([type=checkbox][dark][checked]) .check {
+  color: #434343;
 }
 
 :host([type=radio][checked]) .check {

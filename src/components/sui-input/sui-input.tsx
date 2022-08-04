@@ -10,6 +10,7 @@ export class SuiInput {
 
   @Element() host: HTMLElement;
   @Prop({reflect: true, mutable: true}) checked: any;
+  @Prop() dark: boolean;
   input: HTMLInputElement;
 
   @Listen('click')
@@ -54,7 +55,7 @@ export class SuiInput {
   render() {
     const { host } = this;
     if(!this.input) this.renderInput(host);
-
+    this.host.setAttribute('dark', '');
     return (
       <Host tabindex="0">
         <div class="options-parent">

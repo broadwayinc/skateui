@@ -24,6 +24,7 @@ export namespace Components {
     }
     interface SuiInput {
         "checked": any;
+        "dark": boolean;
     }
     interface SuiOverlay {
         "close": () => Promise<void>;
@@ -91,6 +92,7 @@ declare namespace LocalJSX {
     }
     interface SuiInput {
         "checked"?: any;
+        "dark"?: boolean;
     }
     interface SuiOverlay {
         "show"?: boolean;
