@@ -39,10 +39,15 @@ export class SuiInput {
     let properties = getElementAttributes(this.host.attributes)
     for (let k in properties) {
       if(k !== 'style') {
+        console.log(k, properties[k]);
         this.input.setAttribute(k, properties[k]);
       }
     }
 
+    if(this.checked) {
+      this.input.checked = true;
+    }
+    
     if(this.input.type === 'checkbox' || this.input.type === 'radio') {
       this.input.style.display = 'none';
     } else {
