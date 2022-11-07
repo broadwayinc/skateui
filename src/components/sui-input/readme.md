@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property  | Attribute | Description | Type  | Default     |
-| --------- | --------- | ----------- | ----- | ----------- |
-| `checked` | `checked` |             | `any` | `undefined` |
+| Property  | Attribute | Description | Type      | Default     |
+| --------- | --------- | ----------- | --------- | ----------- |
+| `checked` | `checked` |             | `any`     | `undefined` |
+| `dark`    | `dark`    |             | `boolean` | `undefined` |
 
 
 ## Shadow Parts
