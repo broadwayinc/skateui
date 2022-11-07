@@ -21,7 +21,7 @@ export class SuiOverlay {
 
   render() {
     return (
-      <Host style={{position: 'fixed', overflow: 'hidden'}}></Host>
+      <Host></Host>
     );
   }
 

@@ -1,11 +1,13 @@
 :host {
   display: inline-block;
   padding: 10px;
-  border: 0.3px solid $stroke-color;
+  outline: 0.3px solid $stroke-color;
+  border-color: $color-primary;
   width: 100px;
   white-space: nowrap;
   border-radius: 2px;
-  color: $color-primary;
+  vertical-align: middle;
+  box-sizing: border-box;
 }
 
 :host([type=checkbox]),
@@ -14,6 +16,7 @@
   height: 16px;
   cursor: pointer;
   padding: 0;
+  color: $color-primary;
 
   .options-parent {
     position: relative;
@@ -21,8 +24,8 @@
     width: 100%;
     height: 100%;
     color: inherit;
-    box-shadow: inset 0.5px 0.5px 0.7px #FFFFFF;
-    border-radius: inherit;
+    border-color: inherit;
+    border-radius: 2px;
 
     &::before {
       content: '';
@@ -31,20 +34,28 @@
       right: 0;
       top: 0;
       bottom: 0;
-      z-index: -1;
       border-radius: inherit;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border-radius: inherit;
+      box-shadow: inset 0.3px 0.3px 0.7px #fff;
     }
   }
   
   .options-inner {
     width: 100%;
     height: 100%;
-    border: 2px solid;
-    border-color: inherit;
+    border: 2px solid currentColor;
     box-sizing: border-box;
     position: relative;
     border-radius: inherit;
-    z-index: -1;
 
     &::before {
       content: '';
@@ -55,12 +66,12 @@
       right: 0;
       top: 0;
       bottom: 0;
+      box-shadow: 0.3px 0.3px 0.7px #ffffff;
     }
 
     &::after {
       content: '';
       position: absolute;
-      box-shadow: 0.5px 0.5px 0.7px #FFFFFF;
       display: block;
       left: 0;
       right: 0px;
@@ -69,7 +80,11 @@
     }
   }
 }
-
+:host([type=radio]) {
+  .options-parent {
+    border-radius: inherit;
+  }
+}
 :host([type=radio]) {
   border-radius: 50%;
 
@@ -82,6 +97,11 @@
   }
 }
 
+:host([type=checkbox][dark]) {
+  color: #fff;
+}
+
+// Hover designs
 :host([type=radio]:not([disabled]):hover),
 :host([type=checkbox]:not([disabled]):hover) {
   .options-parent:before {
@@ -100,11 +120,10 @@
   }
 }
 
+// Checkbox Checked designs
 :host([type=checkbox][checked]) .options-parent {
   .options-inner {
     color: inherit;
-    background-color: currentColor;
-    border-color: transparent;
 
     &::before,
     &::after {
@@ -112,28 +131,47 @@
       box-shadow: none;
     }
 
-    &::after {
-      content: '';
-      background-image: url("data:image/svg+xml,%3Csvg width='18' height='14' viewBox='0 0 18 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.79502 10.8749L1.62502 6.70492L0.205017 8.11492L5.79502 13.7049L17.795 1.70492L16.385 0.294922L5.79502 10.8749Z' fill='%23fff'/%3E%3C/svg%3E%0A");
-      background-size: 80% 80%;
-      background-position: center;
-      background-repeat: no-repeat;
+    &::before {
+      background-color: currentColor;
     }
   }
 }
 
-:host([type=radio][checked]) .options-parent::after {
-  content: '';
+:host .check svg {
+  display: none;
+}
+:host([type=checkbox][checked]) .check svg {
   display: block;
+}
+
+:host([type=checkbox][checked]) .check {
   position: absolute;
+  width: 80%;
+  height: 100%;
+  margin-left: 10%;
+  color: #fff;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+:host([type=checkbox][dark][checked]) .check {
+  color: #434343;
+}
+
+:host([type=radio][checked]) .check {
+  position: absolute;
+  display: block;
   width: 40%;
   height: 40%;
-  color: inherit;
-  background-color: currentColor;
   border-radius: inherit;
+  transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  color: inherit;
+  background-color: currentColor;
   border: 0.3px solid #595959;
   box-shadow: inset 0.5px 0.5px 0.7px #FFFFFF;
 }
@@ -142,5 +180,8 @@
 :host([type=radio][disabled]) {
   .options-parent {
     color: rgba(0, 0, 0, .25);
+  }
+  .options-inner {
+    border-color: rgba(0, 0, 0, .25);
   }
 }

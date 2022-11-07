@@ -21,9 +21,11 @@ export namespace Components {
         "middle": string;
     }
     interface SuiButton {
+        "loading": Boolean;
     }
     interface SuiInput {
         "checked": any;
+        "dark": boolean;
     }
     interface SuiOverlay {
         "close": () => Promise<void>;
@@ -88,9 +90,11 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface SuiButton {
+        "loading"?: Boolean;
     }
     interface SuiInput {
         "checked"?: any;
+        "dark"?: boolean;
     }
     interface SuiOverlay {
         "show"?: boolean;

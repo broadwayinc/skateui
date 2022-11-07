@@ -10,6 +10,7 @@ export class SuiInput {
 
   @Element() host: HTMLElement;
   @Prop({reflect: true, mutable: true}) checked: any;
+  @Prop() dark: boolean;
   input: HTMLInputElement;
 
   @Listen('click')
@@ -42,6 +43,10 @@ export class SuiInput {
       }
     }
 
+    if(this.checked) {
+      this.input.checked = true;
+    }
+
     if(this.input.type === 'checkbox' || this.input.type === 'radio') {
       this.input.style.display = 'none';
     } else {
@@ -54,11 +59,15 @@ export class SuiInput {
   render() {
     const { host } = this;
     if(!this.input) this.renderInput(host);
-
+    if(this.dark) this.host.setAttribute('dark', '');
     return (
       <Host tabindex="0">
         <div class="options-parent">
-          <div class="options-inner"></div>
+          <div class="options-inner">
+            <div class="check" part="check">
+              <svg width='18' height='14' viewBox='0 0 18 14' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path d='M5.79502 10.8749L1.62502 6.70492L0.205017 8.11492L5.79502 13.7049L17.795 1.70492L16.385 0.294922L5.79502 10.8749Z' fill='currentColor'/></svg>
+            </div>
+          </div>
         </div>
         <slot></slot>
       </Host>
