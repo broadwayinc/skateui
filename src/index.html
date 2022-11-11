@@ -17,7 +17,7 @@
     <sui-button>sui-button</sui-button>
   </form>
   <sui-button class="text">sui-button</sui-button><br>
-  <sui-button class="outline">sui-button</sui-button>
+  <sui-button class="outline" onclick="button_click(this)">sui-button</sui-button>
   <ul>
     <li>
       autofocus &#x2713;
@@ -26,7 +26,13 @@
       tabfocus (desktop) &#x2713;
     </li>
     <li>
+      content vertically aligned on min-height &#x2713;
+    </li>
+    <li>
       stylable &#x2713;
+    </li>
+    <li>
+      watches style change &#x2713;
     </li>
     <li>
       works with forms &#x2713;
@@ -44,6 +50,9 @@
   <br>
 </body>
 <script>
+  function button_click(el) {
+      el.innerHTML = 'HI'
+  }
 </script>
 <style>
   body {
