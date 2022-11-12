@@ -3,7 +3,7 @@
   background: $color-primary;
   display: inline-table;
   color: #ffffff;
-  border-radius: $radius;
+  border-radius: 5px;
   font-size: 16px;
   padding: 0 20px;
   min-height: 40px;
@@ -19,15 +19,16 @@
     inset -1px -1px 2px rgb(0 0 0 / 25%),
     inset 0 0 0px 1px rgb(0 0 0 / 25%);
 
+  line-height: 1;
+
   slot {
-    line-height: 1;
     display: table-cell;
     vertical-align: middle;
   }
 }
 
 @media (pointer: fine) {
-  :host(:hover:not([disabled])) {
+  :host(:not([disabled]):hover) {
     box-shadow:
       inset 1px 1px 2px rgb(255 255 255 / 65%),
       inset -1px -1px 2px rgb(0 0 0 / 25%),
@@ -35,7 +36,7 @@
       inset 0 0 0 128em hsla(0 0% 75% / 16%);
   }
 
-  :host(:focus:not([disabled])) {
+  :host(:not([disabled]):focus) {
     outline: 1px solid var(--sui-focus-outline-color);
   }
 }
@@ -56,7 +57,7 @@
   display: none !important;
 }
 
-:host(:active:not([disabled])) {
+:host(:not([disabled]):active) {
   box-shadow:
     inset 0 0 0px 1px hsla(0 0% 50% / 25%),
     inset 0 1px 3px rgba(0 0 0 / 80%),

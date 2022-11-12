@@ -23,9 +23,15 @@ export class SuiButton {
     this.dummyElement.click();
     this.dummyElement.remove();
   }
-
+  @Listen('keyup', { capture: true })
+  keyEventHandler(e) {
+    if(e.key === 'Enter') {
+      // trigger click on enter
+      this.clickEventHandler();
+    }
+  }
   componentDidLoad() {
-    dummyHandler.bind(this)();
+    dummyHandler.bind(this)({ tabFocus: true });
   }
 
   disconnectedCallback() {

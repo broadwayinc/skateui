@@ -21,13 +21,37 @@ export function getElementAttributes(nodeMap: NamedNodeMap) {
   return {};
 }
 
-export function dummyHandler(trackNodes?: boolean | ((n: MutationRecord) => any)) {
+export function randomString(length = 5) {
+  // set random slot name to prevent users adding elements to the slot
+  let result = '';
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+export function dummyHandler(options: {
+  tabFocus?: boolean;
+  copyStyle?: string[] | ((css: CSSStyleDeclaration) => any);
+  trackNodes?: boolean | ((n: MutationRecord) => any);
+  log?: boolean | ((l: { attributeName: string; newValue?: string; oldValue?: string; mutationRecord?: MutationRecord; }) => any);
+}): CSSStyleDeclaration {
+  const { tabFocus = null, trackNodes = null, log = false, copyStyle = null } = options;
+  const hostStyle = getComputedStyle(this.host);
+
   const setFocusOutline = (() => {
     const f = () => {
+      if (!tabFocus) {
+        // if not tab focusable element
+        return;
+      }
+
       // make host focusable
-      let forOutlineColor = getComputedStyle(this.host).backgroundColor;
+      let forOutlineColor = hostStyle.backgroundColor;
       if (forOutlineColor === 'rgba(0, 0, 0, 0)') {
-        forOutlineColor = getComputedStyle(this.host).color;
+        forOutlineColor = hostStyle.color;
       }
 
       // save outline color
@@ -40,9 +64,47 @@ export function dummyHandler(trackNodes?: boolean | ((n: MutationRecord) => any)
   })();
 
   const setDummyAttribute = (attName: string, val: string) => {
-    if (attName !== 'hidden') {
-      // skip 'hidden'
+    const copyStyleBypass = [];
+
+    if (attName === 'style') {
+      let styleProps = val.split(';');
+      for (let s of styleProps) {
+        if (!s) {
+          continue;
+        }
+        let keyVal = s.split(':');
+        let val = keyVal[1].split('!');
+        if (CSS.supports(keyVal[0], val[0])) {
+          this.dummyElement.style.setProperty(keyVal[0], val[0], val[1] || null);
+
+          if (Array.isArray(copyStyle) && copyStyle.includes(keyVal[0])) {
+            // add to style copy bypass list
+            copyStyleBypass.push(keyVal[0]);
+          }
+        }
+      }
+    }
+
+    else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id') {
+      // skip 'hidden' | 'class' | 'id
       this.dummyElement.setAttribute(attName, val);
+    }
+
+    if (copyStyle) {
+      if (typeof copyStyle === 'function') {
+        copyStyle(hostStyle);
+      }
+
+      else {
+        // copy css styles
+        for (let s of copyStyle) {
+          if (!copyStyleBypass.includes(s)) {
+            if (CSS.supports(s, hostStyle[s])) {
+              this.dummyElement.style.setProperty(s, hostStyle[s]);
+            }
+          }
+        }
+      }
     }
   };
 
@@ -50,6 +112,12 @@ export function dummyHandler(trackNodes?: boolean | ((n: MutationRecord) => any)
 
   for (let attName in hostAttributes) {
     setDummyAttribute(attName, hostAttributes[attName]);
+
+    if (attName === 'id') {
+      this.dummyElement.setAttribute(attName, hostAttributes[attName]);
+      this.host.removeAttribute(attName);
+    }
+
     if (attName === 'autofocus') {
       // auto focus
       this.host.focus();
@@ -57,11 +125,25 @@ export function dummyHandler(trackNodes?: boolean | ((n: MutationRecord) => any)
   }
 
   this.observer = new MutationObserver((mutations) => {
-    for (let m of mutations) {
+    let logger = (l) => {
+      if (!log) {
+        return;
+      }
 
+      if (typeof log === 'boolean') {
+        return console.log(l);
+      }
+
+      if (typeof log === 'function') {
+        return log(l);
+      }
+    };
+
+    for (let m of mutations) {
       let attributeName = m.attributeName;
-      if(!attributeName && trackNodes) {
-        if(typeof trackNodes === 'function') {
+      if (!attributeName && trackNodes) {
+        if (typeof trackNodes === 'function') {
+          logger({ attributeName, mutationRecord: m });
           trackNodes(m);
         }
         continue;
@@ -69,14 +151,13 @@ export function dummyHandler(trackNodes?: boolean | ((n: MutationRecord) => any)
 
       let newValue = (m.target as HTMLElement).getAttribute(attributeName);
       let oldValue = m.oldValue;
-      
+
       if (newValue === oldValue) {
         // skip same values
         continue;
       }
-
+      logger({ attributeName, newValue, oldValue });
       // ! do not change the order of execution below !
-
       setFocusOutline();
       if (newValue === null) {
         // attribute is removed
@@ -94,4 +175,5 @@ export function dummyHandler(trackNodes?: boolean | ((n: MutationRecord) => any)
     childList: !!trackNodes
   });
 
+  return hostStyle;
 }

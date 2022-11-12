@@ -31,10 +31,6 @@ export namespace Components {
     }
     interface SuiSticky {
     }
-    interface TempSuiInput {
-        "checked": any;
-        "dark": boolean;
-    }
 }
 declare global {
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
@@ -67,19 +63,12 @@ declare global {
         prototype: HTMLSuiStickyElement;
         new (): HTMLSuiStickyElement;
     };
-    interface HTMLTempSuiInputElement extends Components.TempSuiInput, HTMLStencilElement {
-    }
-    var HTMLTempSuiInputElement: {
-        prototype: HTMLTempSuiInputElement;
-        new (): HTMLTempSuiInputElement;
-    };
     interface HTMLElementTagNameMap {
         "my-component": HTMLMyComponentElement;
         "sui-button": HTMLSuiButtonElement;
         "sui-input": HTMLSuiInputElement;
         "sui-overlay": HTMLSuiOverlayElement;
         "sui-sticky": HTMLSuiStickyElement;
-        "temp-sui-input": HTMLTempSuiInputElement;
     }
 }
 declare namespace LocalJSX {
@@ -106,17 +95,12 @@ declare namespace LocalJSX {
     }
     interface SuiSticky {
     }
-    interface TempSuiInput {
-        "checked"?: any;
-        "dark"?: boolean;
-    }
     interface IntrinsicElements {
         "my-component": MyComponent;
         "sui-button": SuiButton;
         "sui-input": SuiInput;
         "sui-overlay": SuiOverlay;
         "sui-sticky": SuiSticky;
-        "temp-sui-input": TempSuiInput;
     }
 }
 export { LocalJSX as JSX };
@@ -128,7 +112,6 @@ declare module "@stencil/core" {
             "sui-input": LocalJSX.SuiInput & JSXBase.HTMLAttributes<HTMLSuiInputElement>;
             "sui-overlay": LocalJSX.SuiOverlay & JSXBase.HTMLAttributes<HTMLSuiOverlayElement>;
             "sui-sticky": LocalJSX.SuiSticky & JSXBase.HTMLAttributes<HTMLSuiStickyElement>;
-            "temp-sui-input": LocalJSX.TempSuiInput & JSXBase.HTMLAttributes<HTMLTempSuiInputElement>;
         }
     }
 }
