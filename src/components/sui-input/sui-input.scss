@@ -52,6 +52,10 @@
   outline: 1px solid currentColor;
 }
 
+:host(:not([disabled]):active[type='checkbox']) {
+  outline: none;
+}
+
 :host([type='checkbox'][checked]) {
   svg {
     user-select: none;
@@ -109,6 +113,7 @@
 }
 
 :host(:not([disabled]):active[type='radio']) {
+  outline: none;
   &::after {
     // radio pushed
     box-shadow:
