@@ -5,13 +5,24 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
   <title>Stencil Component Starter</title>
-
   <script type="module" src="/build/skateui.esm.js"></script>
   <script nomodule src="/build/skateui.js"></script>
 </head>
 
 <body>
   <h1>skate ui</h1>
+  <pre>
+    Objective:
+      - Make UI component 100% compatible with vanila HTML.
+      - All HTMl attributes should be functional.
+      - Style should be easily customizable via css without implementing additional custom attributes.
+    
+    Known issues:
+      - Safari does not properly display outline radius.
+      - FireFox does not follow outline radius on inline-table elements. (sui-button)
+      - Safari makes cursor to text cursor when element is clicked.
+      - FireFox does not display select element text value vertically aligned middle when using min-height.
+  </pre>
   <hr>
   <form onsubmit="console.log(this);return false;">
     <sui-button>sui-button</sui-button>
@@ -19,98 +30,135 @@
   <sui-button disabled>Disabled</sui-button><br>
   <sui-button class="text">Text</sui-button><br>
   <sui-button class="outline">Outline</sui-button>
-  <ul>
-    <li>
-      autofocus &#x2713;
-    </li>
-    <li>
-      tabfocus (desktop) &#x2713;
-    </li>
-    <li>
-      content vertically aligned on min-height &#x2713;
-    </li>
-    <li>
-      stylable &#x2713;
-    </li>
-    <li>
-      works with forms &#x2713;
-    </li>
-  </ul>
-  <p>Changes:</p>
-  <ul>
-    <li>
-      removed outline, text type button.<br>
-      these should be styled manually. (refer style)
-    </li>
-  </ul>
+  <pre>
+    autofocus &#x2713;
+    tabfocus (desktop) &#x2713;
+    tabfocus enter &#x2713;
+    content vertically aligned on min-height &#x2713;
+    stylable &#x2713;
+    works with forms &#x2713;
+
+    Note:
+      - removed outline, text type button.
+      - these should be styled manually. (refer style)
+  </pre>
   <hr>
   <form onsubmit="inputForm(this);">
-    <sui-input name="A" placeholder="sui-input"></sui-input>
+    <label for="sui-input-vanila">Text input</label>
+    <sui-input id='sui-input-vanila' name="vanila" placeholder="sui-input"></sui-input>
     <br><br>
-    <sui-input name="B" class='input-styled' placeholder="sui-input (skapi web)"></sui-input>
+    <label for="sui-input-number">Number input</label>
+    <sui-input id='sui-input-number' name="sui-input-number" type="number" placeholder="sui-input (number)"></sui-input>
     <br><br>
-    <sui-input name="B" class='input-styled' type="number" placeholder="sui-input (skapi web)"></sui-input>
+    <label for="sui-input-styled">Text input styled</label>
+    <sui-input id='sui-input-styled' name="sui-input-styled" class='input-styled' placeholder="sui-input (skapi web)">
+    </sui-input>
     <br><br>
-    <sui-input name="C" disabled placeholder="sui-input (disabled)"></sui-input>
+    <label for="sui-input-disabled">Disabled input</label>
+    <sui-input id='sui-input-disabled' name="sui-input-disabled" disabled placeholder="sui-input (disabled)">
+    </sui-input>
     <br><br>
-    <sui-input id='D' name="D" type="checkbox" value="checkbox"></sui-input>
-    <label for="D">Checkbox</label>
-    <br>
-    <sui-input id='E1' name="E" type="radio" checked value="radio1"></sui-input>
-    <label for="E1">Radio 1</label>
-    <br>
-    <sui-input id='E2' name="E" type="radio" value="radio2"></sui-input>
-    <label for="E2">Radio 2</label>
+    <label for="sui-input-checkbox">Checkbox</label>
+    <sui-input id='sui-input-checkbox' name="sui-input-checkbox" type="checkbox" value="checkbox" checked></sui-input>
     <br><br>
-    <sui-button>Submit</sui-button>
-    <!-- <button>sub</button> -->
+    <label for="sui-input-checkbox-styled">Checkbox Styled</label>
+    <sui-input id='sui-input-checkbox-styled' class='input-checkbox' name="sui-input-checkbox-styled" type="checkbox"
+      value="checkbox styled"></sui-input>
+    <br><br>
+    <label for="sui-input-radio">Radio</label>
+    <sui-input id='sui-input-radio' name="sui-input-radio" type="radio" checked value="radio vanila"></sui-input>
+    <br><br>
+    <label for="sui-input-radio-styled">Radio Styled</label>
+    <sui-input id='sui-input-radio-styled' class='input-radio' name="sui-input-radio" type="radio" value="radio styled">
+    </sui-input>
+    <br><br>
+    <sui-input type="reset">
+    </sui-input>
+    <sui-input type="submit" value="Send">
+    </sui-input>
   </form>
-  <ul>
-    <li>
-      autofocus &#x2713;
-    </li>
-    <li>
-      tabfocus (desktop) &#x2713;
-    </li>
-    <li>
-      vertically aligned text &#x2713;
-    </li>
-    <li>
-      stylable &#x2713;
-    </li>
-    <li>
-      works with forms &#x2713;
-    </li>
-    <li>
-      checkbox, radio works with labels &#x2713;
-    </li>
-    <li>
-      focus tab-enter works with checkbox, radio &#x2713;
-    </li>
-  </ul>
-  <p>Note:</p>
-  <ul>
-    <li>
-      Pseudo element should be styled certain way. (refer style)
-    </li>
-  </ul>
+  <pre>
+    autofocus &#x2713;
+    tabfocus (desktop) &#x2713;
+    vertically aligned text &#x2713;
+    stylable (including pseudo elements) &#x2713;
+    works with forms &#x2713;
+    works with labels &#x2713;
+    autofill highlights &#x2713;
+    submit / reset button &#x2713;
+    focus tab-enter works with checkbox, radio &#x2713;
+    
+    Note:
+      - for inputs, id assigned to the host element will be reassigned to slot elements.
+        the reason for this is to make label 'for' attribute to be able to focus on the target input element.
+    
+      - Available types (...to be added):
+        'checkbox'
+        'radio'
+        'text'
+        'password'
+        'email'
+        'number'
+        'search' 
+        'tel'
+        'url'
+        'reset'
+        'submit'
+  </pre>
+  <hr>
+  <sui-select name="cars">
+    <option value="sui-select" hidden selected></option>
+    <optgroup label="Cars">
+      <option value="Saab Crab Man Car Saab Crab Man Car Saab Crab">Saab Crab Man Car Saab Crab Man Car Saab Crab</option>
+      <option value="Opel">Opel</option>
+      <option value="Audi">Audi</option>
+    </optgroup>
+    <optgroup label="Food">
+      <option value="Pizza">Pizza</option>
+      <option value="Noodle">Noodle</option>
+      <option value="Burger">Burger</option>
+      <option value="Fried Rice">Fried Rice</option>
+    </optgroup>
+  </sui-select>
+  <br>
+  <br>
+  <sui-select name="cars" multiple size="6">
+    <option value="sui-select" selected>sui-select multiple</option>
+    <option value="Saab">Saab</option>
+    <option value="Opel">Opel</option>
+    <option value="Audi">Audi</option>
+    <optgroup label="Food">
+      <option value="Pizza">Pizza</option>
+      <option value="Noodle">Noodle</option>
+      <option value="Burger">Burger</option>
+      <option value="Fried Rice">Fried Rice</option>
+    </optgroup>
+  </sui-select>
+  <br>
+  <pre>
+    Progress so far:
+      - option elements should work just like html &#x2713;
+      - select multiple &#x2713;
+      - shell is stylable &#x2713;
+      - size attribute works &#x2713;
+      - text ellipsis for long values &#x2713;
+    Working:
+      - Need custom design
+  </pre>
 </body>
+
 <script>
   function inputForm(el) {
     console.log(el);
   }
 </script>
+
 <style>
   body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* background-color: rgb(210, 210, 210); */
   }
-  #pp::before {
-    content: ' ';
-    display: block;
-    background-color: red;
-    width: 100%;
-    height: 100%;
-  }
+
   sui-button {
     margin-bottom: 8px;
   }
@@ -132,12 +180,17 @@
     /* if you don't want focus styling */
   }
 
-  sui-input, label {
+  label {
+    width: 10em;
+    display: inline-block;
+  }
+
+  sui-input,
+  label {
     vertical-align: middle;
   }
 
   sui-input.input-styled {
-    outline: 1px solid hsla(0 0% 50% / 75%);
     color: rgba(0, 0, 0, 0.65);
   }
 
@@ -146,9 +199,26 @@
     color: rgba(0, 0, 0, 0.42);
   }
 
-  sui-input.input-styled:focus-within {
+  sui-input.input-styled input:focus {
     /* styling for focused */
-    outline: 2px solid #293fe6a6;
+    /* outline: 2px solid #293fe6a6; */
+    outline-color: #293fe6a6;
+  }
+
+  sui-input.input-checkbox {
+    color: red;
+  }
+
+  sui-input.input-checkbox[checked] {
+    /* styling for checked */
+    background-color: red;
+    color: white;
+    border-color: red;
+  }
+
+  sui-input.input-radio {
+    /* custom styling */
+    color: red;
   }
 </style>
 

@@ -13,6 +13,10 @@
   box-sizing: border-box;
   cursor: pointer;
   user-select: none;
+  -webkit-user-select: none; /* Safari fallback only */
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
   text-align: center;
   box-shadow:
     inset 1px 1px 2px rgb(255 255 255 / 64%),
@@ -27,19 +31,19 @@
   }
 }
 
-@media (pointer: fine) {
-  :host(:not([disabled]):hover) {
-    box-shadow:
-      inset 1px 1px 2px rgb(255 255 255 / 65%),
-      inset -1px -1px 2px rgb(0 0 0 / 25%),
-      inset 0 0 0px 1px rgb(0 0 0 / 25%),
-      inset 0 0 0 128em hsla(0 0% 75% / 16%);
-  }
-
-  :host(:not([disabled]):focus) {
-    outline: 1px solid var(--sui-focus-outline-color);
-  }
+// @media (pointer: fine) { // this is to prevent focus outline on touchscreens
+:host(:not([disabled]):hover) {
+  box-shadow:
+    inset 1px 1px 2px rgb(255 255 255 / 65%),
+    inset -1px -1px 2px rgb(0 0 0 / 25%),
+    inset 0 0 0px 1px rgb(0 0 0 / 25%),
+    inset 0 0 1em 1em hsla(0 0% 75% / 16%);
 }
+
+:host(:not([disabled]):focus) {
+  outline: 1px solid var(--sui-focus-outline-color);
+}
+// }
 
 :host(:hover[disabled]) {
   cursor: default;
@@ -50,6 +54,7 @@
     inset -1px -1px 2px rgb(255 255 255 / 65%),
     inset 1px 1px 2px rgb(0 0 0 / 25%),
     inset 0 0 0px 1px rgb(0 0 0 / 25%);
+
   filter: grayscale(1) contrast(0.25) invert(1) brightness(1.3);
 }
 

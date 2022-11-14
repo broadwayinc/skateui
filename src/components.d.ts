@@ -29,6 +29,8 @@ export namespace Components {
         "open": () => Promise<void>;
         "show": boolean;
     }
+    interface SuiSelect {
+    }
     interface SuiSticky {
     }
 }
@@ -57,6 +59,12 @@ declare global {
         prototype: HTMLSuiOverlayElement;
         new (): HTMLSuiOverlayElement;
     };
+    interface HTMLSuiSelectElement extends Components.SuiSelect, HTMLStencilElement {
+    }
+    var HTMLSuiSelectElement: {
+        prototype: HTMLSuiSelectElement;
+        new (): HTMLSuiSelectElement;
+    };
     interface HTMLSuiStickyElement extends Components.SuiSticky, HTMLStencilElement {
     }
     var HTMLSuiStickyElement: {
@@ -68,6 +76,7 @@ declare global {
         "sui-button": HTMLSuiButtonElement;
         "sui-input": HTMLSuiInputElement;
         "sui-overlay": HTMLSuiOverlayElement;
+        "sui-select": HTMLSuiSelectElement;
         "sui-sticky": HTMLSuiStickyElement;
     }
 }
@@ -93,6 +102,8 @@ declare namespace LocalJSX {
     interface SuiOverlay {
         "show"?: boolean;
     }
+    interface SuiSelect {
+    }
     interface SuiSticky {
     }
     interface IntrinsicElements {
@@ -100,6 +111,7 @@ declare namespace LocalJSX {
         "sui-button": SuiButton;
         "sui-input": SuiInput;
         "sui-overlay": SuiOverlay;
+        "sui-select": SuiSelect;
         "sui-sticky": SuiSticky;
     }
 }
@@ -111,6 +123,7 @@ declare module "@stencil/core" {
             "sui-button": LocalJSX.SuiButton & JSXBase.HTMLAttributes<HTMLSuiButtonElement>;
             "sui-input": LocalJSX.SuiInput & JSXBase.HTMLAttributes<HTMLSuiInputElement>;
             "sui-overlay": LocalJSX.SuiOverlay & JSXBase.HTMLAttributes<HTMLSuiOverlayElement>;
+            "sui-select": LocalJSX.SuiSelect & JSXBase.HTMLAttributes<HTMLSuiSelectElement>;
             "sui-sticky": LocalJSX.SuiSticky & JSXBase.HTMLAttributes<HTMLSuiStickyElement>;
         }
     }

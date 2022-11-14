@@ -34,11 +34,13 @@ export function randomString(length = 5) {
 
 export function dummyHandler(options: {
   tabFocus?: boolean;
+  appendIdToSlotElement?: boolean;
+  excludeAttribute: string[];
   copyStyle?: string[] | ((css: CSSStyleDeclaration) => any);
   trackNodes?: boolean | ((n: MutationRecord) => any);
   log?: boolean | ((l: { attributeName: string; newValue?: string; oldValue?: string; mutationRecord?: MutationRecord; }) => any);
 }): CSSStyleDeclaration {
-  const { tabFocus = null, trackNodes = null, log = false, copyStyle = null } = options;
+  const { excludeAttribute = [], tabFocus = null, trackNodes = null, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
   const hostStyle = getComputedStyle(this.host);
 
   const setFocusOutline = (() => {
@@ -85,8 +87,8 @@ export function dummyHandler(options: {
       }
     }
 
-    else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id') {
-      // skip 'hidden' | 'class' | 'id
+    else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !(excludeAttribute || []).includes(attName)) {
+      // skip 'hidden' | 'class' | 'id' | excluded list
       this.dummyElement.setAttribute(attName, val);
     }
 
@@ -113,7 +115,7 @@ export function dummyHandler(options: {
   for (let attName in hostAttributes) {
     setDummyAttribute(attName, hostAttributes[attName]);
 
-    if (attName === 'id') {
+    if (attName === 'id' && appendIdToSlotElement) {
       this.dummyElement.setAttribute(attName, hostAttributes[attName]);
       this.host.removeAttribute(attName);
     }

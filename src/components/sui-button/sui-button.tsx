@@ -8,24 +8,43 @@ import { dummyHandler } from '../../utils/utils';
 })
 export class SuiButton {
   // element only needs to be created once
-  dummyElement = Object.assign(document.createElement('button'), { hidden: true });
+
   observer: MutationObserver;
 
   @Element() host: HTMLElement;
-  @Listen('click', { capture: true })
+  isFormButton = (() => {
+    return this.host.closest('form');
+  })();
+
+  dummyElement = (() => {
+    // if(this.host.disabled) tabindex="0"
+    if (!this.host.hasAttribute('disabled')) {
+      this.host.setAttribute('tabindex', '0');
+    }
+    const button = Object.assign(document.createElement('button'), { hidden: true });
+    if (!this.isFormButton) {
+      this.host.append(button);
+    }
+    return button;
+  })();
+
+  @Listen('click')
   clickEventHandler() {
     if (this.host.attributes.getNamedItem('disabled')) {
       // does not trigger dummy when disabled
       return;
     }
-
-    this.host.parentElement.insertBefore(this.dummyElement, this.host);
-    this.dummyElement.click();
-    this.dummyElement.remove();
+    if (this.isFormButton) {
+      this.host.parentElement.insertBefore(this.dummyElement, this.host);
+      this.dummyElement.click();
+      this.dummyElement.remove();
+    } else {
+      this.dummyElement.click();
+    }
   }
-  @Listen('keyup', { capture: true })
+  @Listen('keyup')
   keyEventHandler(e) {
-    if(e.key === 'Enter') {
+    if (e.key === 'Enter') {
       // trigger click on enter
       this.clickEventHandler();
     }
@@ -41,7 +60,7 @@ export class SuiButton {
 
   render() {
     return (
-      <Host tabindex="0">
+      <Host>
         <slot></slot>
       </Host>
     );
