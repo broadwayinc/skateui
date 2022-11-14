@@ -1,9 +1,8 @@
 :host([multiple]) {
   padding: .66em;
-
   box-shadow:
-    0 0 0 1px hsla(0 0% 50% / 75%),
-    inset 0 1px 2px 1px rgb(0 0 0 / 25%), inset -1px -1px 1px rgb(255 255 255 / 25%);
+    0 0 0 1px rgb(128 128 128), -1px -1px 3px 0px rgb(0 0 0), 0px 0px 1px 2px rgb(255 255 255);
+  overflow: hidden;
 }
 
 :host {

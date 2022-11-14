@@ -72,6 +72,15 @@ export class SuiSelect {
       tabFocus: true,
       copyStyle: (hostCss: CSSStyleDeclaration) => {
         this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+        
+        const select = this.host.getElementsByTagName('select')?.[0] || null;
+
+        if (select && select.children.length) {
+          let len = select.children.length;
+          while (len--) {
+            (select.children[len] as HTMLElement).style.setProperty('color', hostCss.color);
+          }
+        }
 
         // make text input fill the host
         let needAdjustment = false;
