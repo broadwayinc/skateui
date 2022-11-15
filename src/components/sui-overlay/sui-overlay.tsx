@@ -46,8 +46,11 @@ export class SuiOverlay {
         'align-items': 'flex-start'
       }
     };
+
     const screen = document.createElement('div');
+
     for (let k in css.base) {
+      // append base css
       screen.style.setProperty(k, css.base[k]);
     }
 
@@ -56,10 +59,12 @@ export class SuiOverlay {
     }
 
     for (let k in css[this.contentPosition]) {
+      // append positioning css
       screen.style.setProperty(k, css[this.contentPosition][k]);
     }
 
     screen.onclick = () => {
+      // onclick event is triggered when overlay is clicked
       this.host.click();
     };
 
@@ -70,14 +75,16 @@ export class SuiOverlay {
       } catch (err) { }
 
       if (typeof val === 'string' || typeof val !== 'string' && val) {
+        // prevents background scroll
         document.body.style.top = `-${window.scrollY}px`;
         document.body.style.position = 'fixed';
       }
     }
 
+    // generate overlay id
     this.overlayId = randomString();
     screen.id = this.overlayId;
-    screen.classList.add('sui-overlay');
+    
     return screen;
   }
   @Method()
