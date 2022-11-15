@@ -8,9 +8,10 @@
   <script nomodule src="/build/skateui.js"></script>
 </head>
 
-<body style="max-width: 800px;margin: 8px auto;">
-  <h1>skate ui</h1>
-  <pre>
+<body style="margin:0; width:100%;">
+  <div style="max-width: 800px;margin: 8px auto;">
+    <h1>skate ui</h1>
+    <pre>
   Objective:
     - Make UI component 100% compatible with vanila HTML.
     - All HTMl attributes should be functional.
@@ -36,15 +37,15 @@
       but when refreshed, the quirks will go away.
 
   </pre>
-  <hr>
-  <h2>sui-button</h2>
-  <form onsubmit="console.log(this);return false;">
-    <sui-button>sui-button</sui-button>
-  </form>
-  <sui-button disabled>Disabled</sui-button><br>
-  <sui-button class="text">Text</sui-button><br>
-  <sui-button class="outline">Outline</sui-button>
-  <pre>
+    <hr>
+    <h2>sui-button</h2>
+    <form onsubmit="console.log(this);return false;">
+      <sui-button>sui-button</sui-button>
+    </form>
+    <sui-button disabled>Disabled</sui-button><br>
+    <sui-button class="text">Text</sui-button><br>
+    <sui-button class="outline">Outline</sui-button>
+    <pre>
   autofocus &#x2713;
   tabfocus (desktop) &#x2713;
   tabfocus enter &#x2713;
@@ -56,44 +57,45 @@
     - removed outline, text type button.
     - these should be styled manually. (refer style)
   </pre>
-  <hr>
-  <h2>sui-input</h2>
-  <form onsubmit="inputForm(this);">
-    <label for="sui-input-vanila">Text input</label>
-    <sui-input id='sui-input-vanila' name="vanila" placeholder="sui-input"></sui-input>
-    <br><br>
-    <label for="sui-input-number">Number input</label>
-    <sui-input id='sui-input-number' name="sui-input-number" type="number" placeholder="sui-input (number)">
-    </sui-input>
-    <br><br>
-    <label for="sui-input-styled">Text input styled</label>
-    <sui-input id='sui-input-styled' name="sui-input-styled" class='input-styled' placeholder="sui-input (skapi web)">
-    </sui-input>
-    <br><br>
-    <label for="sui-input-disabled">Disabled input</label>
-    <sui-input id='sui-input-disabled' name="sui-input-disabled" disabled placeholder="sui-input (disabled)">
-    </sui-input>
-    <br><br>
-    <label for="sui-input-checkbox">Checkbox</label>
-    <sui-input id='sui-input-checkbox' name="sui-input-checkbox" type="checkbox" value="checkbox" checked></sui-input>
-    <br><br>
-    <label for="sui-input-checkbox-styled">Checkbox Styled</label>
-    <sui-input id='sui-input-checkbox-styled' class='input-checkbox' name="sui-input-checkbox-styled" type="checkbox"
-      value="checkbox styled"></sui-input>
-    <br><br>
-    <label for="sui-input-radio">Radio</label>
-    <sui-input id='sui-input-radio' name="sui-input-radio" type="radio" checked value="radio vanila"></sui-input>
-    <br><br>
-    <label for="sui-input-radio-styled">Radio Styled</label>
-    <sui-input id='sui-input-radio-styled' class='input-radio' name="sui-input-radio" type="radio" value="radio styled">
-    </sui-input>
-    <br><br>
-    <sui-input type="reset">
-    </sui-input>
-    <sui-input type="submit" value="Send">
-    </sui-input>
-  </form>
-  <pre>
+    <hr>
+    <h2>sui-input</h2>
+    <form onsubmit="inputForm(this);">
+      <label for="sui-input-vanila">Text input</label>
+      <sui-input id='sui-input-vanila' name="vanila" placeholder="sui-input"></sui-input>
+      <br><br>
+      <label for="sui-input-number">Number input</label>
+      <sui-input id='sui-input-number' name="sui-input-number" type="number" placeholder="sui-input (number)">
+      </sui-input>
+      <br><br>
+      <label for="sui-input-styled">Text input styled</label>
+      <sui-input id='sui-input-styled' name="sui-input-styled" class='input-styled' placeholder="sui-input (skapi web)">
+      </sui-input>
+      <br><br>
+      <label for="sui-input-disabled">Disabled input</label>
+      <sui-input id='sui-input-disabled' name="sui-input-disabled" disabled placeholder="sui-input (disabled)">
+      </sui-input>
+      <br><br>
+      <label for="sui-input-checkbox">Checkbox</label>
+      <sui-input id='sui-input-checkbox' name="sui-input-checkbox" type="checkbox" value="checkbox" checked></sui-input>
+      <br><br>
+      <label for="sui-input-checkbox-styled">Checkbox Styled</label>
+      <sui-input id='sui-input-checkbox-styled' class='input-checkbox' name="sui-input-checkbox-styled" type="checkbox"
+        value="checkbox styled"></sui-input>
+      <br><br>
+      <label for="sui-input-radio">Radio</label>
+      <sui-input id='sui-input-radio' name="sui-input-radio" type="radio" checked value="radio vanila"></sui-input>
+      <br><br>
+      <label for="sui-input-radio-styled">Radio Styled</label>
+      <sui-input id='sui-input-radio-styled' class='input-radio' name="sui-input-radio" type="radio"
+        value="radio styled">
+      </sui-input>
+      <br><br>
+      <sui-input type="reset">
+      </sui-input>
+      <sui-input type="submit" value="Send">
+      </sui-input>
+    </form>
+    <pre>
   autofocus &#x2713;
   tabfocus (desktop) &#x2713;
   vertically aligned text &#x2713;
@@ -123,39 +125,39 @@
       'reset'
       'submit'
   </pre>
-  <hr>
-  <h2>sui-select</h2>
-  <sui-select name="cars">
-    <option value="sui-select" hidden selected></option>
-    <optgroup label="Cars">
-      <option value="Saab Crab Man Car Saab Crab Man Car Saab Crab">Saab Crab Man Car Saab Crab Man Car Saab Crab
-      </option>
+    <hr>
+    <h2>sui-select</h2>
+    <sui-select name="cars">
+      <option value="sui-select" hidden selected></option>
+      <optgroup label="Cars">
+        <option value="Saab Crab Man Car Saab Crab Man Car Saab Crab">Saab Crab Man Car Saab Crab Man Car Saab Crab
+        </option>
+        <option value="Opel">Opel</option>
+        <option value="Audi">Audi</option>
+      </optgroup>
+      <optgroup label="Food">
+        <option value="Pizza">Pizza</option>
+        <option value="Noodle">Noodle</option>
+        <option value="Burger">Burger</option>
+        <option value="Fried Rice">Fried Rice</option>
+      </optgroup>
+    </sui-select>
+    <br>
+    <br>
+    <sui-select name="cars" multiple size="8">
+      <option value="sui-select" selected>sui-select multiple</option>
+      <option value="Saab">Saab</option>
       <option value="Opel">Opel</option>
       <option value="Audi">Audi</option>
-    </optgroup>
-    <optgroup label="Food">
-      <option value="Pizza">Pizza</option>
-      <option value="Noodle">Noodle</option>
-      <option value="Burger">Burger</option>
-      <option value="Fried Rice">Fried Rice</option>
-    </optgroup>
-  </sui-select>
-  <br>
-  <br>
-  <sui-select name="cars" multiple size="8">
-    <option value="sui-select" selected>sui-select multiple</option>
-    <option value="Saab">Saab</option>
-    <option value="Opel">Opel</option>
-    <option value="Audi">Audi</option>
-    <optgroup label="Food">
-      <option value="Pizza">Pizza</option>
-      <option value="Noodle">Noodle</option>
-      <option value="Burger">Burger</option>
-      <option value="Fried Rice">Fried Rice</option>
-    </optgroup>
-  </sui-select>
-  <br>
-  <pre>
+      <optgroup label="Food">
+        <option value="Pizza">Pizza</option>
+        <option value="Noodle">Noodle</option>
+        <option value="Burger">Burger</option>
+        <option value="Fried Rice">Fried Rice</option>
+      </optgroup>
+    </sui-select>
+    <br>
+    <pre>
   Progress so far:
     - option elements should work just like html &#x2713;
     - select multiple &#x2713;
@@ -165,25 +167,25 @@
   Working:
     - Need custom design
   </pre>
-  <hr>
-  <h2>sui-nav</h2>
-  <div style="width: 200px;height: 200px;border: 1px solid black;overflow-y: auto;">
-    <sui-nav auto-hide>sui-nav</sui-nav>
-    <div style="font-size: 0.8em;opacity:0.5;padding:0 8px;">
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
-      <p>Scroll down</p>
+    <hr>
+    <h2>sui-nav</h2>
+    <div style="width: 200px;height: 200px;border: 1px solid black;overflow-y: auto;">
+      <sui-nav auto-hide>sui-nav</sui-nav>
+      <div style="font-size: 0.8em;opacity:0.5;padding:0 8px;">
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+        <p>Scroll down</p>
+      </div>
     </div>
-  </div>
-  <pre>
+    <pre>
   stylable &#x2713;
   works any where including body &#x2713;
 
@@ -193,17 +195,17 @@
       ex) auto-hide="8" gives slower hiding, auto-hide='2' gives faster hiding.
           when value is not gives default value is '3'
   </pre>
-  <hr>
-  <h2>sui-overlay</h2>
-  <sui-overlay transition-time="0.25s" overlay-color="rgba(0,0,0,0.25)" id="overlay" onclick="this.close()">
-    <div style="margin: auto; background: white; border: 4px solid; padding: 2em; text-align:center; width: 66%;">
-      <h1>Hello skate ui!</h1>
-      <p>This is your overlay</p>
-    </div>
-  </sui-overlay>
-  <sui-button onclick="overlay.open()">sui-overlay</sui-button>
+    <hr>
+    <h2>sui-overlay</h2>
+    <sui-overlay prevent-background-scroll transition-time="0.25s" overlay-color="rgba(0,0,0,0.25)" id="overlay" onclick="this.close()">
+      <div style="margin: auto; background: white; border: 4px solid; padding: 2em; text-align:center; width: 66%;">
+        <h1>Hello skate ui!</h1>
+        <p>This is your overlay</p>
+      </div>
+    </sui-overlay>
+    <sui-button onclick="overlay.open()">sui-overlay</sui-button>
 
-  <pre>
+    <pre>
   works any where within the page &#x2713;
   can nest anything &#x2713;
   
@@ -215,12 +217,12 @@
       - content-position:
           center | top | bottom | left | right
 
-    - prevent-background-scroll has quirks when disabling body scroll
-      the auto margin is lost
+    - when using prevent-background-scroll body should have margin:0; width:100%;
   
   Need fix:
     - transition for content pop has some latency when content-position is not center
   </pre>
+  </div>
 </body>
 
 <script>

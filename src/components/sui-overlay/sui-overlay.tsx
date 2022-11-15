@@ -84,7 +84,7 @@ export class SuiOverlay {
     // generate overlay id
     this.overlayId = randomString();
     screen.id = this.overlayId;
-    
+
     return screen;
   }
   @Method()
@@ -236,7 +236,7 @@ export class SuiOverlay {
   }
   render() {
     return (
-      <Host>
+      <Host hidden>
         <slot></slot>
       </Host>
     );
