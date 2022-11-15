@@ -1,10 +1,14 @@
 :host {
   user-select: none;
-  -webkit-user-select: none; /* Safari fallback only */
-  -webkit-user-select: none; /* Chrome/Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+ */
-  
+  -webkit-user-select: none;
+  /* Safari fallback only */
+  -webkit-user-select: none;
+  /* Chrome/Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE10+ */
+
   svg {
     display: none;
   }
@@ -27,23 +31,10 @@
   box-sizing: border-box;
   // outline: 1px solid hsla(0 0% 50% / 75%);
   box-shadow:
-    // 0 0 0 1px hsla(0 0% 50% / 75%),
-    // inset 0 1px 2px 1px rgb(0 0 0 / 25%), inset -1px -1px 1px rgb(255 255 255 / 25%);
-    0 0 0 1px rgb(128 128 128), -1px -1px 3px 0px rgb(0 0 0), 0px 0px 1px 2px rgb(255 255 255);
+    inset 0 0 0 1px rgba(128 128 128 / 50%), -1px -1px 2px -1px rgb(0 0 0), 0 0 1px 1px rgb(255 255 255);
 
   background-color: inherit;
   color: inherit;
-}
-
-:host([type='text']:focus-within),
-:host([type='password']:focus-within),
-:host([type='email']:focus-within),
-:host([type='number']:focus-within),
-:host([type='search']:focus-within),
-:host([type='tel']:focus-within),
-:host([type='url']:focus-within) {
-  box-shadow:
-    inset 0 1px 2px 0px rgb(0 0 0 / 25%), inset -1px -1px 2px rgb(255 255 255 / 25%);
 }
 
 :host([disabled]) {

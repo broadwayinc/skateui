@@ -50,14 +50,14 @@ export function dummyHandler(options: {
         return;
       }
 
-      // make host focusable
-      let forOutlineColor = hostStyle.backgroundColor;
-      if (forOutlineColor === 'rgba(0, 0, 0, 0)') {
-        forOutlineColor = hostStyle.color;
-      }
+      // // make host focusable
+      // let forOutlineColor = hostStyle.backgroundColor;
+      // if (forOutlineColor === 'rgba(0, 0, 0, 0)') {
+      //   forOutlineColor = hostStyle.color;
+      // }
 
-      // save outline color
-      this.host.style.setProperty('--sui-focus-outline-color', forOutlineColor);
+      // // save outline color
+      // this.host.style.setProperty('--sui-focus-outline-color', forOutlineColor);
     };
 
     // executes on init, return function to be reusable
