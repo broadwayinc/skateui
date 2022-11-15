@@ -33,37 +33,15 @@ export function randomString(length = 5) {
 }
 
 export function dummyHandler(options: {
-  tabFocus?: boolean;
+  computedStyle?: CSSStyleDeclaration;
   appendIdToSlotElement?: boolean;
   excludeAttribute: string[];
   copyStyle?: string[] | ((css: CSSStyleDeclaration) => any);
   trackNodes?: boolean | ((n: MutationRecord) => any);
   log?: boolean | ((l: { attributeName: string; newValue?: string; oldValue?: string; mutationRecord?: MutationRecord; }) => any);
 }): CSSStyleDeclaration {
-  const { excludeAttribute = [], tabFocus = null, trackNodes = null, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
-  const hostStyle = getComputedStyle(this.host);
-
-  const setFocusOutline = (() => {
-    const f = () => {
-      if (!tabFocus) {
-        // if not tab focusable element
-        return;
-      }
-
-      // // make host focusable
-      // let forOutlineColor = hostStyle.backgroundColor;
-      // if (forOutlineColor === 'rgba(0, 0, 0, 0)') {
-      //   forOutlineColor = hostStyle.color;
-      // }
-
-      // // save outline color
-      // this.host.style.setProperty('--sui-focus-outline-color', forOutlineColor);
-    };
-
-    // executes on init, return function to be reusable
-    f();
-    return f;
-  })();
+  const { computedStyle=null, excludeAttribute = [], trackNodes = null, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
+  const hostStyle = computedStyle || getComputedStyle(this.host);
 
   const setDummyAttribute = (attName: string, val: string) => {
     const copyStyleBypass = [];
@@ -160,7 +138,7 @@ export function dummyHandler(options: {
       }
       logger({ attributeName, newValue, oldValue });
       // ! do not change the order of execution below !
-      setFocusOutline();
+
       if (newValue === null) {
         // attribute is removed
         this.dummyElement.removeAttribute(attributeName);

@@ -17,7 +17,6 @@ export class SuiButton {
   })();
 
   dummyElement = (() => {
-    // if(this.host.disabled) tabindex="0"
     if (!this.host.hasAttribute('disabled')) {
       this.host.setAttribute('tabindex', '0');
     }
@@ -49,8 +48,9 @@ export class SuiButton {
       this.clickEventHandler();
     }
   }
+
   componentDidLoad() {
-    dummyHandler.bind(this)({ tabFocus: true });
+    dummyHandler.bind(this)({ computedStyle: window.getComputedStyle(this.host) });
   }
 
   disconnectedCallback() {

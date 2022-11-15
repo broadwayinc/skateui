@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
 
 <head>
   <meta charset="utf-8" />
@@ -9,7 +8,7 @@
   <script nomodule src="/build/skateui.js"></script>
 </head>
 
-<body>
+<body style="max-width: 800px;margin: 8px auto;">
   <h1>skate ui</h1>
   <pre>
     Objective:
@@ -17,14 +16,26 @@
       - All HTMl attributes should be functional.
       - Style should be easily customizable via css without implementing additional custom attributes.
     
+    Note:
+      - skateui component is reactive to font-size.
+        this was intended decision.
+
     Known issues:
       - Safari does not properly display outline radius.
       - FireFox does not follow outline radius on inline-table elements. (sui-button)
       - Safari makes cursor to text cursor when element is clicked.
       - FireFox does not display select element text value vertically aligned middle when using min-height.
       - Chrome on linux use text color for input focus outline.
+      - skateui use getComputedStyle and mutationobserver internally.
+        when developing, there can be some minor quirks when:
+          - trying to modify css styles directly from developers panel in web browsers.
+          - working on live reloads
+        
+        but when refreshed, the quirks will go away.
+
   </pre>
   <hr>
+  <h2>sui-button</h2>
   <form onsubmit="console.log(this);return false;">
     <sui-button>sui-button</sui-button>
   </form>
@@ -44,6 +55,7 @@
       - these should be styled manually. (refer style)
   </pre>
   <hr>
+  <h2>sui-input</h2>
   <form onsubmit="inputForm(this);">
     <label for="sui-input-vanila">Text input</label>
     <sui-input id='sui-input-vanila' name="vanila" placeholder="sui-input"></sui-input>
@@ -86,6 +98,8 @@
     works with forms &#x2713;
     works with labels &#x2713;
     autofill highlights &#x2713;
+    prevents nesting &#x2713;
+    aligns with buttons &#x2713;
     submit / reset button &#x2713;
     focus tab-enter works with checkbox, radio &#x2713;
     
@@ -107,6 +121,7 @@
         'submit'
   </pre>
   <hr>
+  <h2>sui-select</h2>
   <sui-select name="cars">
     <option value="sui-select" hidden selected></option>
     <optgroup label="Cars">
@@ -147,18 +162,55 @@
     Working:
       - Need custom design
   </pre>
+  <hr>
+  <h2>sui-nav</h2>
+  <div style="width: 200px;height: 200px;border: 1px solid black;overflow-y: auto;">
+    <sui-nav auto-hide>sui-nav</sui-nav>
+    <div style="font-size: 0.8em;opacity:0.5;padding:0 8px;">
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+      <p>Scroll down</p>
+    </div>
+  </div>
+  <pre>
+    stylable &#x2713;
+    works any where including body &#x2713;
+
+    Note:
+      - additional attribute "auto-hide" hides nav element when parent is scrolled.
+        "auto-hide" attribute can also have number value(greater than 0) for hiding movement curves.
+        ex) auto-hide="8" gives slower hiding, auto-hide='2' gives faster hiding.
+            when value is not gives default value is '3'
+  </pre>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 </body>
 
 <script>
   function inputForm(el) {
     console.log(el);
   }
+
 </script>
 
 <style>
   body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     /* background-color: rgb(210, 210, 210); */
+    /* font-size: 32px; */
+  }
+
+  sui-nav {
+    background-color: #293FE6;
+    color: white;
+    box-sizing: border-box;
   }
 
   sui-button {
@@ -169,7 +221,6 @@
     background-color: transparent;
     color: #293FE6;
     border: 2px solid #293FE6;
-    padding: calc(0.6em - 2px) calc(20px - 2px);
     /* using calc() for reference. default paddings are .6em 20px */
     box-shadow: none;
   }
@@ -187,10 +238,10 @@
     display: inline-block;
   }
 
-  sui-input,
+  /* sui-input,
   label {
     vertical-align: middle;
-  }
+  } */
 
   sui-input.input-styled {
     color: rgba(0, 0, 0, 0.65);
@@ -223,5 +274,3 @@
     color: red;
   }
 </style>
-
-</html>

@@ -92,6 +92,7 @@ export class SuiInput {
       if (!this.host.hasAttribute('disabled')) {
         this.host.setAttribute('tabindex', '0');
       }
+      
       this.host.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
           // checkbox, radio should be able to trigger click on enter key
@@ -188,7 +189,7 @@ export class SuiInput {
 
   componentDidLoad() {
     dummyHandler.bind(this)({
-      tabFocus: true,
+      computedStyle: window.getComputedStyle(this.host),
       copyStyle: this.isChecker ? null : !this.isButton ? (hostCss: CSSStyleDeclaration) => {
         this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
 

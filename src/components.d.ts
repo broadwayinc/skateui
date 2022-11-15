@@ -24,6 +24,9 @@ export namespace Components {
     }
     interface SuiInput {
     }
+    interface SuiNav {
+        "autoHide": number;
+    }
     interface SuiOverlay {
         "close": () => Promise<void>;
         "open": () => Promise<void>;
@@ -53,6 +56,12 @@ declare global {
         prototype: HTMLSuiInputElement;
         new (): HTMLSuiInputElement;
     };
+    interface HTMLSuiNavElement extends Components.SuiNav, HTMLStencilElement {
+    }
+    var HTMLSuiNavElement: {
+        prototype: HTMLSuiNavElement;
+        new (): HTMLSuiNavElement;
+    };
     interface HTMLSuiOverlayElement extends Components.SuiOverlay, HTMLStencilElement {
     }
     var HTMLSuiOverlayElement: {
@@ -75,6 +84,7 @@ declare global {
         "my-component": HTMLMyComponentElement;
         "sui-button": HTMLSuiButtonElement;
         "sui-input": HTMLSuiInputElement;
+        "sui-nav": HTMLSuiNavElement;
         "sui-overlay": HTMLSuiOverlayElement;
         "sui-select": HTMLSuiSelectElement;
         "sui-sticky": HTMLSuiStickyElement;
@@ -99,6 +109,9 @@ declare namespace LocalJSX {
     }
     interface SuiInput {
     }
+    interface SuiNav {
+        "autoHide"?: number;
+    }
     interface SuiOverlay {
         "show"?: boolean;
     }
@@ -110,6 +123,7 @@ declare namespace LocalJSX {
         "my-component": MyComponent;
         "sui-button": SuiButton;
         "sui-input": SuiInput;
+        "sui-nav": SuiNav;
         "sui-overlay": SuiOverlay;
         "sui-select": SuiSelect;
         "sui-sticky": SuiSticky;
@@ -122,6 +136,7 @@ declare module "@stencil/core" {
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
             "sui-button": LocalJSX.SuiButton & JSXBase.HTMLAttributes<HTMLSuiButtonElement>;
             "sui-input": LocalJSX.SuiInput & JSXBase.HTMLAttributes<HTMLSuiInputElement>;
+            "sui-nav": LocalJSX.SuiNav & JSXBase.HTMLAttributes<HTMLSuiNavElement>;
             "sui-overlay": LocalJSX.SuiOverlay & JSXBase.HTMLAttributes<HTMLSuiOverlayElement>;
             "sui-select": LocalJSX.SuiSelect & JSXBase.HTMLAttributes<HTMLSuiSelectElement>;
             "sui-sticky": LocalJSX.SuiSticky & JSXBase.HTMLAttributes<HTMLSuiStickyElement>;

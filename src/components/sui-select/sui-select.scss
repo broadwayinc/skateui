@@ -19,11 +19,12 @@
   /* IE10+ */
 
   display: inline-block;
-  min-height: 40px;
+  // min-height: 40px;
   width: 12em;
   line-height: 1;
-  font-size: 16px;
-  padding: 0 .66em;
+  // font-size: 16px;
+  font-size: inherit;
+  padding: 0.75em .66em;
   border-radius: 4px;
   box-sizing: border-box;
 
