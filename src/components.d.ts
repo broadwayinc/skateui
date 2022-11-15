@@ -29,8 +29,10 @@ export namespace Components {
     }
     interface SuiOverlay {
         "close": () => Promise<void>;
-        "open": () => Promise<void>;
-        "show": boolean;
+        "contentPosition": string;
+        "open": () => Promise<unknown>;
+        "overlayColor": string;
+        "transitionTime": string;
     }
     interface SuiSelect {
     }
@@ -113,7 +115,9 @@ declare namespace LocalJSX {
         "autoHide"?: number;
     }
     interface SuiOverlay {
-        "show"?: boolean;
+        "contentPosition"?: string;
+        "overlayColor"?: string;
+        "transitionTime"?: string;
     }
     interface SuiSelect {
     }
