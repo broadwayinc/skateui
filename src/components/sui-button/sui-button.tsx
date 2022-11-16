@@ -7,8 +7,6 @@ import { dummyHandler } from '../../utils/utils';
   shadow: true
 })
 export class SuiButton {
-  // element only needs to be created once
-
   observer: MutationObserver;
 
   @Element() host: HTMLElement;
@@ -17,6 +15,7 @@ export class SuiButton {
   })();
 
   dummyElement = (() => {
+    // element only needs to be created once, hence creating on class init
     if (!this.host.hasAttribute('disabled')) {
       this.host.setAttribute('tabindex', '0');
     }
