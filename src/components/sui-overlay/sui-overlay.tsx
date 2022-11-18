@@ -105,32 +105,57 @@ export class SuiOverlay {
     const screen = document.getElementById(this.overlayId);
     const el = (screen.firstChild as HTMLElement);
 
-    el.style.removeProperty('bottom');
-    el.style.removeProperty('left');
-    screen.style.setProperty('background-color', 'transparent');
 
-    if (el.children.length) {
-      let len = el.children.length;
-      while (len--) {
-        this.host.prepend(el.children[len]);
+    let revert = {
+      bottom: {
+        'bottom': ' -100%'
+      },
+
+      top: {
+        'bottom': '100%'
+      },
+
+      right: {
+        'left': '100%'
+      },
+
+      left: {
+        'left': '-100%'
       }
+    };
+
+    for (let k in revert[this.contentPosition]) {
+      el.style.setProperty(k, revert[this.contentPosition][k]);
     }
+
+    screen.style.setProperty('background-color', 'transparent');
 
     let wait = 0;
     if (this.transitionTime.includes('ms')) {
       wait = Number(this.transitionTime.split(',')[0].replace('ms', ''));
     }
     else if (this.transitionTime.includes('s')) {
-      wait = Number(this.transitionTime.split(',')[0].replace('s', '')) * 1000;
+      wait = parseFloat(this.transitionTime.split(',')[0].replace('s', '')) * 1000;
     }
+
+    let removeEl = () => {
+      if (el.children.length) {
+        let len = el.children.length;
+        while (len--) {
+          this.host.prepend(el.children[len]);
+        }
+      }
+    };
 
     if (wait) {
       setTimeout(() => {
+        removeEl();
         screen.remove();
       }, wait);
     }
     else {
       // close popup
+      removeEl();
       screen.remove();
     }
 
@@ -167,7 +192,7 @@ export class SuiOverlay {
           'display': 'block',
           'position': 'relative',
           'max-height': '100%',
-          'transition': `bottom cubic-bezier(0, 1, 1, 1) ${this.transitionTime}, left cubic-bezier(0, 1, 1, 1) ${this.transitionTime}`
+          'transition': `bottom ${this.transitionTime}, left ${this.transitionTime}`
         },
 
         bottom: {

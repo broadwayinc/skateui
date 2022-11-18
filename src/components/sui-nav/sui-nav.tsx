@@ -13,11 +13,6 @@ export class SuiNav {
   scrollOffset = 0;
   topOffset = 0;
   offsetProp = 'pageYOffset';
-  navHideEvent = () => {
-    window.requestAnimationFrame(() => {
-      this.calcNavbarPosition();
-    });
-  };
   componentWillLoad() {
     if (this.autoHide === undefined) {
       // no given attribute
@@ -50,6 +45,7 @@ export class SuiNav {
           this.autoHide = 0;
         }
       }
+
       else {
         // other types are not allowed
         this.autoHide = 0;
@@ -59,59 +55,75 @@ export class SuiNav {
   disconnectedCallback() {
     // remove windows event
     if (this.offsetProp === 'pageYOffset') {
-      window.document.removeEventListener('scroll', this.navHideEvent);
+      document.removeEventListener('scroll', this.calcNavbarPosition);
     }
   }
   componentDidLoad() {
     this.navCss = window.getComputedStyle(this.host);
-    const parent = this.host.parentElement;
     this.host.style.setProperty('--nav-position', 'sticky'); // apply css variable
 
     if (this.autoHide) {
-      if (parent.tagName.toLowerCase() === 'body') {
-        this.parent = window;
-        window.document.addEventListener(
-          'scroll',
-          this.navHideEvent,
-          { passive: true }
-        );
-      }
+      let seekScrollableParent = (el) => {
+        if (el) {
+          if (el.scrollHeight > el.clientHeight && 'hidden' !== window.getComputedStyle(el).overflowY) {
+            return el;
+          }
+          else {
+            return seekScrollableParent(el.parentElement);
+          }
+        }
+        else {
+          return el;
+        }
+      };
 
-      else {
+      let scrollableParent = seekScrollableParent(this.host.parentElement);
+      if (scrollableParent && scrollableParent.tagName.toLowerCase() !== 'html') {
         this.offsetProp = 'scrollTop';
-        this.parent = parent;
-
+        this.parent = scrollableParent;
         this.parent.addEventListener(
           'scroll',
-          this.navHideEvent,
+          this.calcNavbarPosition,
+          { passive: true }
+        );
+      } else {
+        this.parent = window;
+        document.addEventListener(
+          'scroll',
+          this.calcNavbarPosition,
           { passive: true }
         );
       }
+
     }
   }
-  calcNavbarPosition() {
-    const navHeight = parseInt(this.navCss.height);
-    const scrollOffset = this.parent[this.offsetProp] < 0 ? 0 : this.parent[this.offsetProp]; // on mobile, offsetProp can be negative
-    const offsetDifference = (this.scrollOffset - scrollOffset) / this.autoHide;
 
-    const topOffset = (() => {
-      let topOffset = this.topOffset + offsetDifference;
-      if (topOffset < -navHeight) {
-        // if offset is beyond navHeight
-        return -navHeight;
-      }
-      if (topOffset > 0) {
-        // offset is positive
-        return 0;
-      }
+  // ! should be arrow function !
+  calcNavbarPosition = () => {
+    window.requestAnimationFrame(() => {
+      const navHeight = parseInt(this.navCss.height);
+      const scrollOffset = this.parent[this.offsetProp] < 0 ? 0 : this.parent[this.offsetProp]; // on mobile, offsetProp can be negative
+      const offsetDifference = (this.scrollOffset - scrollOffset) / this.autoHide;
 
-      return topOffset; // return int range
-    })();
+      const topOffset = (() => {
+        let topOffset = this.topOffset + offsetDifference;
+        if (topOffset < -navHeight) {
+          // if offset is beyond navHeight
+          return -navHeight;
+        }
+        if (topOffset > 0) {
+          // offset is positive
+          return 0;
+        }
 
-    this.scrollOffset = scrollOffset; // update scroll offset
-    this.topOffset = topOffset;
-    this.host.style.setProperty('--nav-top', `${topOffset}px`); // apply css variable
-  }
+        return topOffset; // return int range
+      })();
+
+      this.scrollOffset = scrollOffset; // update scroll offset
+      this.topOffset = topOffset;
+      this.host.style.setProperty('--nav-top', `${topOffset}px`); // apply css variable
+    });
+  };
 
   render() {
     return (

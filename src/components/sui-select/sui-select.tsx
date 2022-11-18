@@ -38,9 +38,9 @@ export class SuiSelect {
         select.prepend(this.host.children[len]);
       }
     }
-    this.value = select.value;
+    this.value = select.getElementsByTagName('option')[select.selectedIndex || 0]?.textContent || select.value || '';
     select.addEventListener('change', () => {
-      this.value = select.value;
+      this.value = select.getElementsByTagName('option')[select.selectedIndex || 0]?.textContent || select.value || '';
     });
 
     for (const [key, value] of Object.entries({
@@ -74,15 +74,6 @@ export class SuiSelect {
       tabFocus: true,
       copyStyle: (hostCss: CSSStyleDeclaration) => {
         this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
-        
-        const select = this.host.getElementsByTagName('select')?.[0] || null;
-
-        if (select && select.children.length) {
-          let len = select.children.length;
-          while (len--) {
-            (select.children[len] as HTMLElement).style.setProperty('color', hostCss.color);
-          }
-        }
 
         // make text input fill the host
         let needAdjustment = false;
@@ -109,8 +100,8 @@ export class SuiSelect {
           this.topPadding = `${padding[0]}px`;
           this.dummyElement.style.setProperty('height', `calc(100% + ${padding[0]}px + ${padding[2]}px)`, 'important');
         }
-        
-        else if(!this.isMultiple) {
+
+        else if (!this.isMultiple) {
           this.dummyElement.style.setProperty('height', hostCss['height'], 'important');
         }
 

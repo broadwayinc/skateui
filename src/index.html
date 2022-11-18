@@ -59,16 +59,34 @@
   </pre>
     <hr>
     <h2>sui-input</h2>
-    <form onsubmit="inputForm(this);">
-      <label for="sui-input-vanila">Text input</label>
-      <sui-input id='sui-input-vanila' name="vanila" placeholder="sui-input"></sui-input>
-      <br><br>
-      <label for="sui-input-number">Number input</label>
-      <sui-input id='sui-input-number' name="sui-input-number" type="number" placeholder="sui-input (number)">
-      </sui-input>
-      <br><br>
-      <label for="sui-input-styled">Text input styled</label>
-      <sui-input id='sui-input-styled' name="sui-input-styled" class='input-styled' placeholder="sui-input (skapi web)">
+    <form id='inputForm' onsubmit="inputForm(this);">
+      <script>
+        for (let t of [
+          'text',
+          'email',
+          'search',
+          'tel',
+          'url',
+          'password',
+          'number',
+        ]) {
+          const inp = document.createElement('sui-input');
+          const label = document.createElement('label');
+          const id = `sui-input-${t}`;
+          label.setAttribute('for', id);
+          label.innerHTML = t;
+          inp.id = id;
+          inp.setAttribute('name', `sui-input-${t}`);
+          inp.setAttribute('type', t);
+          inp.setAttribute('placeholder', `sui-input (${t})`);
+          inputForm.append(label);
+          inputForm.append(inp);
+          inputForm.append(document.createElement('br'));
+          inputForm.append(document.createElement('br'));
+        }
+      </script>
+      <label for="sui-input-styled">Text input (Styled)</label>
+      <sui-input class='sui-input-styled' id='sui-input-styled' name="styled" placeholder="sui-input (styled)">
       </sui-input>
       <br><br>
       <label for="sui-input-disabled">Disabled input</label>
@@ -111,24 +129,25 @@
   Note:
     - for inputs, id assigned to the host element will be reassigned to slot elements.
       the reason for this is to make label 'for' attribute to be able to focus on the target input element.
-  
+      so when styling inputs via css, use class instead of id.
+
     - Available types (+more comming up):
       'checkbox'
       'radio'
       'text'
-      'password'
+      'submit'
       'email'
-      'number'
       'search' 
       'tel'
       'url'
+      'password'
+      'number'
       'reset'
-      'submit'
   </pre>
     <hr>
     <h2>sui-select</h2>
     <sui-select name="cars">
-      <option value="sui-select" hidden selected></option>
+      <option value="null" hidden selected>sui-select</option>
       <optgroup label="Cars">
         <option value="Saab Crab Man Car Saab Crab Man Car Saab Crab">Saab Crab Man Car Saab Crab Man Car Saab Crab
         </option>
@@ -145,10 +164,12 @@
     <br>
     <br>
     <sui-select name="cars" multiple size="8">
-      <option value="sui-select" selected>sui-select multiple</option>
-      <option value="Saab">Saab</option>
-      <option value="Opel">Opel</option>
-      <option value="Audi">Audi</option>
+      <option value="null" selected>sui-select multiple</option>
+      <optgroup label="Cars">
+        <option value="Saab">Saab</option>
+        <option value="Opel">Opel</option>
+        <option value="Audi">Audi</option>
+      </optgroup>
       <optgroup label="Food">
         <option value="Pizza">Pizza</option>
         <option value="Noodle">Noodle</option>
@@ -171,18 +192,15 @@
     <h2>sui-nav</h2>
     <div style="width: 200px;height: 200px;border: 1px solid black;overflow-y: auto;">
       <sui-nav auto-hide>sui-nav</sui-nav>
-      <div style="font-size: 0.8em;opacity:0.5;padding:0 8px;">
+      <div id='scContent' style="font-size: 0.8em;opacity:0.5;padding:0 8px;">
         <p>Scroll down</p>
-        <p>Scroll down</p>
-        <p>Scroll down</p>
-        <p>Scroll down</p>
-        <p>Scroll down</p>
-        <p>Scroll down</p>
-        <p>Scroll down</p>
-        <p>Scroll down</p>
-        <p>Scroll down</p>
-        <p>Scroll down</p>
-        <p>Scroll down</p>
+        <script>
+          let len = 10;
+          while (len--) {
+            const p = scContent.firstElementChild.cloneNode(true);
+            scContent.append(p);
+          }
+        </script>
       </div>
     </div>
     <pre>
@@ -197,8 +215,9 @@
   </pre>
     <hr>
     <h2>sui-overlay</h2>
-    <sui-overlay prevent-background-scroll transition-time="0.25s" overlay-color="rgba(0,0,0,0.25)" id="overlay" onclick="this.close()">
-      <div style="margin: auto; background: white; border: 4px solid; padding: 2em; text-align:center; width: 66%;">
+    <sui-overlay prevent-background-scroll content-position="left" transition-time="0.5s" overlay-color="rgba(0,0,0,0.25)" id="overlay"
+      onclick="this.close()">
+      <div style="margin: auto; background: white; border: 4px solid; padding: 2em; text-align:center; display: inline-block;">
         <h1>Hello skate ui!</h1>
         <p>This is your overlay</p>
       </div>
@@ -238,9 +257,11 @@
     /* background-color: rgb(210, 210, 210); */
     /* font-size: 32px; */
   }
+
   pre {
     word-break: break-word;
   }
+
   sui-nav {
     background-color: #293FE6;
     color: white;
@@ -276,16 +297,16 @@
     vertical-align: middle;
   } */
 
-  sui-input.input-styled {
+  sui-input.sui-input-styled {
     color: rgba(0, 0, 0, 0.65);
   }
 
-  sui-input.input-styled input::placeholder {
+  sui-input.sui-input-styled input::placeholder {
     /* styling for pseudo elements */
     color: rgba(0, 0, 0, 0.42);
   }
 
-  sui-input.input-styled input:focus {
+  sui-input.sui-input-styled input:focus {
     /* styling for focused */
     /* outline: 2px solid #293fe6a6; */
     outline-color: #293fe6a6;
