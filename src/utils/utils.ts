@@ -41,8 +41,11 @@ export function dummyHandler(options: {
   trackNodes?: boolean | ((n: MutationRecord) => any);
   log?: boolean | ((l: { attributeName: string; newValue?: string; oldValue?: string; mutationRecord?: MutationRecord; }) => any);
 }): CSSStyleDeclaration {
+  
   const { excludeStyle = [], computedStyle = null, excludeAttribute = [], trackNodes = null, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
   const hostStyle = computedStyle || getComputedStyle(this.host);
+
+  excludeStyle.push(...['display', 'position', 'width', 'height', 'min-width', 'min-height', 'font']);
 
   const setDummyAttribute = (attName: string, val: string) => {
     const copyStyleBypass = [];
@@ -55,7 +58,15 @@ export function dummyHandler(options: {
         }
         let keyVal = s.split(':');
         let val = keyVal[1].split('!');
-        if (!excludeStyle.includes(keyVal[0]) && CSS.supports(keyVal[0], val[0])) {
+        if (!excludeStyle.includes(keyVal[0]) && (() => {
+          // exclude related styles ex) border-xxxx
+          for (let e of excludeStyle) {
+            if (e.includes(keyVal[0] + '-')) {
+              return false;
+            }
+          }
+          return true;
+        })() && CSS.supports(keyVal[0], val[0])) {
           this.dummyElement.style.setProperty(keyVal[0], val[0], val[1] || null);
 
           if (Array.isArray(copyStyle) && copyStyle.includes(keyVal[0])) {
@@ -66,7 +77,7 @@ export function dummyHandler(options: {
       }
     }
 
-    else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !(excludeAttribute || []).includes(attName)) {
+    else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
       // skip 'hidden' | 'class' | 'id' | excluded list
       this.dummyElement.setAttribute(attName, val);
     }

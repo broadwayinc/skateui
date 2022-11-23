@@ -187,9 +187,9 @@ export class SuiInput {
   componentDidLoad() {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
-      excludeStyle: ['height', 'width', 'min-width', 'border', 'display', 'font-size', 'margin', 'padding', 'position'],
+      excludeStyle: ['border', 'margin', 'padding'],
       copyStyle: this.isChecker ? null : !this.isButton ? (hostCss: CSSStyleDeclaration) => {
-        // this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+        this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
 
         // make text input fill the host
         let needAdjustment = false;
@@ -207,7 +207,6 @@ export class SuiInput {
         });
 
         if (!needAdjustment) {
-          // this.dummyElement.style.setProperty('height', hostCss['height'], 'important');
           this.dummyElement.style.setProperty('margin', '0', 'important');
           return;
         }
