@@ -23,14 +23,16 @@ export class SuiInput {
     'reset',
     'submit'
   ];
+
   observer: MutationObserver;
   slotName: string = randomString();
   isChecker = false;
   isButton = false;
+
   dummyElement = (() => {
     // add input element manually because shadow dom input is not recognized by forms
     let inputType = this.host.getAttribute('type'); // always use getAttribute() for proper casing
-    if (!inputType) {
+    if (!inputType || !this.availableTypes.includes(inputType)) {
       this.host.setAttribute('type', 'text');
       inputType = 'text';
     }
@@ -187,7 +189,7 @@ export class SuiInput {
   componentDidLoad() {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
-      excludeStyle: ['border', 'margin', 'padding'],
+      excludeStyle: ['border', 'margin', 'padding', 'max', 'min'],
       copyStyle: this.isChecker ? null : !this.isButton ? (hostCss: CSSStyleDeclaration) => {
         this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
 
@@ -221,6 +223,7 @@ export class SuiInput {
             return p ? `-${p}px` : '0px';
           }).join(' '), 'important');
       } : null,
+
       appendIdToSlotElement: true
     });
   }
@@ -238,6 +241,7 @@ export class SuiInput {
         {/* fine tuned viewBox svg. find out how to make svg. */}
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="-2 -4 28 28"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" /></svg>
         <slot name={this.slotName}></slot>
+        {/* display value eg) button input */}
         <slot name='value'></slot>
       </Host>
     );

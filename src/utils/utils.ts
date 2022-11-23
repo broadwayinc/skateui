@@ -41,11 +41,11 @@ export function dummyHandler(options: {
   trackNodes?: boolean | ((n: MutationRecord) => any);
   log?: boolean | ((l: { attributeName: string; newValue?: string; oldValue?: string; mutationRecord?: MutationRecord; }) => any);
 }): CSSStyleDeclaration {
-  
-  const { excludeStyle = [], computedStyle = null, excludeAttribute = [], trackNodes = null, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
+
+  const { excludeStyle = [], computedStyle = null, excludeAttribute = [], trackNodes = false, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
   const hostStyle = computedStyle || getComputedStyle(this.host);
 
-  excludeStyle.push(...['display', 'position', 'width', 'height', 'min-width', 'min-height', 'font']);
+  excludeStyle.push(...['display', 'position', 'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height', 'font']);
 
   const setDummyAttribute = (attName: string, val: string) => {
     const copyStyleBypass = [];
@@ -88,10 +88,20 @@ export function dummyHandler(options: {
       }
 
       else {
+
+
         // copy css styles
         for (let s of copyStyle) {
           if (!copyStyleBypass.includes(s)) {
-            if (CSS.supports(s, hostStyle[s])) {
+            if (!excludeStyle.includes(s) && (() => {
+              // exclude related styles ex) border-xxxx
+              for (let e of excludeStyle) {
+                if (e.includes(s + '-')) {
+                  return false;
+                }
+              }
+              return true;
+            })() && CSS.supports(s, hostStyle[s])) {
               this.dummyElement.style.setProperty(s, hostStyle[s]);
             }
           }

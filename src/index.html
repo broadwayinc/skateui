@@ -9,7 +9,7 @@
 </head>
 
 <body style="margin:0; width:100%;">
-  <div style="max-width: 800px;margin: 8px auto;">
+  <div style="max-width: 64em;margin: 8px auto;">
     <h1>skate ui</h1>
     <pre>
   Objective:
@@ -24,15 +24,15 @@
       if you are not a fan of the looks, simply set box-shadow to none
 
   Known issues:
-    - Safari does not properly display outline radius.
-    - FireFox does not follow outline radius on inline-table elements. (sui-button)
+    - In safari, outline does not follow border radius.
+    - In fireFox, outline does not follow border radius on inline-table elements.
     - Safari makes cursor to text cursor when element is clicked.
     - FireFox does not display select element text value vertically aligned middle when using min-height.
     - Chrome on linux use text color for input focus outline.
     - skateui use getComputedStyle and mutationobserver internally.
-      when developing, there can be some minor quirks when:
+      when developing, depending on the os/browser, there can be some minor quirks when:
         - trying to modify css styles directly from developers panel in web browsers.
-        - working on live reloads
+        - working on live reloads.
       
       but when refreshed, the quirks will go away.
 
@@ -215,10 +215,9 @@
   </pre>
     <hr>
     <h2>sui-overlay</h2>
-    <sui-overlay prevent-background-scroll content-position="left" transition-time="0.5s"
-      overlay-color="rgba(0,0,0,0.25)" id="overlay" onclick="this.close()">
+    <sui-overlay position="center" id="overlay" onclick="this.close()">
       <div
-        style="margin: auto; background: white; border: 4px solid; padding: 2em; text-align:center; display: inline-block;">
+        style="background: white; box-sizing: border-box; border: 4px solid; padding: 2em; text-align:center;">
         <h1>Hello skate ui!</h1>
         <p>This is your overlay</p>
       </div>
@@ -232,15 +231,11 @@
   Note:
     - has additional attributes:
       - transition-time (css time)
-      - overlay-color (css color)
-      - prevent-background-scroll
-      - content-position:
+      - position:
           center | top | bottom | left | right
 
-    - when using prevent-background-scroll body should have margin:0; width:100%;
-  
-  Need fix:
-    - transition for content pop has some latency when content-position is not center
+    - when using onclick() window scroll is disabled, and body should have margin:0; width:100%;
+    - Overlay color, color can be set by style="background-color: ... , color: ..."
   </pre>
   </div>
 </body>
@@ -253,42 +248,16 @@
 </script>
 
 <style>
-  #testsel {
-    background: red;
-      box-sizing: border-box;
-      border: none;
-      /* min-height: 100%;
-      width: 100%;
-      min-width: 100%; */
-      /* display: block; */
-      font-size: inherit;
-      line-height: 1;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-  }
-  #testinp {
-    background: red;
-    box-sizing: border-box;
-    border: none;
-    padding: 0;
-    /* min-height: '100%'; */
-    /* width: 100%; */
-    /* min-width: 100%; */
-    /* display: block; */
-    font-size: inherit;
-    color: inherit;
-    line-height: 1;
-  }
-
   body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    /* background-color: rgb(210, 210, 210); */
+    background-color: rgb(240, 240, 240);
     /* font-size: 32px; */
   }
 
   pre {
     word-break: break-word;
+    line-height: 1.5;
+    font-size: 1.2em;
   }
 
   sui-nav {
@@ -343,6 +312,7 @@
 
   sui-input.input-checkbox {
     color: red;
+    border-radius: 100%;
   }
 
   sui-input.input-checkbox[checked] {
@@ -355,5 +325,6 @@
   sui-input.input-radio {
     /* custom styling */
     color: red;
+    border-radius: 2px;
   }
 </style>

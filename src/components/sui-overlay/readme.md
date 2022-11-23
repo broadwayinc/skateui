@@ -7,11 +7,10 @@
 
 ## Properties
 
-| Property          | Attribute          | Description | Type     | Default         |
-| ----------------- | ------------------ | ----------- | -------- | --------------- |
-| `contentPosition` | `content-position` |             | `string` | `'center'`      |
-| `overlayColor`    | `overlay-color`    |             | `string` | `'transparent'` |
-| `transitionTime`  | `transition-time`  |             | `string` | `'0.5s'`        |
+| Property         | Attribute         | Description | Type     | Default    |
+| ---------------- | ----------------- | ----------- | -------- | ---------- |
+| `position`       | `position`        |             | `string` | `'center'` |
+| `transitionTime` | `transition-time` |             | `string` | `'0.25s'`  |
 
 
 ## Methods
