@@ -37,10 +37,11 @@ export function dummyHandler(options: {
   appendIdToSlotElement?: boolean;
   excludeAttribute: string[];
   copyStyle?: string[] | ((css: CSSStyleDeclaration) => any);
+  excludeStyle?: string[];
   trackNodes?: boolean | ((n: MutationRecord) => any);
   log?: boolean | ((l: { attributeName: string; newValue?: string; oldValue?: string; mutationRecord?: MutationRecord; }) => any);
 }): CSSStyleDeclaration {
-  const { computedStyle=null, excludeAttribute = [], trackNodes = null, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
+  const { excludeStyle = [], computedStyle = null, excludeAttribute = [], trackNodes = null, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
   const hostStyle = computedStyle || getComputedStyle(this.host);
 
   const setDummyAttribute = (attName: string, val: string) => {
@@ -54,7 +55,7 @@ export function dummyHandler(options: {
         }
         let keyVal = s.split(':');
         let val = keyVal[1].split('!');
-        if (CSS.supports(keyVal[0], val[0])) {
+        if (!excludeStyle.includes(keyVal[0]) && CSS.supports(keyVal[0], val[0])) {
           this.dummyElement.style.setProperty(keyVal[0], val[0], val[1] || null);
 
           if (Array.isArray(copyStyle) && copyStyle.includes(keyVal[0])) {

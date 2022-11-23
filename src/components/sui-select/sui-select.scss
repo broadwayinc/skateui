@@ -1,8 +1,16 @@
 :host([multiple]) {
   padding: .66em;
-  border: 1px solid rgba(138 134 129 / 50%);
+  // border: 1px solid rgba(138 134 129 / 50%);
+  // box-shadow:
+  //   -1px -1px 2px -1px rgb(0 0 0 / 50%),
+  //   1px 1px 1px rgb(255 255 255 / 50%);
   box-shadow:
-    -1px -1px 2px rgb(0 0 0 / 50%), 1px 1px 1px rgb(255 255 255 / 50%);
+    -1px -1px 2px -1px rgb(0 0 0 / 50%),
+    1px 1px 1px rgb(255 255 255 / 33%),
+    inset 0 0 0 1px rgba(0 0 0 / 25%);
+  // border: 1px solid rgba(138 134 129 / 50%);
+  // box-shadow:
+  //   -1px -1px 2px rgb(0 0 0 / 50%), 1px 1px 1px rgb(255 255 255 / 50%);
 
   overflow: hidden;
 }
@@ -18,40 +26,69 @@
   -ms-user-select: none;
   /* IE10+ */
 
+  vertical-align: baseline;
   display: inline-block;
-  // min-height: 40px;
   width: 12em;
-  line-height: 1;
-  // font-size: 16px;
+  line-height: 1.2;
   font-size: inherit;
-  padding: 0.75em .66em;
+  padding: 0.6em .66em;
   border-radius: 4px;
   box-sizing: border-box;
 
-  box-shadow:
-    0 0 0 1px hsla(0 0% 50% / 75%),
-    inset 1px 1px 2px rgba(255 255 255 / 64%),
-    inset -1px -1px 2px rgba(0 0 0 / 25%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+  div {
+    position: relative;
+    display: flex;
+    align-items: center
+  }
+
+  slot {
+    option {
+      color: black;
+      background-color: white;
+    }
+  }
+
+  // slot {
+  //   display: block;
+  //   position: relative;
+  //   height: 100%;
+  //   width: 100%;
+  // }
+
+  // box-shadow: 0 0 0 1px hsla(0 0% 50% / 75%),
+  // inset 1px 1px 2px rgba(255 255 255 / 64%),
+  // inset -1px -1px 2px rgba(0 0 0 / 25%);
+  // border: 1px solid rgba(138 134 129 / 50%);
+  // box-shadow:
+  //   inset 1px 1px 2px rgb(255 255 255 / 33%),
+  //   inset -1px -1px 2px rgb(0 0 0 / 25%),
+  //   inset 0 0 0px 1px rgb(0 0 0 / 25%);
+  box-shadow: inset 1px 1px 2px rgb(255 255 255 / 50%),
+  inset -1px -1px 2px rgb(0 0 0 / 25%),
+  inset 0 0 0 1px rgb(0 0 0 / 25%);
 
   background-color: transparent;
   color: inherit;
-  position: relative;
 
   svg {
     user-select: none;
     pointer-events: none;
     width: .75em;
-    height: 100%;
+    // height: 100%;
     color: inherit;
     position: absolute;
-    right: 0.5em;
+    right: 0;
     opacity: 0.88;
+    display: block;
+    line-height: 1em;
   }
 
   span {
     user-select: none;
     pointer-events: none;
-    height: 100%;
+    // height: 100%;
     width: 100%;
     position: absolute;
     align-items: center;
@@ -59,7 +96,9 @@
     &::after {
       content: attr(data-selected);
       display: inline-block;
+      vertical-align: baseline;
       width: 100%;
+      line-height: normal;
       flex: 1 1 auto;
       text-overflow: ellipsis;
       overflow: hidden;

@@ -92,7 +92,7 @@ export class SuiInput {
       if (!this.host.hasAttribute('disabled')) {
         this.host.setAttribute('tabindex', '0');
       }
-      
+
       this.host.addEventListener('keyup', (e) => {
         if (e.key === 'Enter') {
           // checkbox, radio should be able to trigger click on enter key
@@ -171,13 +171,10 @@ export class SuiInput {
         background: 'transparent',
         'box-sizing': 'border-box',
         border: 'none',
-        'min-height': '100%',
-        width: '100%',
-        'min-width': '100%',
-        display: 'inline-block',
+        display: 'block',
         'font-size': 'inherit',
         color: 'inherit',
-        'line-height': '1'
+        'line-height': '1.2'
       })) {
         input.style.setProperty(key, value, 'important');
       }
@@ -190,8 +187,9 @@ export class SuiInput {
   componentDidLoad() {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
+      excludeStyle: ['height', 'width', 'min-width', 'border', 'display', 'font-size', 'margin', 'padding', 'position'],
       copyStyle: this.isChecker ? null : !this.isButton ? (hostCss: CSSStyleDeclaration) => {
-        this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+        // this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
 
         // make text input fill the host
         let needAdjustment = false;
@@ -209,20 +207,13 @@ export class SuiInput {
         });
 
         if (!needAdjustment) {
-          this.dummyElement.style.setProperty('height', hostCss['height'], 'important');
+          // this.dummyElement.style.setProperty('height', hostCss['height'], 'important');
           this.dummyElement.style.setProperty('margin', '0', 'important');
           return;
         }
 
-        if (padding[0] || padding[2]) {
-          this.dummyElement.style.setProperty('height', `calc(100% + ${padding[0]}px + ${padding[2]}px)`, 'important');
-        }
-        else {
-          this.dummyElement.style.setProperty('height', hostCss['height'], 'important');
-        }
-
         if (padding[1] || padding[3]) {
-          this.dummyElement.style.setProperty('min-width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
+          this.dummyElement.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
         }
 
         this.dummyElement.style.setProperty('padding', hostCss['padding'], 'important');
