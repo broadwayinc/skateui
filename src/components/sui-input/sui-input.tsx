@@ -1,4 +1,4 @@
-import { Component, Host, h, Element } from '@stencil/core';
+import { Component, Host, h, Element, Listen } from '@stencil/core';
 import { dummyHandler, randomString } from '../../utils/utils';
 @Component({
   tag: 'sui-input',
@@ -6,6 +6,10 @@ import { dummyHandler, randomString } from '../../utils/utils';
   shadow: true
 })
 export class SuiInput {
+  @Listen('invalid')
+  invalidInput(e){
+    console.log('I got invalid', e )
+  }
   @Element() host: HTMLElement;
   availableTypes: string[] = [
     // checker

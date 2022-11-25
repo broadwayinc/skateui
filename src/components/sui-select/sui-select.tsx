@@ -51,7 +51,6 @@ export class SuiSelect {
       border: 'none',
       display: 'block',
       'font-size': 'inherit',
-      color: this.isMultiple ? 'inherit' : 'transparent',
       'line-height': '1.2',
       '-webkit-appearance': 'none',
       '-moz-appearance': 'none',
@@ -59,6 +58,10 @@ export class SuiSelect {
       'cursor': this.isMultiple ? 'default' : 'pointer'
     })) {
       select.style.setProperty(key, value, 'important');
+    }
+
+    if (!this.isMultiple) {
+      select.style.setProperty('opacity', '0');
     }
 
     this.host.append(select);
