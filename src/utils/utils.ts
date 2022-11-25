@@ -1,3 +1,226 @@
+export function cloneEvents(el) {
+  const eventList = [
+    'abort'
+    ,
+    'animationend'
+    ,
+    'animationiteration'
+    ,
+    'animationstart'
+    ,
+    'auxclick'
+    ,
+    'beforecopy'
+    ,
+    'beforecut'
+    ,
+    'beforeinput'
+    ,
+    'beforematch'
+    ,
+    'beforepaste'
+    ,
+    'beforexrselect'
+    ,
+    'blur'
+    ,
+    'cancel'
+    ,
+    'canplay'
+    ,
+    'canplaythrough'
+    ,
+    'change'
+    ,
+    'click'
+    ,
+    'close'
+    ,
+    'contextlost'
+    ,
+    'contextmenu'
+    ,
+    'contextrestored'
+    ,
+    'copy'
+    ,
+    'cuechange'
+    ,
+    'cut'
+    ,
+    'dblclick'
+    ,
+    'drag'
+    ,
+    'dragend'
+    ,
+    'dragenter'
+    ,
+    'dragleave'
+    ,
+    'dragover'
+    ,
+    'dragstart'
+    ,
+    'drop'
+    ,
+    'durationchange'
+    ,
+    'emptied'
+    ,
+    'ended'
+    ,
+    'error'
+    ,
+    'focus'
+    ,
+    'formdata'
+    ,
+    'fullscreenchange'
+    ,
+    'fullscreenerror'
+    ,
+    'gotpointercapture'
+    ,
+    'input'
+    ,
+    'invalid'
+    ,
+    'keydown'
+    ,
+    'keypress'
+    ,
+    'keyup'
+    ,
+    'load'
+    ,
+    'loadeddata'
+    ,
+    'loadedmetadata'
+    ,
+    'loadstart'
+    ,
+    'lostpointercapture'
+    ,
+    'mousedown'
+    ,
+    'mouseenter'
+    ,
+    'mouseleave'
+    ,
+    'mousemove'
+    ,
+    'mouseout'
+    ,
+    'mouseover'
+    ,
+    'mouseup'
+    ,
+    'mousewheel'
+    ,
+    'paste'
+    ,
+    'pause'
+    ,
+    'play'
+    ,
+    'playing'
+    ,
+    'pointercancel'
+    ,
+    'pointerdown'
+    ,
+    'pointerenter'
+    ,
+    'pointerleave'
+    ,
+    'pointermove'
+    ,
+    'pointerout'
+    ,
+    'pointerover'
+    ,
+    'pointerrawupdate'
+    ,
+    'pointerup'
+    ,
+    'progress'
+    ,
+    'ratechange'
+    ,
+    'reset'
+    ,
+    'resize'
+    ,
+    'scroll'
+    ,
+    'search'
+    ,
+    'securitypolicyviolation'
+    ,
+    'seeked'
+    ,
+    'seeking'
+    ,
+    'select'
+    ,
+    'selectionchange'
+    ,
+    'selectstart'
+    ,
+    'slotchange'
+    ,
+    'stalled'
+    ,
+    'submit'
+    ,
+    'suspend'
+    ,
+    'timeupdate'
+    ,
+    'toggle'
+    ,
+    'transitioncancel'
+    ,
+    'transitionend'
+    ,
+    'transitionrun'
+    ,
+    'transitionstart'
+    ,
+    'volumechange'
+    ,
+    'waiting'
+    ,
+    'webkitanimationend'
+    ,
+    'webkitanimationiteration'
+    ,
+    'webkitanimationstart'
+    ,
+    'webkitfullscreenchange'
+    ,
+    'webkitfullscreenerror'
+    ,
+    'webkittransitionend'
+    ,
+    'wheel'
+  ];
+  for (let name of eventList) {
+    el.addEventListener(name, ev => {
+      if (!ev.bubbles) {
+        // re dispatch unbubbled events
+        ev.stopPropagation();
+        // let new_ev = new ev.constructor(ev.type, ev);
+        let new_ev = new Event(ev.type, {
+          bubbles: true
+        });
+        el.dispatchEvent(new_ev);
+      }
+    });
+  }
+}
+
 export function format(first: string, middle: string, last: string): string {
   return (first || '') + (middle ? ` ${middle}` : '') + (last ? ` ${last}` : '');
 }
@@ -113,8 +336,9 @@ export function dummyHandler(options: {
   const hostAttributes = getElementAttributes(this.host.attributes);
 
   for (let attName in hostAttributes) {
-    setDummyAttribute(attName, hostAttributes[attName]);
-
+    if (attName.substring(0, 2) !== 'on') {
+      setDummyAttribute(attName, hostAttributes[attName]);
+    }
     if (attName === 'id' && appendIdToSlotElement) {
       this.dummyElement.setAttribute(attName, hostAttributes[attName]);
       this.host.removeAttribute(attName);

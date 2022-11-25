@@ -23,6 +23,8 @@ export namespace Components {
     interface SuiButton {
     }
     interface SuiInput {
+        "modelvalue": any;
+        "value": any;
     }
     interface SuiNav {
         "autoHide": number;
@@ -109,6 +111,8 @@ declare namespace LocalJSX {
     interface SuiButton {
     }
     interface SuiInput {
+        "modelvalue"?: any;
+        "value"?: any;
     }
     interface SuiNav {
         "autoHide"?: number;

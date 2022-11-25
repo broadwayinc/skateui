@@ -15,12 +15,7 @@ export class SuiSelect {
   isMultiple: boolean = (() => {
     return this.host.hasAttribute('multiple');
   })();
-  // @Prop({
-  //   mutable: true,
-  //   // reflect: true - test if reflect is required for spa reactive environment. if not leave as false
-  // }) value: string;
   dummyElement = (() => {
-
     const select_pre = this.host.getElementsByTagName('select');
     if (select_pre.length) {
       if (select_pre.length !== 1) {
@@ -38,6 +33,7 @@ export class SuiSelect {
         select.prepend(this.host.children[len]);
       }
     }
+
     this.value = select.getElementsByTagName('option')[select.selectedIndex || 0]?.textContent || select.value || '';
     select.addEventListener('change', () => {
       this.value = select.getElementsByTagName('option')[select.selectedIndex || 0]?.textContent || select.value || '';
@@ -71,7 +67,6 @@ export class SuiSelect {
   componentWillLoad() {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
-      tabFocus: true,
       copyStyle: (hostCss: CSSStyleDeclaration) => {
         this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
 

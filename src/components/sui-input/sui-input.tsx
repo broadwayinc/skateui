@@ -1,16 +1,13 @@
-import { Component, Host, h, Element, Listen } from '@stencil/core';
-import { dummyHandler, randomString } from '../../utils/utils';
+import { Component, Host, h, Element, Prop } from '@stencil/core';
+import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
 @Component({
   tag: 'sui-input',
   styleUrl: 'sui-input.scss',
   shadow: true
 })
 export class SuiInput {
-  @Listen('invalid')
-  invalidInput(e){
-    console.log('I got invalid', e )
-  }
   @Element() host: HTMLElement;
+  @Prop({ reflect: true }) value: any;
   availableTypes: string[] = [
     // checker
     'checkbox',
@@ -67,13 +64,13 @@ export class SuiInput {
 
     // create new element
     const input = document.createElement('input');
+    if (this.value) {
+      input.setAttribute('value', this.value);
+    }
 
     // setup new slot name
     // slot name is to prevent users adding custom elements
     input.setAttribute('slot', this.slotName);
-
-    // stop event propagation from input element
-    input.addEventListener('click', e => e.stopPropagation());
 
     if (!this.availableTypes.includes(inputType)) {
       // type not available (yet)
@@ -122,6 +119,7 @@ export class SuiInput {
       if (!this.host.hasAttribute('disabled')) {
         this.host.setAttribute('tabindex', '0');
       }
+
       // add eventlistener manually if type is checkbox | radio
       const clicker = () => {
         if (this.host.attributes.getNamedItem('disabled')) {
@@ -230,6 +228,10 @@ export class SuiInput {
 
       appendIdToSlotElement: true
     });
+
+    // stop event propagation from input element,
+    // emit events from host
+    cloneEvents.bind(this)(this.dummyElement);
   }
 
   disconnectedCallback() {
