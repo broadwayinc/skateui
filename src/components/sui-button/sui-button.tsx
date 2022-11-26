@@ -37,7 +37,7 @@ export class SuiButton {
       this.dummyElement.click();
       this.dummyElement.remove();
     } else {
-      this.dummyElement.click();
+      // this.dummyElement.click();
     }
   }
   @Listen('keyup')
