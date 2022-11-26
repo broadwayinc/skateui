@@ -7,10 +7,9 @@
 
 ## Properties
 
-| Property     | Attribute    | Description | Type  | Default     |
-| ------------ | ------------ | ----------- | ----- | ----------- |
-| `modelvalue` | `modelvalue` |             | `any` | `undefined` |
-| `value`      | `value`      |             | `any` | `undefined` |
+| Property | Attribute | Description | Type  | Default     |
+| -------- | --------- | ----------- | ----- | ----------- |
+| `value`  | `value`   |             | `any` | `undefined` |
 
 
 ----------------------------------------------

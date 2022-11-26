@@ -3,7 +3,8 @@ import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
 @Component({
   tag: 'sui-input',
   styleUrl: 'sui-input.scss',
-  shadow: true
+  shadow: true,
+  // scoped: false,
 })
 export class SuiInput {
   @Element() host: HTMLElement;
@@ -172,16 +173,20 @@ export class SuiInput {
       for (const [key, value] of Object.entries({
         // set important styles
         // these value should not be editable
-        background: 'transparent',
         'box-sizing': 'border-box',
-        border: 'none',
         display: 'block',
         'font-size': 'inherit',
-        color: 'inherit',
         'line-height': '1.2'
       })) {
         input.style.setProperty(key, value, 'important');
       }
+      // for (const [key, value] of Object.entries({
+      //   'background-color': 'transparent',
+      //   color: 'inherit',
+      //   border: 'none',
+      // })) {
+      //   input.style.setProperty(key, value);
+      // }
     }
 
     this.host.prepend(input);

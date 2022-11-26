@@ -20,6 +20,12 @@
   }
 }
 
+::slotted([slot]) { /* slot1 every slotted element - YES */
+  color: inherit;
+  background-color: transparent;
+  border: none;
+}
+
 :host([type='text']),
 :host([type='password']),
 :host([type='email']),
