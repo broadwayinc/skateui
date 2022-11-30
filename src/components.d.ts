@@ -6,47 +6,39 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first": string;
-        /**
-          * The last name
-         */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
-    }
     interface SuiButton {
-        "loading": Boolean;
+    }
+    interface SuiFlextext {
+        "maxSize": number;
+        "minSize": number;
     }
     interface SuiInput {
-        "checked": any;
-        "dark": boolean;
+        "value": any;
+    }
+    interface SuiNav {
+        "autoHide": number;
     }
     interface SuiOverlay {
         "close": () => Promise<void>;
-        "open": () => Promise<void>;
-        "show": boolean;
+        "open": () => Promise<unknown>;
+        "position": string;
+        "transitionTime": string;
     }
-    interface SuiSticky {
+    interface SuiSelect {
     }
 }
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
-    }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
-    };
     interface HTMLSuiButtonElement extends Components.SuiButton, HTMLStencilElement {
     }
     var HTMLSuiButtonElement: {
         prototype: HTMLSuiButtonElement;
         new (): HTMLSuiButtonElement;
+    };
+    interface HTMLSuiFlextextElement extends Components.SuiFlextext, HTMLStencilElement {
+    }
+    var HTMLSuiFlextextElement: {
+        prototype: HTMLSuiFlextextElement;
+        new (): HTMLSuiFlextextElement;
     };
     interface HTMLSuiInputElement extends Components.SuiInput, HTMLStencilElement {
     }
@@ -54,70 +46,71 @@ declare global {
         prototype: HTMLSuiInputElement;
         new (): HTMLSuiInputElement;
     };
+    interface HTMLSuiNavElement extends Components.SuiNav, HTMLStencilElement {
+    }
+    var HTMLSuiNavElement: {
+        prototype: HTMLSuiNavElement;
+        new (): HTMLSuiNavElement;
+    };
     interface HTMLSuiOverlayElement extends Components.SuiOverlay, HTMLStencilElement {
     }
     var HTMLSuiOverlayElement: {
         prototype: HTMLSuiOverlayElement;
         new (): HTMLSuiOverlayElement;
     };
-    interface HTMLSuiStickyElement extends Components.SuiSticky, HTMLStencilElement {
+    interface HTMLSuiSelectElement extends Components.SuiSelect, HTMLStencilElement {
     }
-    var HTMLSuiStickyElement: {
-        prototype: HTMLSuiStickyElement;
-        new (): HTMLSuiStickyElement;
+    var HTMLSuiSelectElement: {
+        prototype: HTMLSuiSelectElement;
+        new (): HTMLSuiSelectElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
         "sui-button": HTMLSuiButtonElement;
+        "sui-flextext": HTMLSuiFlextextElement;
         "sui-input": HTMLSuiInputElement;
+        "sui-nav": HTMLSuiNavElement;
         "sui-overlay": HTMLSuiOverlayElement;
-        "sui-sticky": HTMLSuiStickyElement;
+        "sui-select": HTMLSuiSelectElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
-    }
     interface SuiButton {
-        "loading"?: Boolean;
+    }
+    interface SuiFlextext {
+        "maxSize"?: number;
+        "minSize"?: number;
     }
     interface SuiInput {
-        "checked"?: any;
-        "dark"?: boolean;
+        "value"?: any;
+    }
+    interface SuiNav {
+        "autoHide"?: number;
     }
     interface SuiOverlay {
-        "show"?: boolean;
+        "position"?: string;
+        "transitionTime"?: string;
     }
-    interface SuiSticky {
+    interface SuiSelect {
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
         "sui-button": SuiButton;
+        "sui-flextext": SuiFlextext;
         "sui-input": SuiInput;
+        "sui-nav": SuiNav;
         "sui-overlay": SuiOverlay;
-        "sui-sticky": SuiSticky;
+        "sui-select": SuiSelect;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
             "sui-button": LocalJSX.SuiButton & JSXBase.HTMLAttributes<HTMLSuiButtonElement>;
+            "sui-flextext": LocalJSX.SuiFlextext & JSXBase.HTMLAttributes<HTMLSuiFlextextElement>;
             "sui-input": LocalJSX.SuiInput & JSXBase.HTMLAttributes<HTMLSuiInputElement>;
+            "sui-nav": LocalJSX.SuiNav & JSXBase.HTMLAttributes<HTMLSuiNavElement>;
             "sui-overlay": LocalJSX.SuiOverlay & JSXBase.HTMLAttributes<HTMLSuiOverlayElement>;
-            "sui-sticky": LocalJSX.SuiSticky & JSXBase.HTMLAttributes<HTMLSuiStickyElement>;
+            "sui-select": LocalJSX.SuiSelect & JSXBase.HTMLAttributes<HTMLSuiSelectElement>;
         }
     }
 }

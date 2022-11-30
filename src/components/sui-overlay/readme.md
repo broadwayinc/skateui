@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type      | Default |
-| -------- | --------- | ----------- | --------- | ------- |
-| `show`   | `show`    |             | `boolean` | `false` |
+| Property         | Attribute         | Description | Type     | Default    |
+| ---------------- | ----------------- | ----------- | -------- | ---------- |
+| `position`       | `position`        |             | `string` | `'center'` |
+| `transitionTime` | `transition-time` |             | `string` | `'0.25s'`  |
 
 
 ## Methods
@@ -24,13 +25,13 @@ Type: `Promise<void>`
 
 
 
-### `open() => Promise<void>`
+### `open() => Promise<unknown>`
 
 
 
 #### Returns
 
-Type: `Promise<void>`
+Type: `Promise<unknown>`
 
 
 

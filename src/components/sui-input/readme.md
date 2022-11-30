@@ -7,17 +7,9 @@
 
 ## Properties
 
-| Property  | Attribute | Description | Type      | Default     |
-| --------- | --------- | ----------- | --------- | ----------- |
-| `checked` | `checked` |             | `any`     | `undefined` |
-| `dark`    | `dark`    |             | `boolean` | `undefined` |
-
-
-## Shadow Parts
-
-| Part      | Description |
-| --------- | ----------- |
-| `"check"` |             |
+| Property | Attribute | Description | Type  | Default     |
+| -------- | --------- | ----------- | ----- | ----------- |
+| `value`  | `value`   |             | `any` | `undefined` |
 
 
 ----------------------------------------------

@@ -1,77 +1,260 @@
-import { Component, Host, h, Element, Listen, Prop } from '@stencil/core';
-import { getElementAttributes } from '../../utils/utils';
-
+import { Component, Host, h, Element, Prop } from '@stencil/core';
+import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
 @Component({
   tag: 'sui-input',
   styleUrl: 'sui-input.scss',
   shadow: true,
+  // scoped: false,
 })
 export class SuiInput {
-
   @Element() host: HTMLElement;
-  @Prop({reflect: true, mutable: true}) checked: any;
-  @Prop() dark: boolean;
-  input: HTMLInputElement;
+  @Prop({ reflect: true }) value: any;
+  availableTypes: string[] = [
+    // checker
+    'checkbox',
+    'radio',
+    // text
+    'text',
+    'password',
+    'email',
+    'number',
+    'search',
+    'tel',
+    'url',
+    // buttons
+    'reset',
+    'submit'
+  ];
 
-  @Listen('click')
-  click() {
-    if(this.input.type === 'checkbox' || this.input.type === 'radio') {
-      this.input.click();
-      this.checked = this.input.checked;
+  observer: MutationObserver;
+  slotName: string = randomString();
+  isChecker = false;
+  isButton = false;
+
+  dummyElement = (() => {
+    // add input element manually because shadow dom input is not recognized by forms
+    let inputType = this.host.getAttribute('type'); // always use getAttribute() for proper casing
+    if (!inputType || !this.availableTypes.includes(inputType)) {
+      this.host.setAttribute('type', 'text');
+      inputType = 'text';
     }
-    this.input.focus();
-  }
 
-  renderInput(host) {
-    this.input = document.createElement('input');
-    this.input.style.background = 'transparent';
-    this.input.style.width = '100%';
-    this.input.style.boxSizing = 'border-box';
-    this.input.style.border = 'none';
-    this.input.style.color = 'inherit';
-    this.input.style.font = 'inherit';
-    this.input.style.fontSize = '1em';
+    this.isButton = inputType === 'reset' || inputType === 'submit';
+    this.isChecker = inputType === 'checkbox' || inputType === 'radio';
 
-    this.input.addEventListener('focus', () => {
-      this.input.style.outline = 'none';
+    const previousInput = this.host.getElementsByTagName('input')?.[0];
+    if (previousInput && previousInput.hasAttribute('slot')) {
+      // if element already exists, return
+      // element can already exist when working on hot reloads
+
+      // setup new slot name
+      previousInput.setAttribute('slot', this.slotName);
+
+      // button input use additional span to display text
+      const previousSpan = this.host.getElementsByTagName('span')?.[0];
+      if (previousSpan) {
+        if (previousSpan && previousSpan.hasAttribute('slot') && previousSpan.getAttribute('slot') === 'value' && this.isButton) {
+          previousSpan.innerHTML = this.host.getAttribute('value') || (inputType === 'submit' ? 'Submit' : 'Reset');
+        }
+        else {
+          previousSpan.remove();
+        }
+      }
+      return previousInput;
+    }
+
+    // create new element
+    const input = document.createElement('input');
+    if (this.value) {
+      input.setAttribute('value', this.value);
+    }
+
+    // setup new slot name
+    // slot name is to prevent users adding custom elements
+    input.setAttribute('slot', this.slotName);
+
+    if (!this.availableTypes.includes(inputType)) {
+      // type not available (yet)
+      this.host.prepend(input);
+      return input;
+    }
+
+    // add eventlistener manually if type is checkbox | radio | reset | submit
+    const clicker = () => {
+      if (this.host.attributes.getNamedItem('disabled')) {
+        // does not trigger dummy when disabled
+        return;
+      }
+      this.dummyElement.click();
+    };
+
+    if (this.isButton) {
+      // hidden
+      input.setAttribute('hidden', '');
+
+      // tab index is on host
+      if (!this.host.hasAttribute('disabled')) {
+        this.host.setAttribute('tabindex', '0');
+      }
+
+      this.host.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+          // checkbox, radio should be able to trigger click on enter key
+          clicker();
+        }
+      });
+      this.host.addEventListener('click', clicker);
+
+      // add button text
+      let span = document.createElement('span');
+      span.innerHTML = this.host.getAttribute('value') || (inputType === 'submit' ? 'Submit' : 'Reset');
+      span.setAttribute('slot', 'value');
+      this.host.prepend(span);
+    }
+
+    else if (this.isChecker) {
+      // hidden
+      input.setAttribute('hidden', '');
+
+      // tab index is on host
+      if (!this.host.hasAttribute('disabled')) {
+        this.host.setAttribute('tabindex', '0');
+      }
+
+      // add eventlistener manually if type is checkbox | radio
+      const clicker = () => {
+        if (this.host.attributes.getNamedItem('disabled')) {
+          // does not trigger dummy when disabled
+          return;
+        }
+        this.dummyElement.click();
+      };
+
+      this.host.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+          // checkbox, radio should be able to trigger click on enter key
+          clicker();
+        }
+      }, true);
+
+      this.host.addEventListener('click', clicker);
+
+      input.addEventListener('change', () => {
+        // keep track of checked, update dom
+        if (inputType === 'checkbox') {
+          if (input.checked) {
+            this.host.setAttribute('checked', '');
+          }
+          else {
+            this.host.removeAttribute('checked');
+          }
+        }
+
+        if (inputType === 'radio') {
+          // triggers only on checked, since radio button can't uncheck from user input
+          let radios = document.getElementsByName(input.name);
+          for (let i = 0; i < radios.length; i++) {
+            if (
+              (radios[i] instanceof HTMLInputElement) &&
+              radios[i].getAttribute('type') === 'radio' &&
+              radios[i] !== input
+            ) {
+              radios[i].parentElement.removeAttribute('checked'); // remove checked attribute from it's host
+            }
+          }
+          this.host.setAttribute('checked', '');
+        }
+      });
+    }
+
+    else {
+      // tab index is on input element
+
+      for (const [key, value] of Object.entries({
+        // set important styles
+        // these value should not be editable
+        'box-sizing': 'border-box',
+        display: 'block',
+        'font-size': 'inherit',
+        'line-height': '1.2'
+      })) {
+        input.style.setProperty(key, value, 'important');
+      }
+      // for (const [key, value] of Object.entries({
+      //   'background-color': 'transparent',
+      //   color: 'inherit',
+      //   border: 'none',
+      // })) {
+      //   input.style.setProperty(key, value);
+      // }
+    }
+
+    this.host.prepend(input);
+    return input;
+  })();
+
+  componentDidLoad() {
+    dummyHandler.bind(this)({
+      computedStyle: window.getComputedStyle(this.host),
+      excludeStyle: ['border', 'margin', 'padding', 'max', 'min'],
+      copyStyle: this.isChecker ? null : !this.isButton ? (hostCss: CSSStyleDeclaration) => {
+        this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+
+        // make text input fill the host
+        let needAdjustment = false;
+        let padding = [
+          hostCss['padding-top'],
+          hostCss['padding-right'],
+          hostCss['padding-bottom'],
+          hostCss['padding-left']
+        ].map(p => {
+          let val = Number(p.replace('px', ''));
+          if (val && !needAdjustment) {
+            needAdjustment = true;
+          }
+          return val;
+        });
+
+        if (!needAdjustment) {
+          this.dummyElement.style.setProperty('margin', '0', 'important');
+          return;
+        }
+
+        if (padding[1] || padding[3]) {
+          this.dummyElement.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
+        }
+
+        this.dummyElement.style.setProperty('padding', hostCss['padding'], 'important');
+        this.dummyElement.style.setProperty('margin',
+          padding.map(p => {
+            return p ? `-${p}px` : '0px';
+          }).join(' '), 'important');
+      } : null,
+
+      appendIdToSlotElement: true
     });
 
-    let properties = getElementAttributes(this.host.attributes)
-    for (let k in properties) {
-      if(k !== 'style') {
-        this.input.setAttribute(k, properties[k]);
-      }
-    }
+    // stop event propagation from input element,
+    // emit events from host
+    cloneEvents.bind(this)(this.dummyElement);
+  }
 
-    if(this.checked) {
-      this.input.checked = true;
-    }
-
-    if(this.input.type === 'checkbox' || this.input.type === 'radio') {
-      this.input.style.display = 'none';
-    } else {
-      this.input.style.appearance = 'none';
-    }
-
-    host.appendChild(this.input);
+  disconnectedCallback() {
+    // save memory by disconnecting mutation watch
+    this.observer.disconnect();
+    // remove dummy element
+    this.dummyElement.remove();
   }
 
   render() {
-    const { host } = this;
-    if(!this.input) this.renderInput(host);
-    if(this.dark) this.host.setAttribute('dark', '');
     return (
-      <Host tabindex="0">
-        <div class="options-parent">
-          <div class="options-inner">
-            <div class="check" part="check">
-              <svg width='18' height='14' viewBox='0 0 18 14' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path d='M5.79502 10.8749L1.62502 6.70492L0.205017 8.11492L5.79502 13.7049L17.795 1.70492L16.385 0.294922L5.79502 10.8749Z' fill='currentColor'/></svg>
-            </div>
-          </div>
-        </div>
-        <slot></slot>
+      <Host>
+        {/* fine tuned viewBox svg. find out how to make svg. */}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="-2 -4 28 28"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" /></svg>
+        <slot name={this.slotName}></slot>
+        {/* display value eg) button input */}
+        <slot name='value'></slot>
       </Host>
     );
   }
-
 }

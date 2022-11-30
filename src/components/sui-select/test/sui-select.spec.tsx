@@ -1,18 +1,18 @@
 import { newSpecPage } from '@stencil/core/testing';
-import { SuiSticky } from '../sui-sticky';
+import { SuiSelect } from '../sui-select';
 
-describe('sui-sticky', () => {
+describe('sui-select', () => {
   it('renders', async () => {
     const page = await newSpecPage({
-      components: [SuiSticky],
-      html: `<sui-sticky></sui-sticky>`,
+      components: [SuiSelect],
+      html: `<sui-select></sui-select>`,
     });
     expect(page.root).toEqualHtml(`
-      <sui-sticky>
+      <sui-select>
         <mock:shadow-root>
           <slot></slot>
         </mock:shadow-root>
-      </sui-sticky>
+      </sui-select>
     `);
   });
 });
