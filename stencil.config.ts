@@ -3,10 +3,10 @@ import { sass } from '@stencil/sass';
 
 export const config: Config = {
   namespace: 'skateui',
-  invisiblePrehydration: false,
+  invisiblePrehydration: true,
   plugins: [sass({
     injectGlobalPaths: [
-      "src/global/styles/variables.scss"
+      "src/variables.scss"
     ]
   })],
   outputTargets: [

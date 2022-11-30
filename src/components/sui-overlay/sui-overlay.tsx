@@ -185,7 +185,6 @@ export class SuiOverlay {
       // create overlay
       const screen = this.createScreen();
 
-
       const el = document.createElement('div');
       if (this.host.children.length) {
         let len = this.host.children.length;

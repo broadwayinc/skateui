@@ -8,6 +8,10 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface SuiButton {
     }
+    interface SuiFlextext {
+        "maxSize": number;
+        "minSize": number;
+    }
     interface SuiInput {
         "value": any;
     }
@@ -29,6 +33,12 @@ declare global {
     var HTMLSuiButtonElement: {
         prototype: HTMLSuiButtonElement;
         new (): HTMLSuiButtonElement;
+    };
+    interface HTMLSuiFlextextElement extends Components.SuiFlextext, HTMLStencilElement {
+    }
+    var HTMLSuiFlextextElement: {
+        prototype: HTMLSuiFlextextElement;
+        new (): HTMLSuiFlextextElement;
     };
     interface HTMLSuiInputElement extends Components.SuiInput, HTMLStencilElement {
     }
@@ -56,6 +66,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "sui-button": HTMLSuiButtonElement;
+        "sui-flextext": HTMLSuiFlextextElement;
         "sui-input": HTMLSuiInputElement;
         "sui-nav": HTMLSuiNavElement;
         "sui-overlay": HTMLSuiOverlayElement;
@@ -64,6 +75,10 @@ declare global {
 }
 declare namespace LocalJSX {
     interface SuiButton {
+    }
+    interface SuiFlextext {
+        "maxSize"?: number;
+        "minSize"?: number;
     }
     interface SuiInput {
         "value"?: any;
@@ -79,6 +94,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "sui-button": SuiButton;
+        "sui-flextext": SuiFlextext;
         "sui-input": SuiInput;
         "sui-nav": SuiNav;
         "sui-overlay": SuiOverlay;
@@ -90,6 +106,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "sui-button": LocalJSX.SuiButton & JSXBase.HTMLAttributes<HTMLSuiButtonElement>;
+            "sui-flextext": LocalJSX.SuiFlextext & JSXBase.HTMLAttributes<HTMLSuiFlextextElement>;
             "sui-input": LocalJSX.SuiInput & JSXBase.HTMLAttributes<HTMLSuiInputElement>;
             "sui-nav": LocalJSX.SuiNav & JSXBase.HTMLAttributes<HTMLSuiNavElement>;
             "sui-overlay": LocalJSX.SuiOverlay & JSXBase.HTMLAttributes<HTMLSuiOverlayElement>;

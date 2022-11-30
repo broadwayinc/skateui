@@ -57,6 +57,9 @@ export class SuiNav {
     if (this.offsetProp === 'pageYOffset') {
       document.removeEventListener('scroll', this.calcNavbarPosition);
     }
+    else {
+      this.parent.removeEventListener('scroll', this.calcNavbarPosition);
+    }
   }
   componentDidLoad() {
     this.navCss = window.getComputedStyle(this.host);
@@ -98,8 +101,9 @@ export class SuiNav {
     }
   }
 
-  // ! should be arrow function !
-  calcNavbarPosition = () => {
+  // ! should be variable with bind !
+  // this way we can remove the event when component is destroyed
+  calcNavbarPosition = (function () {
     window.requestAnimationFrame(() => {
       const navHeight = parseInt(this.navCss.height);
       const scrollOffset = this.parent[this.offsetProp] < 0 ? 0 : this.parent[this.offsetProp]; // on mobile, offsetProp can be negative
@@ -123,7 +127,7 @@ export class SuiNav {
       this.topOffset = topOffset;
       this.host.style.setProperty('--nav-top', `${topOffset}px`); // apply css variable
     });
-  };
+  }).bind(this);
 
   render() {
     return (

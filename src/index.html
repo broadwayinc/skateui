@@ -216,8 +216,7 @@
     <hr>
     <h2>sui-overlay</h2>
     <sui-overlay position="center" id="overlay" onclick="this.close()">
-      <div
-        style="background: white; box-sizing: border-box; border: 4px solid; padding: 2em; text-align:center;">
+      <div style="background: white; box-sizing: border-box; border: 4px solid; padding: 2em; text-align:center;">
         <h1>Hello skate ui!</h1>
         <p>This is your overlay</p>
       </div>
@@ -237,6 +236,17 @@
     - when using onclick() window scroll is disabled, and body should have margin:0; width:100%;
     - Overlay color, color can be set by style="background-color: ... , color: ..."
   </pre>
+    <hr>
+    <h2>sui-flextext</h2>
+    <sui-flextext>Hello my name is Baksa</sui-flextext>
+    <pre>
+      Flex text is a auto sized text.
+      Text is expanded to the width of a parent.
+
+      Note:
+        - has custom attribute min-size (default 72), max-size (defaults to current font size)
+          value should be number
+    </pre>
   </div>
 </body>
 
