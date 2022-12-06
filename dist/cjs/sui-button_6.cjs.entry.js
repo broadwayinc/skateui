@@ -310,7 +310,9 @@ const SuiButton = class {
   }
   disconnectedCallback() {
     // save memory by disconnecting mutation watch
-    this.observer.disconnect();
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
   render() {
     return (index.h(index.Host, null, index.h("slot", null)));

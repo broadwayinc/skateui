@@ -45,7 +45,9 @@ const SuiButton$1 = /*@__PURE__*/ proxyCustomElement(class extends HTMLElement {
   }
   disconnectedCallback() {
     // save memory by disconnecting mutation watch
-    this.observer.disconnect();
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
   render() {
     return (h(Host, null, h("slot", null)));
