@@ -14,12 +14,12 @@ export const config: Config = {
       type: 'dist',
       esmLoaderPath: '../loader',
     },
-    {
-      type: 'dist-custom-elements',
-    },
-    {
-      type: 'docs-readme',
-    },
+    // {
+    //   type: 'dist-custom-elements',
+    // },
+    // {
+    //   type: 'docs-readme',
+    // },
     {
       type: 'www',
       serviceWorker: null, // disable service workers
