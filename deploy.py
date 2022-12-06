@@ -16,7 +16,7 @@ with open('./package.json', 'r') as p:
 
     else:
         ret = os.system(
-            f'aws s3 sync ./dist s3://broadwayinc.dev/jslib/skapi/{package["version"]} --acl public-read')
+            f'aws s3 sync ./dist s3://broadwayinc.dev/jslib/skateui/{package["version"]} --acl public-read')
 
         if ret != 0:
             print('==Failed to upload==')
