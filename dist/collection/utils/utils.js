@@ -1,4 +1,4 @@
-function cloneEvents(el) {
+export function cloneEvents(el) {
   const eventList = [
     'abort',
     'animationend',
@@ -118,10 +118,10 @@ function cloneEvents(el) {
     });
   }
 }
-function format(first, middle, last) {
+export function format(first, middle, last) {
   return (first || '') + (middle ? ` ${middle}` : '') + (last ? ` ${last}` : '');
 }
-function getElementAttributes(nodeMap) {
+export function getElementAttributes(nodeMap) {
   if (nodeMap) {
     const length = nodeMap.length;
     return Object.keys(nodeMap).reduce((props, current) => {
@@ -137,7 +137,7 @@ function getElementAttributes(nodeMap) {
   }
   return {};
 }
-function randomString(length = 5) {
+export function randomString(length = 5) {
   // set random slot name to prevent users adding elements to the slot
   let result = '';
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -147,7 +147,7 @@ function randomString(length = 5) {
   }
   return result;
 }
-function dummyHandler(options) {
+export function dummyHandler(options) {
   const { excludeStyle = [], computedStyle = null, excludeAttribute = [], trackNodes = false, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
   const hostStyle = computedStyle || getComputedStyle(this.host);
   excludeStyle.push(...['display', 'position', 'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height', 'font']);
@@ -268,5 +268,3 @@ function dummyHandler(options) {
   });
   return hostStyle;
 }
-
-export { cloneEvents as c, dummyHandler as d, randomString as r };

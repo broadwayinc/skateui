@@ -1,11 +1,7 @@
-import { r as registerInstance, h, e as Host, g as getElement } from './index-82f09f33.js';
-import { r as randomString } from './utils-7bb2cdb2.js';
-
-const suiOverlayCss = ":host{display:none !important}";
-
-const SuiOverlay = class {
-  constructor(hostRef) {
-    registerInstance(this, hostRef);
+import { Component, Host, h, Element, Prop, Method } from '@stencil/core';
+import { randomString } from '../../utils/utils';
+export class SuiOverlay {
+  constructor() {
     this.position = 'center';
     this.transitionTime = '0.25s';
     this.overlayId = null;
@@ -242,10 +238,91 @@ const SuiOverlay = class {
     });
   }
   render() {
-    return (h(Host, { hidden: true, style: { display: this.overlayId ? null : 'none' } }, h("slot", null)));
+    return (h(Host, { hidden: true, style: { display: this.overlayId ? null : 'none' } },
+      h("slot", null)));
   }
-  get host() { return getElement(this); }
-};
-SuiOverlay.style = suiOverlayCss;
-
-export { SuiOverlay as sui_overlay };
+  static get is() { return "sui-overlay"; }
+  static get encapsulation() { return "shadow"; }
+  static get originalStyleUrls() { return {
+    "$": ["sui-overlay.scss"]
+  }; }
+  static get styleUrls() { return {
+    "$": ["sui-overlay.css"]
+  }; }
+  static get properties() { return {
+    "position": {
+      "type": "string",
+      "mutable": false,
+      "complexType": {
+        "original": "string",
+        "resolved": "string",
+        "references": {}
+      },
+      "required": false,
+      "optional": false,
+      "docs": {
+        "tags": [],
+        "text": ""
+      },
+      "attribute": "position",
+      "reflect": false,
+      "defaultValue": "'center'"
+    },
+    "transitionTime": {
+      "type": "string",
+      "mutable": false,
+      "complexType": {
+        "original": "string",
+        "resolved": "string",
+        "references": {}
+      },
+      "required": false,
+      "optional": false,
+      "docs": {
+        "tags": [],
+        "text": ""
+      },
+      "attribute": "transition-time",
+      "reflect": false,
+      "defaultValue": "'0.25s'"
+    }
+  }; }
+  static get methods() { return {
+    "close": {
+      "complexType": {
+        "signature": "() => Promise<void>",
+        "parameters": [],
+        "references": {
+          "Promise": {
+            "location": "global"
+          },
+          "HTMLElement": {
+            "location": "global"
+          }
+        },
+        "return": "Promise<void>"
+      },
+      "docs": {
+        "text": "",
+        "tags": []
+      }
+    },
+    "open": {
+      "complexType": {
+        "signature": "() => Promise<unknown>",
+        "parameters": [],
+        "references": {
+          "Promise": {
+            "location": "global"
+          }
+        },
+        "return": "Promise<unknown>"
+      },
+      "docs": {
+        "text": "",
+        "tags": []
+      }
+    }
+  }; }
+  static get elementRef() { return "host"; }
+}
