@@ -230,7 +230,11 @@ export class SuiInput {
             return p ? `-${p}px` : '0px';
           }).join(' '), 'important');
       } : null,
-
+      attCallback: (attName, val) => {
+        if (attName === 'value' && this.dummyElement.value !== val) {
+          this.dummyElement.value = val;
+        }
+      },
       appendIdToSlotElement: true
     });
 

@@ -270,7 +270,7 @@ export class SuiOverlay {
           'left': 'right'
         };
         let popDirection = matchByPosition[this.position];
-        
+
         screen.style.setProperty('background-color', this.host.style.getPropertyValue('background-color'));
         screen.style.setProperty('color', this.host.style.getPropertyValue('color'));
 
@@ -286,7 +286,7 @@ export class SuiOverlay {
   }
   render() {
     return (
-      <Host hidden>
+      <Host hidden style={{ display: this.overlayId ? null : 'none' }}>
         <slot></slot>
       </Host>
     );

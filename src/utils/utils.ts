@@ -260,6 +260,7 @@ export function dummyHandler(options: {
   appendIdToSlotElement?: boolean;
   excludeAttribute: string[];
   copyStyle?: string[] | ((css: CSSStyleDeclaration) => any);
+  attCallback?: ((attName: string, value: string) => any);
   excludeStyle?: string[];
   trackNodes?: boolean | ((n: MutationRecord) => any);
   log?: boolean | ((l: { attributeName: string; newValue?: string; oldValue?: string; mutationRecord?: MutationRecord; }) => any);
@@ -303,6 +304,10 @@ export function dummyHandler(options: {
     else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
       // skip 'hidden' | 'class' | 'id' | excluded list
       this.dummyElement.setAttribute(attName, val);
+      // attribute update callback
+      if (typeof options.attCallback === 'function') {
+        options.attCallback(attName, val);
+      }
     }
 
     if (copyStyle) {

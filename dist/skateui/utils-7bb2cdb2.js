@@ -1,4 +1,4 @@
-export function cloneEvents(el) {
+function cloneEvents(el) {
   const eventList = [
     'abort',
     'animationend',
@@ -118,10 +118,10 @@ export function cloneEvents(el) {
     });
   }
 }
-export function format(first, middle, last) {
+function format(first, middle, last) {
   return (first || '') + (middle ? ` ${middle}` : '') + (last ? ` ${last}` : '');
 }
-export function getElementAttributes(nodeMap) {
+function getElementAttributes(nodeMap) {
   if (nodeMap) {
     const length = nodeMap.length;
     return Object.keys(nodeMap).reduce((props, current) => {
@@ -137,7 +137,7 @@ export function getElementAttributes(nodeMap) {
   }
   return {};
 }
-export function randomString(length = 5) {
+function randomString(length = 5) {
   // set random slot name to prevent users adding elements to the slot
   let result = '';
   let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -147,7 +147,7 @@ export function randomString(length = 5) {
   }
   return result;
 }
-export function dummyHandler(options) {
+function dummyHandler(options) {
   const { excludeStyle = [], computedStyle = null, excludeAttribute = [], trackNodes = false, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
   const hostStyle = computedStyle || getComputedStyle(this.host);
   excludeStyle.push(...['display', 'position', 'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height', 'font']);
@@ -181,6 +181,10 @@ export function dummyHandler(options) {
     else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
       // skip 'hidden' | 'class' | 'id' | excluded list
       this.dummyElement.setAttribute(attName, val);
+      // attribute update callback
+      if (typeof options.attCallback === 'function') {
+        options.attCallback(attName, val);
+      }
     }
     if (copyStyle) {
       if (typeof copyStyle === 'function') {
@@ -264,3 +268,5 @@ export function dummyHandler(options) {
   });
   return hostStyle;
 }
+
+export { cloneEvents as c, dummyHandler as d, randomString as r };

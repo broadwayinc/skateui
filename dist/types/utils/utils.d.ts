@@ -7,6 +7,7 @@ export declare function dummyHandler(options: {
   appendIdToSlotElement?: boolean;
   excludeAttribute: string[];
   copyStyle?: string[] | ((css: CSSStyleDeclaration) => any);
+  attCallback?: ((attName: string, value: string) => any);
   excludeStyle?: string[];
   trackNodes?: boolean | ((n: MutationRecord) => any);
   log?: boolean | ((l: {

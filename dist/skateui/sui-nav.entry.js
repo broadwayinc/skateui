@@ -1,6 +1,10 @@
-import { Component, Host, h, Element, Prop } from '@stencil/core';
-export class SuiNav {
-  constructor() {
+import { r as registerInstance, h, e as Host, g as getElement } from './index-82f09f33.js';
+
+const suiNavCss = ":host{display:block;width:100%;padding:8px;transform:translateY(var(--nav-top));position:var(--nav-position);top:0;z-index:1}";
+
+const SuiNav = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
     this.scrollOffset = 0;
     this.topOffset = 0;
     this.offsetProp = 'pageYOffset';
@@ -103,35 +107,10 @@ export class SuiNav {
     }
   }
   render() {
-    return (h(Host, null,
-      h("slot", null)));
+    return (h(Host, null, h("slot", null)));
   }
-  static get is() { return "sui-nav"; }
-  static get encapsulation() { return "shadow"; }
-  static get originalStyleUrls() { return {
-    "$": ["sui-nav.scss"]
-  }; }
-  static get styleUrls() { return {
-    "$": ["sui-nav.css"]
-  }; }
-  static get properties() { return {
-    "autoHide": {
-      "type": "number",
-      "mutable": false,
-      "complexType": {
-        "original": "number",
-        "resolved": "number",
-        "references": {}
-      },
-      "required": false,
-      "optional": false,
-      "docs": {
-        "tags": [],
-        "text": ""
-      },
-      "attribute": "auto-hide",
-      "reflect": false
-    }
-  }; }
-  static get elementRef() { return "host"; }
-}
+  get host() { return getElement(this); }
+};
+SuiNav.style = suiNavCss;
+
+export { SuiNav as sui_nav };

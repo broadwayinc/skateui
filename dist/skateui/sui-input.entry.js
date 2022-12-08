@@ -1,7 +1,11 @@
-import { Component, Host, h, Element, Prop } from '@stencil/core';
-import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
-export class SuiInput {
-  constructor() {
+import { r as registerInstance, h, e as Host, g as getElement } from './index-82f09f33.js';
+import { r as randomString, d as dummyHandler, c as cloneEvents } from './utils-7bb2cdb2.js';
+
+const suiInputCss = ":host{user-select:none;-webkit-user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;vertical-align:bottom}:host slot{display:block}:host svg{display:none}::slotted([slot]){color:inherit;background-color:transparent;border:none}:host([type=text]),:host([type=password]),:host([type=email]),:host([type=number]),:host([type=search]),:host([type=tel]),:host([type=url]){display:inline-block;width:12em;font-size:inherit;padding:0.6em 0.66em;border-radius:4px;box-sizing:border-box;box-shadow:-1px -1px 2px -1px rgba(0, 0, 0, 0.5), 1px 1px 1px rgba(255, 255, 255, 0.33), inset 0 0 0 1px rgba(0, 0, 0, 0.25);background-color:inherit;color:inherit}:host([disabled]){box-shadow:none;background-color:rgba(128, 128, 128, 0.5);filter:grayscale(1)}:host([type=checkbox]){min-height:unset;width:1em;height:1em;font-size:1em;padding:0;box-shadow:none;background-color:transparent;color:#293FE6;border:2px solid currentColor;border-radius:2px;box-sizing:border-box;text-align:center;overflow:hidden;display:inline-block}:host([type=checkbox][checked]) svg{user-select:none;pointer-events:none;width:100%;display:block;color:inherit}:host([type=radio]){min-height:unset;width:1em;height:1em;font-size:1em;padding:0;box-shadow:none;background-color:transparent;color:#293FE6;box-sizing:border-box;border:2px solid currentColor;border-radius:100%;display:inline-block}:host([type=radio])::after{content:\"\";user-select:none;pointer-events:none;display:block;position:relative;width:calc(100% - 4px);height:calc(100% - 4px);margin:2px;border-radius:inherit;box-shadow:none;background-color:transparent}:host([type=radio][checked])::after{box-shadow:inset 0.5px 0.5px 0px rgba(255, 255, 255, 0.5), inset -0.5px -0.5px 0px rgba(0, 0, 0, 0.25), inset 0 0 0px 0.5px rgba(0, 0, 0, 0.25);background-color:currentColor}:host(:not([disabled]):active[type=radio])::after{box-shadow:inset 0 0 0px 0.5px rgba(128, 128, 128, 0.25), inset 0.15px 0.5px 0px rgba(0, 0, 0, 0.8), inset -0.5px -0.5px 0px rgba(255, 255, 255, 0.25);background-color:currentColor}:host([type=reset]),:host([type=submit]){-webkit-tap-highlight-color:rgba(0, 0, 0, 0);background:#293FE6;display:inline-table;color:#ffffff;border-radius:5px;vertical-align:baseline;font-size:inherit;padding:0.6em 1.2em;font-weight:bold;font-family:system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Open Sans\", \"Helvetica Neue\", sans-serif;box-sizing:border-box;cursor:pointer;user-select:none;text-align:center;box-shadow:inset 1px 1px 2px rgba(255, 255, 255, 0.5), inset -1px -1px 2px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(0, 0, 0, 0.25);line-height:1.2}:host([type=reset]) slot,:host([type=submit]) slot{display:flex;align-items:center;height:100%;justify-content:center;vertical-align:middle}:host([type=reset]:not([disabled]):hover),:host([type=submit]:not([disabled]):hover){box-shadow:inset 1px 1px 2px rgba(255, 255, 255, 0.65), inset -1px -1px 2px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(0, 0, 0, 0.25), inset 0 0 1em 1em rgba(191, 191, 191, 0.16)}:host([type=reset]:hover[disabled]),:host([type=submit]:hover[disabled]){cursor:default}:host([type=reset][disabled]),:host([type=submit][disabled]){box-shadow:inset -1px -1px 2px rgba(255, 255, 255, 0.65), inset 1px 1px 2px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(0, 0, 0, 0.25);filter:grayscale(1) contrast(0.25) invert(1) brightness(1.3)}:host([type=reset][hidden]),:host([type=submit][hidden]){display:none !important}:host([type=reset]:not([disabled]):active),:host([type=submit]:not([disabled]):active){box-shadow:inset 0 0 0 1px rgba(128, 128, 128, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.8), inset -1px -1px 1px rgba(255, 255, 255, 0.25)}";
+
+const SuiInput = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
     this.availableTypes = [
       // checker
       'checkbox',
@@ -192,6 +196,11 @@ export class SuiInput {
           return p ? `-${p}px` : '0px';
         }).join(' '), 'important');
       } : null,
+      attCallback: (attName, val) => {
+        if (attName === 'value' && this.dummyElement.value !== val) {
+          this.dummyElement.value = val;
+        }
+      },
       appendIdToSlotElement: true
     });
     // stop event propagation from input element,
@@ -205,38 +214,10 @@ export class SuiInput {
     this.dummyElement.remove();
   }
   render() {
-    return (h(Host, null,
-      h("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "currentColor", viewBox: "-2 -4 28 28" },
-        h("path", { d: "M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" })),
-      h("slot", { name: this.slotName }),
-      h("slot", { name: 'value' })));
+    return (h(Host, null, h("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "currentColor", viewBox: "-2 -4 28 28" }, h("path", { d: "M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" })), h("slot", { name: this.slotName }), h("slot", { name: 'value' })));
   }
-  static get is() { return "sui-input"; }
-  static get encapsulation() { return "shadow"; }
-  static get originalStyleUrls() { return {
-    "$": ["sui-input.scss"]
-  }; }
-  static get styleUrls() { return {
-    "$": ["sui-input.css"]
-  }; }
-  static get properties() { return {
-    "value": {
-      "type": "any",
-      "mutable": false,
-      "complexType": {
-        "original": "any",
-        "resolved": "any",
-        "references": {}
-      },
-      "required": false,
-      "optional": false,
-      "docs": {
-        "tags": [],
-        "text": ""
-      },
-      "attribute": "value",
-      "reflect": true
-    }
-  }; }
-  static get elementRef() { return "host"; }
-}
+  get host() { return getElement(this); }
+};
+SuiInput.style = suiInputCss;
+
+export { SuiInput as sui_input };

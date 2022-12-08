@@ -1,6 +1,10 @@
-import { Component, Host, h, Prop, Element } from '@stencil/core';
-export class SuiFlextext {
-  constructor() {
+import { r as registerInstance, h, e as Host, g as getElement } from './index-82f09f33.js';
+
+const suiFlextextCss = ":host{display:block;cursor:default;font-size:var(--auto-size);line-height:1}";
+
+const SuiFlextext = class {
+  constructor(hostRef) {
+    registerInstance(this, hostRef);
     this.minSize = 0;
     this.maxSize = 72;
     this.fontSize = null;
@@ -68,54 +72,10 @@ export class SuiFlextext {
     window.removeEventListener('resize', this.adjustSize);
   }
   render() {
-    return (h(Host, null,
-      h("slot", null)));
+    return (h(Host, null, h("slot", null)));
   }
-  static get is() { return "sui-flextext"; }
-  static get encapsulation() { return "shadow"; }
-  static get originalStyleUrls() { return {
-    "$": ["sui-flextext.scss"]
-  }; }
-  static get styleUrls() { return {
-    "$": ["sui-flextext.css"]
-  }; }
-  static get properties() { return {
-    "minSize": {
-      "type": "number",
-      "mutable": true,
-      "complexType": {
-        "original": "number",
-        "resolved": "number",
-        "references": {}
-      },
-      "required": false,
-      "optional": false,
-      "docs": {
-        "tags": [],
-        "text": ""
-      },
-      "attribute": "min-size",
-      "reflect": false,
-      "defaultValue": "0"
-    },
-    "maxSize": {
-      "type": "number",
-      "mutable": true,
-      "complexType": {
-        "original": "number",
-        "resolved": "number",
-        "references": {}
-      },
-      "required": false,
-      "optional": false,
-      "docs": {
-        "tags": [],
-        "text": ""
-      },
-      "attribute": "max-size",
-      "reflect": false,
-      "defaultValue": "72"
-    }
-  }; }
-  static get elementRef() { return "host"; }
-}
+  get host() { return getElement(this); }
+};
+SuiFlextext.style = suiFlextextCss;
+
+export { SuiFlextext as sui_flextext };
