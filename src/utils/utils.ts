@@ -208,6 +208,7 @@ export function cloneEvents(el) {
   ];
   for (let name of eventList) {
     el.addEventListener(name, ev => {
+      console.log({name,ev});
       if (!ev.bubbles) {
         // re dispatch unbubbled events
         ev.stopPropagation();

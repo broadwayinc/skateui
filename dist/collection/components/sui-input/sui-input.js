@@ -86,7 +86,7 @@ export class SuiInput {
         this.host.addEventListener('click', clicker);
         // add button text
         let span = document.createElement('span');
-        span.innerHTML = this.host.getAttribute('value') || (inputType === 'submit' ? 'Submit' : 'Reset');
+        span.innerHTML = this.value || (inputType === 'submit' ? 'Submit' : 'Reset');
         span.setAttribute('slot', 'value');
         this.host.prepend(span);
       }

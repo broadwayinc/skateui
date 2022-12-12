@@ -108,6 +108,7 @@ function cloneEvents(el) {
   ];
   for (let name of eventList) {
     el.addEventListener(name, ev => {
+      console.log({ name, ev });
       if (!ev.bubbles) {
         // re dispatch unbubbled events
         ev.stopPropagation();
@@ -488,7 +489,7 @@ const SuiInput = class {
         this.host.addEventListener('click', clicker);
         // add button text
         let span = document.createElement('span');
-        span.innerHTML = this.host.getAttribute('value') || (inputType === 'submit' ? 'Submit' : 'Reset');
+        span.innerHTML = this.value || (inputType === 'submit' ? 'Submit' : 'Reset');
         span.setAttribute('slot', 'value');
         this.host.prepend(span);
       }
