@@ -174,6 +174,7 @@ export class SuiOverlay {
 
     this.overlayId = null;
   }
+  
   @Method()
   open() {
     return new Promise(res => {
@@ -283,6 +284,9 @@ export class SuiOverlay {
         res(null);
       });
     });
+  }
+  disconnectedCallback() {
+    this.close();
   }
   render() {
     return (

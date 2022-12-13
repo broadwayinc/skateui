@@ -1,4 +1,4 @@
-import { r as registerInstance, h, H as Host, g as getElement } from './index-c1dbdf18.js';
+import { r as registerInstance, h, H as Host, g as getElement } from './index-169abe3a.js';
 
 function cloneEvents(el) {
   const eventList = [
@@ -108,7 +108,6 @@ function cloneEvents(el) {
   ];
   for (let name of eventList) {
     el.addEventListener(name, ev => {
-      console.log({ name, ev });
       if (!ev.bubbles) {
         // re dispatch unbubbled events
         ev.stopPropagation();
@@ -170,7 +169,7 @@ function dummyHandler(options) {
           }
           return true;
         })() && CSS.supports(keyVal[0], val[0])) {
-          this.dummyElement.style.setProperty(keyVal[0], val[0], val[1] || null);
+          this.el.style.setProperty(keyVal[0], val[0], val[1] || null);
           if (Array.isArray(copyStyle) && copyStyle.includes(keyVal[0])) {
             // add to style copy bypass list
             copyStyleBypass.push(keyVal[0]);
@@ -180,7 +179,7 @@ function dummyHandler(options) {
     }
     else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
       // skip 'hidden' | 'class' | 'id' | excluded list
-      this.dummyElement.setAttribute(attName, val);
+      this.el.setAttribute(attName, val);
       // attribute update callback
       if (typeof options.attCallback === 'function') {
         options.attCallback(attName, val);
@@ -203,7 +202,7 @@ function dummyHandler(options) {
               }
               return true;
             })() && CSS.supports(s, hostStyle[s])) {
-              this.dummyElement.style.setProperty(s, hostStyle[s]);
+              this.el.style.setProperty(s, hostStyle[s]);
             }
           }
         }
@@ -216,7 +215,7 @@ function dummyHandler(options) {
       setDummyAttribute(attName, hostAttributes[attName]);
     }
     if (attName === 'id' && appendIdToSlotElement) {
-      this.dummyElement.setAttribute(attName, hostAttributes[attName]);
+      this.el.setAttribute(attName, hostAttributes[attName]);
       this.host.removeAttribute(attName);
     }
     if (attName === 'autofocus') {
@@ -255,7 +254,7 @@ function dummyHandler(options) {
       // ! do not change the order of execution below !
       if (newValue === null) {
         // attribute is removed
-        this.dummyElement.removeAttribute(attributeName);
+        this.el.removeAttribute(attributeName);
         continue;
       }
       setDummyAttribute(attributeName, newValue);
@@ -277,7 +276,7 @@ const SuiButton = class {
     this.isFormButton = (() => {
       return this.host.closest('form');
     })();
-    this.dummyElement = (() => {
+    this.el = (() => {
       // element only needs to be created once, hence creating on class init
       if (!this.host.hasAttribute('disabled')) {
         this.host.setAttribute('tabindex', '0');
@@ -295,9 +294,9 @@ const SuiButton = class {
       return;
     }
     if (this.isFormButton) {
-      this.host.parentElement.insertBefore(this.dummyElement, this.host);
-      this.dummyElement.click();
-      this.dummyElement.remove();
+      this.host.parentElement.insertBefore(this.el, this.host);
+      this.el.click();
+      this.el.remove();
     }
   }
   keyEventHandler(e) {
@@ -424,10 +423,12 @@ const SuiInput = class {
     this.slotName = randomString();
     this.isChecker = false;
     this.isButton = false;
-    this.dummyElement = (() => {
+    this.el = (() => {
       var _a, _b;
       // add input element manually because shadow dom input is not recognized by forms
       let inputType = this.host.getAttribute('type'); // always use getAttribute() for proper casing
+      // let value = this.host.getAttribute('value');
+      let value = this.value;
       if (!inputType || !this.availableTypes.includes(inputType)) {
         this.host.setAttribute('type', 'text');
         inputType = 'text';
@@ -444,7 +445,7 @@ const SuiInput = class {
         const previousSpan = (_b = this.host.getElementsByTagName('span')) === null || _b === void 0 ? void 0 : _b[0];
         if (previousSpan) {
           if (previousSpan && previousSpan.hasAttribute('slot') && previousSpan.getAttribute('slot') === 'value' && this.isButton) {
-            previousSpan.innerHTML = this.host.getAttribute('value') || (inputType === 'submit' ? 'Submit' : 'Reset');
+            previousSpan.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
           }
           else {
             previousSpan.remove();
@@ -454,9 +455,12 @@ const SuiInput = class {
       }
       // create new element
       const input = document.createElement('input');
-      if (this.value) {
-        input.setAttribute('value', this.value);
+      if (value) {
+        input.setAttribute('value', value);
       }
+      // if (this.value) {
+      //   input.setAttribute('value', this.value);
+      // }
       // setup new slot name
       // slot name is to prevent users adding custom elements
       input.setAttribute('slot', this.slotName);
@@ -471,7 +475,7 @@ const SuiInput = class {
           // does not trigger dummy when disabled
           return;
         }
-        this.dummyElement.click();
+        this.el.click();
       };
       if (this.isButton) {
         // hidden
@@ -489,7 +493,8 @@ const SuiInput = class {
         this.host.addEventListener('click', clicker);
         // add button text
         let span = document.createElement('span');
-        span.innerHTML = this.value || (inputType === 'submit' ? 'Submit' : 'Reset');
+        // span.innerHTML = this.value || (inputType === 'submit' ? 'Submit' : 'Reset');
+        span.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
         span.setAttribute('slot', 'value');
         this.host.prepend(span);
       }
@@ -506,7 +511,7 @@ const SuiInput = class {
             // does not trigger dummy when disabled
             return;
           }
-          this.dummyElement.click();
+          this.el.click();
         };
         this.host.addEventListener('keyup', (e) => {
           if (e.key === 'Enter') {
@@ -563,12 +568,17 @@ const SuiInput = class {
       return input;
     })();
   }
+  valueHandler(n, o) {
+    if (n !== o) {
+      this.el.value = n;
+    }
+  }
   componentDidLoad() {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
       excludeStyle: ['border', 'margin', 'padding', 'max', 'min'],
       copyStyle: this.isChecker ? null : !this.isButton ? (hostCss) => {
-        this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+        this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
         // make text input fill the host
         let needAdjustment = false;
         let padding = [
@@ -584,38 +594,40 @@ const SuiInput = class {
           return val;
         });
         if (!needAdjustment) {
-          this.dummyElement.style.setProperty('margin', '0', 'important');
+          this.el.style.setProperty('margin', '0', 'important');
           return;
         }
         if (padding[1] || padding[3]) {
-          this.dummyElement.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
+          this.el.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
         }
-        this.dummyElement.style.setProperty('padding', hostCss['padding'], 'important');
-        this.dummyElement.style.setProperty('margin', padding.map(p => {
+        this.el.style.setProperty('padding', hostCss['padding'], 'important');
+        this.el.style.setProperty('margin', padding.map(p => {
           return p ? `-${p}px` : '0px';
         }).join(' '), 'important');
       } : null,
-      attCallback: (attName, val) => {
-        if (attName === 'value' && this.dummyElement.value !== val) {
-          this.dummyElement.value = val;
-        }
-      },
+      // attCallback: (attName, val) => {
+      //   console.log({attName,val})
+      // },
+      excludeAttribute: ['value'],
       appendIdToSlotElement: true
     });
     // stop event propagation from input element,
     // emit events from host
-    cloneEvents.bind(this)(this.dummyElement);
+    cloneEvents.bind(this)(this.el);
   }
   disconnectedCallback() {
     // save memory by disconnecting mutation watch
     this.observer.disconnect();
     // remove dummy element
-    this.dummyElement.remove();
+    this.el.remove();
   }
   render() {
     return (h(Host, null, h("svg", { xmlns: "http://www.w3.org/2000/svg", fill: "currentColor", viewBox: "-2 -4 28 28" }, h("path", { d: "M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" })), h("slot", { name: this.slotName }), h("slot", { name: 'value' })));
   }
   get host() { return getElement(this); }
+  static get watchers() { return {
+    "value": ["valueHandler"]
+  }; }
 };
 SuiInput.style = suiInputCss;
 
@@ -972,6 +984,9 @@ const SuiOverlay = class {
       });
     });
   }
+  disconnectedCallback() {
+    this.close();
+  }
   render() {
     return (h(Host, { hidden: true, style: { display: this.overlayId ? null : 'none' } }, h("slot", null)));
   }
@@ -990,7 +1005,7 @@ const SuiSelect = class {
     this.isMultiple = (() => {
       return this.host.hasAttribute('multiple');
     })();
-    this.dummyElement = (() => {
+    this.el = (() => {
       var _a;
       const select_pre = this.host.getElementsByTagName('select');
       if (select_pre.length) {
@@ -1038,7 +1053,7 @@ const SuiSelect = class {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
       copyStyle: (hostCss) => {
-        this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+        this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
         // make text input fill the host
         let needAdjustment = false;
         let padding = [
@@ -1054,23 +1069,23 @@ const SuiSelect = class {
           return val;
         });
         if (!needAdjustment) {
-          this.dummyElement.style.setProperty('margin', '0', 'important');
+          this.el.style.setProperty('margin', '0', 'important');
           return;
         }
         if (padding[0] || padding[2]) {
           this.topPadding = `${padding[0]}px`;
-          this.dummyElement.style.setProperty('height', `calc(100% + ${padding[0]}px + ${padding[2]}px)`, 'important');
+          this.el.style.setProperty('height', `calc(100% + ${padding[0]}px + ${padding[2]}px)`, 'important');
         }
         else if (!this.isMultiple) {
-          this.dummyElement.style.setProperty('height', hostCss['height'], 'important');
+          this.el.style.setProperty('height', hostCss['height'], 'important');
         }
         if (padding[1] || padding[3]) {
           this.leftPadding = `${padding[3]}px`;
           this.rightPadding = `${padding[1]}px`;
-          this.dummyElement.style.setProperty('width', `calc(100% + ${this.leftPadding} + ${this.rightPadding})`, 'important');
+          this.el.style.setProperty('width', `calc(100% + ${this.leftPadding} + ${this.rightPadding})`, 'important');
         }
-        this.dummyElement.style.setProperty('padding', hostCss['padding'], 'important');
-        this.dummyElement.style.setProperty('margin', padding.map(p => {
+        this.el.style.setProperty('padding', hostCss['padding'], 'important');
+        this.el.style.setProperty('margin', padding.map(p => {
           return p ? `-${p}px` : '0px';
         }).join(' '), 'important');
       },

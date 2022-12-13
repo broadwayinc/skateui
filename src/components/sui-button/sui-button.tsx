@@ -14,7 +14,7 @@ export class SuiButton {
     return this.host.closest('form');
   })();
 
-  dummyElement = (() => {
+  el = (() => {
     // element only needs to be created once, hence creating on class init
     if (!this.host.hasAttribute('disabled')) {
       this.host.setAttribute('tabindex', '0');
@@ -33,11 +33,11 @@ export class SuiButton {
       return;
     }
     if (this.isFormButton) {
-      this.host.parentElement.insertBefore(this.dummyElement, this.host);
-      this.dummyElement.click();
-      this.dummyElement.remove();
+      this.host.parentElement.insertBefore(this.el, this.host);
+      this.el.click();
+      this.el.remove();
     } else {
-      // this.dummyElement.click();
+      // this.el.click();
     }
   }
   @Listen('keyup')

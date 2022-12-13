@@ -15,7 +15,8 @@ export class SuiSelect {
   isMultiple: boolean = (() => {
     return this.host.hasAttribute('multiple');
   })();
-  dummyElement = (() => {
+  
+  el = (() => {
     const select_pre = this.host.getElementsByTagName('select');
     if (select_pre.length) {
       if (select_pre.length !== 1) {
@@ -68,7 +69,7 @@ export class SuiSelect {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
       copyStyle: (hostCss: CSSStyleDeclaration) => {
-        this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+        this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
 
         // make text input fill the host
         let needAdjustment = false;
@@ -86,27 +87,27 @@ export class SuiSelect {
         });
 
         if (!needAdjustment) {
-          this.dummyElement.style.setProperty('margin', '0', 'important');
+          this.el.style.setProperty('margin', '0', 'important');
           return;
         }
 
         if (padding[0] || padding[2]) {
           this.topPadding = `${padding[0]}px`;
-          this.dummyElement.style.setProperty('height', `calc(100% + ${padding[0]}px + ${padding[2]}px)`, 'important');
+          this.el.style.setProperty('height', `calc(100% + ${padding[0]}px + ${padding[2]}px)`, 'important');
         }
 
         else if (!this.isMultiple) {
-          this.dummyElement.style.setProperty('height', hostCss['height'], 'important');
+          this.el.style.setProperty('height', hostCss['height'], 'important');
         }
 
         if (padding[1] || padding[3]) {
           this.leftPadding = `${padding[3]}px`;
           this.rightPadding = `${padding[1]}px`;
-          this.dummyElement.style.setProperty('width', `calc(100% + ${this.leftPadding} + ${this.rightPadding})`, 'important');
+          this.el.style.setProperty('width', `calc(100% + ${this.leftPadding} + ${this.rightPadding})`, 'important');
         }
 
-        this.dummyElement.style.setProperty('padding', hostCss['padding'], 'important');
-        this.dummyElement.style.setProperty('margin',
+        this.el.style.setProperty('padding', hostCss['padding'], 'important');
+        this.el.style.setProperty('margin',
           padding.map(p => {
             return p ? `-${p}px` : '0px';
           }).join(' '), 'important');

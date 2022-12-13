@@ -237,6 +237,9 @@ export class SuiOverlay {
       });
     });
   }
+  disconnectedCallback() {
+    this.close();
+  }
   render() {
     return (h(Host, { hidden: true, style: { display: this.overlayId ? null : 'none' } },
       h("slot", null)));

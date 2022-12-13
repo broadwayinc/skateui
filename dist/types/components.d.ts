@@ -13,6 +13,7 @@ export namespace Components {
         "minSize": number;
     }
     interface SuiInput {
+        "el": HTMLInputElement;
         "value": any;
     }
     interface SuiNav {
@@ -81,6 +82,7 @@ declare namespace LocalJSX {
         "minSize"?: number;
     }
     interface SuiInput {
+        "el"?: HTMLInputElement;
         "value"?: any;
     }
     interface SuiNav {

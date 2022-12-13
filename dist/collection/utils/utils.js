@@ -106,7 +106,6 @@ export function cloneEvents(el) {
   ];
   for (let name of eventList) {
     el.addEventListener(name, ev => {
-      console.log({ name, ev });
       if (!ev.bubbles) {
         // re dispatch unbubbled events
         ev.stopPropagation();
@@ -171,7 +170,7 @@ export function dummyHandler(options) {
           }
           return true;
         })() && CSS.supports(keyVal[0], val[0])) {
-          this.dummyElement.style.setProperty(keyVal[0], val[0], val[1] || null);
+          this.el.style.setProperty(keyVal[0], val[0], val[1] || null);
           if (Array.isArray(copyStyle) && copyStyle.includes(keyVal[0])) {
             // add to style copy bypass list
             copyStyleBypass.push(keyVal[0]);
@@ -181,7 +180,7 @@ export function dummyHandler(options) {
     }
     else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
       // skip 'hidden' | 'class' | 'id' | excluded list
-      this.dummyElement.setAttribute(attName, val);
+      this.el.setAttribute(attName, val);
       // attribute update callback
       if (typeof options.attCallback === 'function') {
         options.attCallback(attName, val);
@@ -204,7 +203,7 @@ export function dummyHandler(options) {
               }
               return true;
             })() && CSS.supports(s, hostStyle[s])) {
-              this.dummyElement.style.setProperty(s, hostStyle[s]);
+              this.el.style.setProperty(s, hostStyle[s]);
             }
           }
         }
@@ -217,7 +216,7 @@ export function dummyHandler(options) {
       setDummyAttribute(attName, hostAttributes[attName]);
     }
     if (attName === 'id' && appendIdToSlotElement) {
-      this.dummyElement.setAttribute(attName, hostAttributes[attName]);
+      this.el.setAttribute(attName, hostAttributes[attName]);
       this.host.removeAttribute(attName);
     }
     if (attName === 'autofocus') {
@@ -256,7 +255,7 @@ export function dummyHandler(options) {
       // ! do not change the order of execution below !
       if (newValue === null) {
         // attribute is removed
-        this.dummyElement.removeAttribute(attributeName);
+        this.el.removeAttribute(attributeName);
         continue;
       }
       setDummyAttribute(attributeName, newValue);

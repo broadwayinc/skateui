@@ -7,5 +7,6 @@ export declare class SuiOverlay {
   createScreen(): HTMLDivElement;
   close(): Promise<void>;
   open(): Promise<unknown>;
+  disconnectedCallback(): void;
   render(): any;
 }

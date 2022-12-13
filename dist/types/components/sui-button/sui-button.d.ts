@@ -2,7 +2,7 @@ export declare class SuiButton {
   observer: MutationObserver;
   host: HTMLElement;
   isFormButton: HTMLFormElement;
-  dummyElement: HTMLButtonElement & {
+  el: HTMLButtonElement & {
     hidden: boolean;
   };
   clickEventHandler(): void;

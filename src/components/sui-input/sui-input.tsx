@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, Prop } from '@stencil/core';
+import { Component, Host, h, Element, Prop, Watch } from '@stencil/core'; //Method, 
 import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
 @Component({
   tag: 'sui-input',
@@ -7,8 +7,26 @@ import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
   // scoped: false,
 })
 export class SuiInput {
+  // instance methods
+  // used Prop instead of Method by purpose.
+  @Prop() value: any;
+  // @Prop()
+  // focus = () => {
+  //   this.el.focus();
+  // };
+  // @Prop()
+  // blur = () => {
+  //   this.el.blur();
+  // };
+
   @Element() host: HTMLElement;
-  @Prop({ reflect: true }) value: any;
+  @Watch('value')
+  valueHandler(n: string, o: string) {
+    if (n !== o) {
+      this.el.value = n;
+    }
+  }
+
   availableTypes: string[] = [
     // checker
     'checkbox',
@@ -30,10 +48,13 @@ export class SuiInput {
   slotName: string = randomString();
   isChecker = false;
   isButton = false;
-
-  dummyElement = (() => {
+  
+  @Prop()
+  el = (() => {
     // add input element manually because shadow dom input is not recognized by forms
     let inputType = this.host.getAttribute('type'); // always use getAttribute() for proper casing
+    // let value = this.host.getAttribute('value');
+    let value = this.value;
     if (!inputType || !this.availableTypes.includes(inputType)) {
       this.host.setAttribute('type', 'text');
       inputType = 'text';
@@ -54,7 +75,7 @@ export class SuiInput {
       const previousSpan = this.host.getElementsByTagName('span')?.[0];
       if (previousSpan) {
         if (previousSpan && previousSpan.hasAttribute('slot') && previousSpan.getAttribute('slot') === 'value' && this.isButton) {
-          previousSpan.innerHTML = this.host.getAttribute('value') || (inputType === 'submit' ? 'Submit' : 'Reset');
+          previousSpan.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
         }
         else {
           previousSpan.remove();
@@ -65,9 +86,12 @@ export class SuiInput {
 
     // create new element
     const input = document.createElement('input');
-    if (this.value) {
-      input.setAttribute('value', this.value);
+    if (value) {
+      input.setAttribute('value', value);
     }
+    // if (this.value) {
+    //   input.setAttribute('value', this.value);
+    // }
 
     // setup new slot name
     // slot name is to prevent users adding custom elements
@@ -85,7 +109,7 @@ export class SuiInput {
         // does not trigger dummy when disabled
         return;
       }
-      this.dummyElement.click();
+      this.el.click();
     };
 
     if (this.isButton) {
@@ -107,7 +131,8 @@ export class SuiInput {
 
       // add button text
       let span = document.createElement('span');
-      span.innerHTML = this.value || (inputType === 'submit' ? 'Submit' : 'Reset');
+      // span.innerHTML = this.value || (inputType === 'submit' ? 'Submit' : 'Reset');
+      span.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
       span.setAttribute('slot', 'value');
       this.host.prepend(span);
     }
@@ -127,7 +152,7 @@ export class SuiInput {
           // does not trigger dummy when disabled
           return;
         }
-        this.dummyElement.click();
+        this.el.click();
       };
 
       this.host.addEventListener('keyup', (e) => {
@@ -198,7 +223,7 @@ export class SuiInput {
       computedStyle: window.getComputedStyle(this.host),
       excludeStyle: ['border', 'margin', 'padding', 'max', 'min'],
       copyStyle: this.isChecker ? null : !this.isButton ? (hostCss: CSSStyleDeclaration) => {
-        this.dummyElement.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+        this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
 
         // make text input fill the host
         let needAdjustment = false;
@@ -216,38 +241,37 @@ export class SuiInput {
         });
 
         if (!needAdjustment) {
-          this.dummyElement.style.setProperty('margin', '0', 'important');
+          this.el.style.setProperty('margin', '0', 'important');
           return;
         }
 
         if (padding[1] || padding[3]) {
-          this.dummyElement.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
+          this.el.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
         }
 
-        this.dummyElement.style.setProperty('padding', hostCss['padding'], 'important');
-        this.dummyElement.style.setProperty('margin',
+        this.el.style.setProperty('padding', hostCss['padding'], 'important');
+        this.el.style.setProperty('margin',
           padding.map(p => {
             return p ? `-${p}px` : '0px';
           }).join(' '), 'important');
       } : null,
-      attCallback: (attName, val) => {
-        if (attName === 'value' && this.dummyElement.value !== val) {
-          this.dummyElement.value = val;
-        }
-      },
+      // attCallback: (attName, val) => {
+      //   console.log({attName,val})
+      // },
+      excludeAttribute: ['value'],
       appendIdToSlotElement: true
     });
 
     // stop event propagation from input element,
     // emit events from host
-    cloneEvents.bind(this)(this.dummyElement);
+    cloneEvents.bind(this)(this.el);
   }
 
   disconnectedCallback() {
     // save memory by disconnecting mutation watch
     this.observer.disconnect();
     // remove dummy element
-    this.dummyElement.remove();
+    this.el.remove();
   }
 
   render() {

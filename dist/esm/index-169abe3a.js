@@ -1,25 +1,3 @@
-'use strict';
-
-function _interopNamespace(e) {
-  if (e && e.__esModule) return e;
-  var n = Object.create(null);
-  if (e) {
-    Object.keys(e).forEach(function (k) {
-      if (k !== 'default') {
-        var d = Object.getOwnPropertyDescriptor(e, k);
-        Object.defineProperty(n, k, d.get ? d : {
-          enumerable: true,
-          get: function () {
-            return e[k];
-          }
-        });
-      }
-    });
-  }
-  n['default'] = e;
-  return Object.freeze(n);
-}
-
 const NAMESPACE = 'skateui';
 
 let scopeId;
@@ -520,14 +498,9 @@ const patch = (oldVNode, newVNode) => {
 };
 const renderVdom = (hostRef, renderFnResults) => {
     const hostElm = hostRef.$hostElement$;
-    const cmpMeta = hostRef.$cmpMeta$;
     const oldVNode = hostRef.$vnode$ || newVNode(null, null);
     const rootVnode = isHost(renderFnResults) ? renderFnResults : h(null, null, renderFnResults);
     hostTagName = hostElm.tagName;
-    if (cmpMeta.$attrsToReflect$) {
-        rootVnode.$attrs$ = rootVnode.$attrs$ || {};
-        cmpMeta.$attrsToReflect$.map(([propName, attribute]) => (rootVnode.$attrs$[attribute] = hostElm[propName]));
-    }
     rootVnode.$tag$ = null;
     rootVnode.$flags$ |= 4 /* isHost */;
     hostRef.$vnode$ = rootVnode;
@@ -765,6 +738,7 @@ const getValue = (ref, propName) => getHostRef(ref).$instanceValues$.get(propNam
 const setValue = (ref, propName, newVal, cmpMeta) => {
     // check our new property value against our internal value
     const hostRef = getHostRef(ref);
+    const elm = hostRef.$hostElement$ ;
     const oldVal = hostRef.$instanceValues$.get(propName);
     const flags = hostRef.$flags$;
     const instance = hostRef.$lazyInstance$ ;
@@ -777,6 +751,22 @@ const setValue = (ref, propName, newVal, cmpMeta) => {
         // set our new value!
         hostRef.$instanceValues$.set(propName, newVal);
         if (instance) {
+            // get an array of method names of watch functions to call
+            if (cmpMeta.$watchers$ && flags & 128 /* isWatchReady */) {
+                const watchMethods = cmpMeta.$watchers$[propName];
+                if (watchMethods) {
+                    // this instance is watching for when this property changed
+                    watchMethods.map((watchMethodName) => {
+                        try {
+                            // fire off each of the watch methods that are watching this property
+                            instance[watchMethodName](newVal, oldVal, propName);
+                        }
+                        catch (e) {
+                            consoleError(e, elm);
+                        }
+                    });
+                }
+            }
             if ((flags & (2 /* hasRendered */ | 16 /* isQueuedForUpdate */)) === 2 /* hasRendered */) {
                 // looks like this value actually changed, so we've got work to do!
                 // but only if we've already rendered, otherwise just chill out
@@ -789,6 +779,9 @@ const setValue = (ref, propName, newVal, cmpMeta) => {
 };
 const proxyComponent = (Cstr, cmpMeta, flags) => {
     if (cmpMeta.$members$) {
+        if (Cstr.watchers) {
+            cmpMeta.$watchers$ = Cstr.watchers;
+        }
         // It's better to have a const than two Object.entries()
         const members = Object.entries(cmpMeta.$members$);
         const prototype = Cstr.prototype;
@@ -880,9 +873,6 @@ const proxyComponent = (Cstr, cmpMeta, flags) => {
                 .map(([propName, m]) => {
                 const attrName = m[1] || propName;
                 attrNameToPropName.set(attrName, propName);
-                if (m[0] & 512 /* ReflectAttr */) {
-                    cmpMeta.$attrsToReflect$.push([propName, attrName]);
-                }
                 return attrName;
             });
         }
@@ -906,6 +896,12 @@ const initializeComponent = async (elm, hostRef, cmpMeta, hmrVersionId, Cstr) =>
                 endLoad();
             }
             if (!Cstr.isProxied) {
+                // we've never proxied this Constructor before
+                // let's add the getters/setters to its prototype before
+                // the first time we create an instance of the implementation
+                {
+                    cmpMeta.$watchers$ = Cstr.watchers;
+                }
                 proxyComponent(Cstr, cmpMeta, 2 /* proxyState */);
                 Cstr.isProxied = true;
             }
@@ -928,6 +924,9 @@ const initializeComponent = async (elm, hostRef, cmpMeta, hmrVersionId, Cstr) =>
             }
             {
                 hostRef.$flags$ &= ~8 /* isConstructingInstance */;
+            }
+            {
+                hostRef.$flags$ |= 128 /* isWatchReady */;
             }
             endNewInstance();
         }
@@ -1044,7 +1043,7 @@ const bootstrapLazy = (lazyBundles, options = {}) => {
                 cmpMeta.$listeners$ = compactMeta[3];
             }
             {
-                cmpMeta.$attrsToReflect$ = [];
+                cmpMeta.$watchers$ = {};
             }
             const tagName = cmpMeta.$tagName$;
             const HostElement = class extends HTMLElement {
@@ -1138,12 +1137,12 @@ const loadModule = (cmpMeta, hostRef, hmrVersionId) => {
         return module[exportName];
     }
     /*!__STENCIL_STATIC_IMPORT_SWITCH__*/
-    return Promise.resolve().then(function () { return /*#__PURE__*/_interopNamespace(require(
+    return import(
     /* @vite-ignore */
     /* webpackInclude: /\.entry\.js$/ */
     /* webpackExclude: /\.system\.entry\.js$/ */
     /* webpackMode: "lazy" */
-    `./${bundleId}.entry.js${''}`)); }).then((importedModule) => {
+    `./${bundleId}.entry.js${''}`).then((importedModule) => {
         {
             cmpModules.set(bundleId, importedModule);
         }
@@ -1194,9 +1193,4 @@ const flush = () => {
 const nextTick = /*@__PURE__*/ (cb) => promiseResolve().then(cb);
 const writeTask = /*@__PURE__*/ queueTask(queueDomWrites, true);
 
-exports.Host = Host;
-exports.bootstrapLazy = bootstrapLazy;
-exports.getElement = getElement;
-exports.h = h;
-exports.promiseResolve = promiseResolve;
-exports.registerInstance = registerInstance;
+export { Host as H, bootstrapLazy as b, getElement as g, h, promiseResolve as p, registerInstance as r };

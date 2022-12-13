@@ -5,7 +5,7 @@ export declare class SuiSelect {
   topPadding: string;
   value: string;
   isMultiple: boolean;
-  dummyElement: HTMLSelectElement;
+  el: HTMLSelectElement;
   componentWillLoad(): void;
   render(): any;
 }
