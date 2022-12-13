@@ -614,6 +614,8 @@ const SuiInput = class {
     // stop event propagation from input element,
     // emit events from host
     cloneEvents.bind(this)(this.el);
+    // dispatch load event when finished loading
+    this.el.dispatchEvent(new Event('load'));
   }
   disconnectedCallback() {
     // save memory by disconnecting mutation watch

@@ -7,18 +7,7 @@ import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
   // scoped: false,
 })
 export class SuiInput {
-  // instance methods
-  // used Prop instead of Method by purpose.
   @Prop() value: any;
-  // @Prop()
-  // focus = () => {
-  //   this.el.focus();
-  // };
-  // @Prop()
-  // blur = () => {
-  //   this.el.blur();
-  // };
-
   @Element() host: HTMLElement;
   @Watch('value')
   valueHandler(n: string, o: string) {
@@ -265,6 +254,9 @@ export class SuiInput {
     // stop event propagation from input element,
     // emit events from host
     cloneEvents.bind(this)(this.el);
+
+    // dispatch load event when finished loading
+    this.el.dispatchEvent(new Event('load'))
   }
 
   disconnectedCallback() {
