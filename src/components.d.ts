@@ -26,6 +26,7 @@ export namespace Components {
         "transitionTime": string;
     }
     interface SuiSelect {
+        "value": any;
     }
 }
 declare global {
@@ -93,6 +94,7 @@ declare namespace LocalJSX {
         "transitionTime"?: string;
     }
     interface SuiSelect {
+        "value"?: any;
     }
     interface IntrinsicElements {
         "sui-button": SuiButton;

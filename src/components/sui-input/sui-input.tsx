@@ -7,8 +7,8 @@ import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
   // scoped: false,
 })
 export class SuiInput {
-  @Prop() value: any;
   @Element() host: HTMLElement;
+  @Prop() value: any;
   @Watch('value')
   valueHandler(n: string, o: string) {
     if (n !== o) {
@@ -37,7 +37,7 @@ export class SuiInput {
   slotName: string = randomString();
   isChecker = false;
   isButton = false;
-  
+
   @Prop()
   el = (() => {
     // add input element manually because shadow dom input is not recognized by forms
@@ -256,7 +256,7 @@ export class SuiInput {
     cloneEvents.bind(this)(this.el);
 
     // dispatch load event when finished loading
-    this.el.dispatchEvent(new Event('load'))
+    this.el.dispatchEvent(new Event('load'));
   }
 
   disconnectedCallback() {
