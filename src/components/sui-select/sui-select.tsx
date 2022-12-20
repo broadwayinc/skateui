@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, State, Prop, Watch } from '@stencil/core';
-import { dummyHandler } from '../../utils/utils';
+import { dummyHandler, cloneEvents } from '../../utils/utils';
 
 @Component({
   tag: 'sui-select',
@@ -8,6 +8,7 @@ import { dummyHandler } from '../../utils/utils';
 })
 export class SuiSelect {
   @Element() host: HTMLElement;
+  observer: MutationObserver;
   @State() leftPadding: string = '0px';
   @State() rightPadding: string = '0px';
   @State() topPadding: string = '0px';
@@ -20,7 +21,7 @@ export class SuiSelect {
       this.valueDisplay = this.el.getElementsByTagName('option')[this.el.selectedIndex || 0]?.textContent || this.el.value || '';
     }
   }
-  
+
   isMultiple: boolean = (() => {
     return this.host.hasAttribute('multiple');
   })();
@@ -42,7 +43,9 @@ export class SuiSelect {
     this.valueDisplay = select.getElementsByTagName('option')[select.selectedIndex || 0]?.textContent || select.value || '';
 
     select.addEventListener('change', () => {
-      this.value = select.value || '';
+      if (select.value !== this.value) {
+        this.value = select.value || '';
+      }
     });
 
     for (const [key, value] of Object.entries({
@@ -70,7 +73,7 @@ export class SuiSelect {
     return select;
   })();
 
-  componentWillLoad() {
+  componentDidLoad() {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
       copyStyle: (hostCss: CSSStyleDeclaration) => {
@@ -120,8 +123,15 @@ export class SuiSelect {
       appendIdToSlotElement: true,
       excludeAttribute: this.isMultiple ? ['value'] : ['size', 'value'] // size attribute should not work for multiple select
     });
+    cloneEvents.bind(this)(this.el);
   }
 
+  disconnectedCallback() {
+    // save memory by disconnecting mutation watch
+    this.observer.disconnect();
+    // remove dummy element
+    this.el.remove();
+  }
   render() {
     return (
       <Host>
