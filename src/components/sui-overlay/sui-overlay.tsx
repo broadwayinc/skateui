@@ -83,6 +83,8 @@ export class SuiOverlay {
     if (typeof this.host.onclick === 'function') {
       // prevents background scroll
       document.body.style.top = `-${window.scrollY}px`;
+      document.body.style.left = `0px`;
+      document.body.style.right = `0px`;
       document.body.style.position = 'fixed';
     }
     else {
@@ -108,6 +110,8 @@ export class SuiOverlay {
       let scrollY = document.body.style.top;
       document.body.style.position = '';
       document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
       window.scrollTo(0, parseInt(scrollY || '0') * -1);
     }
 

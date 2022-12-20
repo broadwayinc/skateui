@@ -8,6 +8,13 @@ ret = os.system('git pull')
 if ret != 0:
     print('==Failed to pull==')
 
+
+ret = os.system('npm run build')
+
+if ret != 0:
+    print('==Failed to build==')
+
+
 with open('./package.json', 'r') as p:
     package = json.loads(p.read())
 

@@ -106,3 +106,5 @@ www
 .DS_Store
 
 dist/
+loader/
+package-lock.json
