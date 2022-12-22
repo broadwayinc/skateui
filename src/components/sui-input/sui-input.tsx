@@ -229,12 +229,13 @@ export class SuiInput {
           return val;
         });
 
+        this.el.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
+
         if (!needAdjustment) {
+          this.el.style.setProperty('padding', '0', 'important');
           this.el.style.setProperty('margin', '0', 'important');
           return;
         }
-
-        this.el.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
 
         this.el.style.setProperty('padding', hostCss['padding'], 'important');
         this.el.style.setProperty('margin',
@@ -253,8 +254,8 @@ export class SuiInput {
     // emit events from host
     cloneEvents.bind(this)(this.el);
 
-    // dispatch load event when finished loading
-    this.el.dispatchEvent(new Event('load'));
+    // dispatch mounted event when finished loading
+    this.el.dispatchEvent(new CustomEvent('mounted'));
   }
 
   disconnectedCallback() {

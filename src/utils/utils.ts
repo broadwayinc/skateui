@@ -1,4 +1,4 @@
-export function cloneEvents(el) {
+export function cloneEvents(el: HTMLElement, dispatchTo = null, eventCallback: { type: string; callback: (e: any) => void; } = null) {
   const eventList = [
     'abort'
     ,
@@ -206,8 +206,21 @@ export function cloneEvents(el) {
     ,
     'wheel'
   ];
-  for (let name of eventList) {
-    el.addEventListener(name, ev => {
+
+  // callback
+  let cb = null;
+
+  if (dispatchTo) {
+    cb = (ev: Event) => {
+      let new_ev = new Event(ev.type);
+      if (eventCallback && eventCallback.type === ev.type && typeof eventCallback.callback === 'function') {
+        eventCallback.callback(new_ev);
+      }
+      dispatchTo.dispatchEvent(new_ev);
+    };
+  }
+  else {
+    cb = (ev: Event) => {
       if (!ev.bubbles) {
         // re dispatch unbubbled events
         ev.stopPropagation();
@@ -217,7 +230,11 @@ export function cloneEvents(el) {
         });
         el.dispatchEvent(new_ev);
       }
-    });
+    };
+  }
+
+  for (let name of eventList) {
+    el.addEventListener(name, cb);
   }
 }
 
@@ -316,8 +333,6 @@ export function dummyHandler(options: {
       }
 
       else {
-
-
         // copy css styles
         for (let s of copyStyle) {
           if (!copyStyleBypass.includes(s)) {

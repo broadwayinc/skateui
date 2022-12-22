@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, Prop, Method } from '@stencil/core';
-import { randomString } from '../../utils/utils';
+import { cloneEvents, randomString } from '../../utils/utils';
 
 @Component({
   tag: 'sui-overlay',
@@ -75,22 +75,15 @@ export class SuiOverlay {
       screen.style.setProperty(k, css[this.position][k]);
     }
 
-    screen.onclick = () => {
-      // onclick event is triggered when overlay is clicked
-      this.host.click();
-    };
-
-    if (typeof this.host.onclick === 'function') {
-      // prevents background scroll
-      document.body.style.top = `-${window.scrollY}px`;
-      document.body.style.left = `0px`;
-      document.body.style.right = `0px`;
-      document.body.style.position = 'fixed';
-    }
-    else {
-      // allow background clicking if there is no event listener
-      screen.style.setProperty('pointer-events', 'none');
-    }
+    cloneEvents(screen, this.host, {
+      type: 'click', callback: () => {
+        // prevents background scroll
+        document.body.style.top = `-${window.scrollY}px`;
+        document.body.style.left = `0px`;
+        document.body.style.right = `0px`;
+        document.body.style.position = 'fixed';
+      }
+    });
 
     // generate overlay id
     this.overlayId = randomString();
@@ -178,7 +171,7 @@ export class SuiOverlay {
 
     this.overlayId = null;
   }
-  
+
   @Method()
   open() {
     return new Promise(res => {
