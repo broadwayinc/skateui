@@ -234,9 +234,7 @@ export class SuiInput {
           return;
         }
 
-        if (padding[1] || padding[3]) {
-          this.el.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
-        }
+        this.el.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
 
         this.el.style.setProperty('padding', hostCss['padding'], 'important');
         this.el.style.setProperty('margin',
