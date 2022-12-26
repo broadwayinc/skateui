@@ -20,8 +20,8 @@ export namespace Components {
         "autoHide": number;
     }
     interface SuiOverlay {
-        "close": () => Promise<void>;
-        "open": () => Promise<unknown>;
+        "close": (cb?: () => any) => Promise<void>;
+        "open": (cb?: () => any) => Promise<unknown>;
         "position": string;
         "transitionTime": string;
     }

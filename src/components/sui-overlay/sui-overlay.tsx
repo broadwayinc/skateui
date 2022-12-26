@@ -75,15 +75,7 @@ export class SuiOverlay {
       screen.style.setProperty(k, css[this.position][k]);
     }
 
-    cloneEvents(screen, this.host, {
-      type: 'click', callback: () => {
-        // prevents background scroll
-        document.body.style.top = `-${window.scrollY}px`;
-        document.body.style.left = `0px`;
-        document.body.style.right = `0px`;
-        document.body.style.position = 'fixed';
-      }
-    });
+    cloneEvents(screen, this.host);
 
     // generate overlay id
     this.overlayId = randomString();
@@ -92,20 +84,10 @@ export class SuiOverlay {
     return screen;
   }
   @Method()
-  async close() {
+  async close(cb = () => null) {
     if (!this.overlayId) {
       // no overlay to close
       return;
-    }
-
-    // prevent user get thrown back to top
-    if (document.body.style.position === 'fixed' && typeof this.host.onclick === 'function') {
-      let scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
     }
 
     const screen = document.getElementById(this.overlayId);
@@ -161,6 +143,7 @@ export class SuiOverlay {
       setTimeout(() => {
         removeEl();
         screen.remove();
+        cb();
       }, wait);
     }
     else {
@@ -173,7 +156,7 @@ export class SuiOverlay {
   }
 
   @Method()
-  open() {
+  open(cb = () => null) {
     return new Promise(res => {
       if (this.overlayId) {
         // overlay is already up
@@ -278,7 +261,7 @@ export class SuiOverlay {
         else if (popDirection === 'left' || popDirection === 'right') {
           el.style.setProperty('left', '0');
         }
-        res(null);
+        res(cb());
       });
     });
   }

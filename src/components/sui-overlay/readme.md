@@ -15,7 +15,7 @@
 
 ## Methods
 
-### `close() => Promise<void>`
+### `close(cb?: () => any) => Promise<void>`
 
 
 
@@ -25,7 +25,7 @@ Type: `Promise<void>`
 
 
 
-### `open() => Promise<unknown>`
+### `open(cb?: () => any) => Promise<unknown>`
 
 
 
