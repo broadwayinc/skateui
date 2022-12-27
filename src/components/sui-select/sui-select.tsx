@@ -25,7 +25,8 @@ export class SuiSelect {
   isMultiple: boolean = (() => {
     return this.host.hasAttribute('multiple');
   })();
-
+  
+  @Prop()
   el = (() => {
     const select = document.createElement('select');
 
