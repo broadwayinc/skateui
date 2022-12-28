@@ -26,6 +26,7 @@ export namespace Components {
         "transitionTime": string;
     }
     interface SuiSelect {
+        "el": HTMLSelectElement;
         "value": any;
     }
 }
@@ -94,6 +95,7 @@ declare namespace LocalJSX {
         "transitionTime"?: string;
     }
     interface SuiSelect {
+        "el"?: HTMLSelectElement;
         "value"?: any;
     }
     interface IntrinsicElements {
