@@ -110,7 +110,7 @@ export class SuiInput {
         this.host.setAttribute('tabindex', '0');
       }
 
-      this.host.addEventListener('keyup', (e) => {
+      this.host.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           // checkbox, radio should be able to trigger click on enter key
           clicker();
@@ -144,9 +144,9 @@ export class SuiInput {
         this.el.click();
       };
 
-      this.host.addEventListener('keyup', (e) => {
+      this.host.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-          // checkbox, radio should be able to trigger click on enter key
+          // checkbox, radio should be able to trigger click on enter | space key
           clicker();
         }
       }, true);

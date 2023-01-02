@@ -50,6 +50,9 @@ export class SuiButton {
 
   componentDidLoad() {
     dummyHandler.bind(this)({ computedStyle: window.getComputedStyle(this.host) });
+
+    // dispatch mounted event when finished loading
+    this.el.dispatchEvent(new CustomEvent('mounted'));
   }
 
   disconnectedCallback() {

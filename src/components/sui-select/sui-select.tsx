@@ -16,6 +16,7 @@ export class SuiSelect {
   @Prop() value: any;
   @Watch('value')
   valueHandler(n: string, o: string) {
+    // console.log({n,o});
     if (n !== o) {
       this.el.value = n;
       this.valueDisplay = this.el.getElementsByTagName('option')[this.el.selectedIndex || 0]?.textContent || this.el.value || '';
@@ -38,11 +39,10 @@ export class SuiSelect {
     }
 
     if (this.value) {
-      select.setAttribute('value', this.value);
+      select.value = this.value;
     }
 
     this.valueDisplay = select.getElementsByTagName('option')[select.selectedIndex || 0]?.textContent || select.value || '';
-
     select.addEventListener('change', () => {
       if (select.value !== this.value) {
         this.value = select.value || '';
@@ -67,7 +67,7 @@ export class SuiSelect {
     }
 
     if (!this.isMultiple) {
-      select.style.setProperty('opacity', '0');
+      select.style.setProperty('color', 'rgba(0 0 0 / 0%)');
     }
 
     this.host.append(select);
@@ -125,6 +125,9 @@ export class SuiSelect {
       excludeAttribute: this.isMultiple ? ['value'] : ['size', 'value'] // size attribute should not work for multiple select
     });
     cloneEvents.bind(this)(this.el);
+
+    // dispatch mounted event when finished loading
+    this.el.dispatchEvent(new CustomEvent('mounted'));
   }
 
   disconnectedCallback() {
