@@ -186,6 +186,7 @@ export class SuiOverlay {
           'display': 'block',
           'position': 'relative',
           'max-height': '100vh',
+          'max-width': '100vw',
           'pointer-events': 'auto'
         },
 
