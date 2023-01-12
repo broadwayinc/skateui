@@ -16,9 +16,8 @@ export class SuiSelect {
   @Prop() value: any;
   @Watch('value')
   valueHandler(n: string, o: string) {
-    // console.log({n,o});
     if (n !== o) {
-      this.el.value = n;
+      this.el.value = n.toString();
       this.valueDisplay = this.el.getElementsByTagName('option')[this.el.selectedIndex || 0]?.textContent || this.el.value || '';
     }
   }
@@ -26,7 +25,7 @@ export class SuiSelect {
   isMultiple: boolean = (() => {
     return this.host.hasAttribute('multiple');
   })();
-  
+
   @Prop()
   el = (() => {
     const select = document.createElement('select');
@@ -132,7 +131,9 @@ export class SuiSelect {
 
   disconnectedCallback() {
     // save memory by disconnecting mutation watch
-    this.observer.disconnect();
+    if (this.observer) {
+      this.observer.disconnect();
+    }
     // remove dummy element
     this.el.remove();
   }

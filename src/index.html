@@ -189,6 +189,34 @@
     - Need custom design
   </pre>
     <hr>
+
+    <h2>sui-tooltip</h2>
+    <br>
+    <sui-tooltip style="float: left;">
+      <div slot="tool" style="font-size: 1.2em; font-weight: bold; background-color: red;color:white;padding: .25em;border-radius: 1.2em;width: 1.2em;text-align: center;cursor: pointer;">?</div>
+      <div slot="tip" style="background-color: red;color:white;box-shadow: 0 0 0 4px blue;border-radius: 4px;padding:.5em;width: 200px;">
+        Hello I'm the red dialog
+        <br>
+        Multiline
+      </div>
+    </sui-tooltip>
+    <sui-tooltip style="float: right;">
+      <p slot="tool">Hover Me</p>
+      <div slot="tip" style="background-color: blue;color:white;box-shadow: 0 0 0 4px red;border-radius: 4px;padding:.5em;width: 300px;max-width: 50vw;">
+        <p>Hello I'm the blue dialog</p>
+        <p>Design your 'tip'</p>
+        <sui-button>You can't click this</sui-button>
+      </div>
+    </sui-tooltip>
+    <pre style="clear: both;">
+  stylable &#x2713;
+
+  Note:
+      - Need to use 'slot' attribute to define tool | tip
+      - Make sure you set tip width, if nesessary, max-width as well
+  </pre>
+
+    <hr>
     <h2>sui-nav</h2>
     <div style="width: 200px;height: 200px;border: 1px solid black;overflow-y: auto;">
       <sui-nav auto-hide>sui-nav</sui-nav>

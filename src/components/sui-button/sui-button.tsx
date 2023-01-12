@@ -36,8 +36,6 @@ export class SuiButton {
       this.host.parentElement.insertBefore(this.el, this.host);
       this.el.click();
       this.el.remove();
-    } else {
-      // this.el.click();
     }
   }
   @Listen('keyup')

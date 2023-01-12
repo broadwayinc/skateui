@@ -12,7 +12,7 @@ export class SuiInput {
   @Watch('value')
   valueHandler(n: string, o: string) {
     if (n !== o) {
-      this.el.value = n;
+      this.el.value = n.toString();
     }
   }
 
@@ -260,7 +260,9 @@ export class SuiInput {
 
   disconnectedCallback() {
     // save memory by disconnecting mutation watch
-    this.observer.disconnect();
+    if (this.observer) {
+      this.observer.disconnect();
+    }
     // remove dummy element
     this.el.remove();
   }

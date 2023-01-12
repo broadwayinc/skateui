@@ -1,0 +1,72 @@
+:host {
+  display: inline-block;
+
+  slot[name='tip'] {
+      // white-space: nowrap;
+  }
+
+  &>.sui-tooltip {
+    position: relative;
+    text-align: left;
+    
+    &>.sui-tip {
+      position: relative;
+      max-width: var(--tip-max-width);
+    }
+
+    &:hover>.sui-tip {
+      display: block;
+    }
+
+    &.bottom {
+      &>.sui-tip {
+        top: calc(100% + 8px);
+        bottom: unset;
+
+        &::after {
+          border-bottom: solid 8px var(--tip-background-color);
+          border-top: 0;
+          bottom: unset;
+          top: -8px;
+        }
+      }
+    }
+
+    &.left {
+      &>.sui-tip {
+        left: unset;
+        right: 2px;
+
+        &::after {
+          left: calc(100% - 1em + 2px);
+          border-right: 8px solid transparent;
+          border-left: 0;
+        }
+      }
+    }
+
+    &>.sui-tip {
+      font-size: 1em;
+      font-weight: normal;
+      line-height: 1;
+      display: none;
+      z-index: 9999;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 2px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: calc(0.5em - 2px);
+        width: 0;
+        height: 0;
+        border: 8px solid transparent;
+        border-top-color: var(--tip-background-color);
+        border-bottom: 0;
+        border-right: 0;
+      }
+    }
+  }
+}

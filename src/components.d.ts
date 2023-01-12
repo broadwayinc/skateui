@@ -29,6 +29,8 @@ export namespace Components {
         "el": HTMLSelectElement;
         "value": any;
     }
+    interface SuiTooltip {
+    }
 }
 declare global {
     interface HTMLSuiButtonElement extends Components.SuiButton, HTMLStencilElement {
@@ -67,6 +69,12 @@ declare global {
         prototype: HTMLSuiSelectElement;
         new (): HTMLSuiSelectElement;
     };
+    interface HTMLSuiTooltipElement extends Components.SuiTooltip, HTMLStencilElement {
+    }
+    var HTMLSuiTooltipElement: {
+        prototype: HTMLSuiTooltipElement;
+        new (): HTMLSuiTooltipElement;
+    };
     interface HTMLElementTagNameMap {
         "sui-button": HTMLSuiButtonElement;
         "sui-flextext": HTMLSuiFlextextElement;
@@ -74,6 +82,7 @@ declare global {
         "sui-nav": HTMLSuiNavElement;
         "sui-overlay": HTMLSuiOverlayElement;
         "sui-select": HTMLSuiSelectElement;
+        "sui-tooltip": HTMLSuiTooltipElement;
     }
 }
 declare namespace LocalJSX {
@@ -98,6 +107,8 @@ declare namespace LocalJSX {
         "el"?: HTMLSelectElement;
         "value"?: any;
     }
+    interface SuiTooltip {
+    }
     interface IntrinsicElements {
         "sui-button": SuiButton;
         "sui-flextext": SuiFlextext;
@@ -105,6 +116,7 @@ declare namespace LocalJSX {
         "sui-nav": SuiNav;
         "sui-overlay": SuiOverlay;
         "sui-select": SuiSelect;
+        "sui-tooltip": SuiTooltip;
     }
 }
 export { LocalJSX as JSX };
@@ -117,6 +129,7 @@ declare module "@stencil/core" {
             "sui-nav": LocalJSX.SuiNav & JSXBase.HTMLAttributes<HTMLSuiNavElement>;
             "sui-overlay": LocalJSX.SuiOverlay & JSXBase.HTMLAttributes<HTMLSuiOverlayElement>;
             "sui-select": LocalJSX.SuiSelect & JSXBase.HTMLAttributes<HTMLSuiSelectElement>;
+            "sui-tooltip": LocalJSX.SuiTooltip & JSXBase.HTMLAttributes<HTMLSuiTooltipElement>;
         }
     }
 }
