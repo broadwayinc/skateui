@@ -234,7 +234,7 @@ export function cloneEvents(el: HTMLElement, dispatchTo = null, eventCallback: {
   }
 
   for (let name of eventList) {
-    el.addEventListener(name, cb);
+    el.addEventListener(name, cb, { passive: name.includes('scroll') || name.includes('wheel') });
   }
 }
 
