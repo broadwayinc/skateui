@@ -193,8 +193,11 @@
     <h2>sui-tooltip</h2>
     <br>
     <sui-tooltip style="float: left;">
-      <div slot="tool" style="font-size: 1.2em; font-weight: bold; background-color: red;color:white;padding: .25em;border-radius: 1.2em;width: 1.2em;text-align: center;cursor: pointer;">?</div>
-      <div slot="tip" style="background-color: red;color:white;box-shadow: 0 0 0 4px blue;border-radius: 4px;padding:.5em;width: 200px;">
+      <div slot="tool"
+        style="font-size: 1.2em; font-weight: bold; background-color: red;color:white;padding: .25em;border-radius: 1.2em;width: 1.2em;text-align: center;cursor: pointer;">
+        ?</div>
+      <div slot="tip"
+        style="background-color: red;color:white;box-shadow: 0 0 0 4px blue;border-radius: 4px;padding:.5em;width: 200px;">
         Hello I'm the red dialog
         <br>
         Multiline
@@ -202,7 +205,8 @@
     </sui-tooltip>
     <sui-tooltip style="float: right;">
       <p slot="tool">Hover Me</p>
-      <div slot="tip" style="background-color: blue;color:white;box-shadow: 0 0 0 4px red;border-radius: 4px;padding:.5em;width: 300px;max-width: 50vw;">
+      <div slot="tip"
+        style="background-color: blue;color:white;box-shadow: 0 0 0 4px red;border-radius: 4px;padding:.5em;width: 300px;max-width: 50vw;">
         <p>Hello I'm the blue dialog</p>
         <p>Design your 'tip'</p>
         <sui-button>You can't click this</sui-button>
@@ -275,6 +279,19 @@
         - has custom attribute min-size (default 72), max-size (defaults to current font size)
           value should be number
     </pre>
+
+    </pre>
+    <hr>
+    <h2>sui-textarea</h2>
+    <sui-textarea></sui-textarea>
+    <sui-textarea placeholder="placeholder"></sui-textarea>
+    <sui-textarea value="Text area value"></sui-textarea>
+    <pre>
+    Vertically expanding Text area.
+    Attribute rows, cols does not work.
+    Textarea width should be set by css.
+    For height, if unset textarea auto expands.
+  </pre>
   </div>
 </body>
 

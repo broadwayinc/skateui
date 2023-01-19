@@ -29,6 +29,10 @@ export namespace Components {
         "el": HTMLSelectElement;
         "value": any;
     }
+    interface SuiTextarea {
+        "el": HTMLTextAreaElement;
+        "value": any;
+    }
     interface SuiTooltip {
     }
 }
@@ -69,6 +73,12 @@ declare global {
         prototype: HTMLSuiSelectElement;
         new (): HTMLSuiSelectElement;
     };
+    interface HTMLSuiTextareaElement extends Components.SuiTextarea, HTMLStencilElement {
+    }
+    var HTMLSuiTextareaElement: {
+        prototype: HTMLSuiTextareaElement;
+        new (): HTMLSuiTextareaElement;
+    };
     interface HTMLSuiTooltipElement extends Components.SuiTooltip, HTMLStencilElement {
     }
     var HTMLSuiTooltipElement: {
@@ -82,6 +92,7 @@ declare global {
         "sui-nav": HTMLSuiNavElement;
         "sui-overlay": HTMLSuiOverlayElement;
         "sui-select": HTMLSuiSelectElement;
+        "sui-textarea": HTMLSuiTextareaElement;
         "sui-tooltip": HTMLSuiTooltipElement;
     }
 }
@@ -107,6 +118,10 @@ declare namespace LocalJSX {
         "el"?: HTMLSelectElement;
         "value"?: any;
     }
+    interface SuiTextarea {
+        "el"?: HTMLTextAreaElement;
+        "value"?: any;
+    }
     interface SuiTooltip {
     }
     interface IntrinsicElements {
@@ -116,6 +131,7 @@ declare namespace LocalJSX {
         "sui-nav": SuiNav;
         "sui-overlay": SuiOverlay;
         "sui-select": SuiSelect;
+        "sui-textarea": SuiTextarea;
         "sui-tooltip": SuiTooltip;
     }
 }
@@ -129,6 +145,7 @@ declare module "@stencil/core" {
             "sui-nav": LocalJSX.SuiNav & JSXBase.HTMLAttributes<HTMLSuiNavElement>;
             "sui-overlay": LocalJSX.SuiOverlay & JSXBase.HTMLAttributes<HTMLSuiOverlayElement>;
             "sui-select": LocalJSX.SuiSelect & JSXBase.HTMLAttributes<HTMLSuiSelectElement>;
+            "sui-textarea": LocalJSX.SuiTextarea & JSXBase.HTMLAttributes<HTMLSuiTextareaElement>;
             "sui-tooltip": LocalJSX.SuiTooltip & JSXBase.HTMLAttributes<HTMLSuiTooltipElement>;
         }
     }

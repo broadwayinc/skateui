@@ -4,14 +4,13 @@ import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
   tag: 'sui-input',
   styleUrl: 'sui-input.scss',
   shadow: true,
-  // scoped: false,
 })
 export class SuiInput {
   @Element() host: HTMLElement;
   @Prop() value: any;
   @Watch('value')
   valueHandler(n: string, o: string) {
-    if (n !== o) {
+    if (n !== o && this.el) {
       this.el.value = n.toString();
     }
   }
@@ -76,7 +75,7 @@ export class SuiInput {
     // create new element
     const input = document.createElement('input');
     if (value) {
-      input.setAttribute('value', value);
+      input.setAttribute('value', value.toString());
     }
     // if (this.value) {
     //   input.setAttribute('value', this.value);
@@ -271,7 +270,10 @@ export class SuiInput {
     return (
       <Host>
         {/* fine tuned viewBox svg. find out how to make svg. */}
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="-2 -4 28 28"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" /></svg>
+        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="-2 -4 28 28"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" /></svg> */}
+        <svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9.31,18.6L3,12.29l1.54-1.51l4.77,4.77L19.46,5.4L21,6.91L9.31,18.6z" />
+        </svg>
         <slot name={this.slotName}></slot>
         {/* display value eg) button input */}
         <slot name='value'></slot>

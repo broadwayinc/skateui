@@ -16,7 +16,7 @@ export class SuiSelect {
   @Prop() value: any;
   @Watch('value')
   valueHandler(n: string, o: string) {
-    if (n !== o) {
+    if (n !== o && this.el) {
       this.el.value = n.toString();
       this.valueDisplay = this.el.getElementsByTagName('option')[this.el.selectedIndex || 0]?.textContent || this.el.value || '';
     }
@@ -38,7 +38,7 @@ export class SuiSelect {
     }
 
     if (this.value) {
-      select.value = this.value;
+      select.value = this.value.toString();
     }
 
     this.valueDisplay = select.getElementsByTagName('option')[select.selectedIndex || 0]?.textContent || select.value || '';
