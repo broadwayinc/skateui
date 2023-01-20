@@ -269,10 +269,8 @@ export class SuiInput {
   render() {
     return (
       <Host>
-        {/* fine tuned viewBox svg. find out how to make svg. */}
-        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="-2 -4 28 28"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z" /></svg> */}
         <svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M9.31,18.6L3,12.29l1.54-1.51l4.77,4.77L19.46,5.4L21,6.91L9.31,18.6z" />
+          <polygon points="9.32,19.57 2.22,12.48 4.91,9.79 9.32,14.2 19.09,4.43 21.78,7.11     "/>
         </svg>
         <slot name={this.slotName}></slot>
         {/* display value eg) button input */}

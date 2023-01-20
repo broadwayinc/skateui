@@ -37,32 +37,45 @@ export class SuiTextarea {
     if (value) {
       textarea.value = value.toString();
     }
-    // textarea.setAttribute('rows', '1');
+
     textarea.setAttribute('slot', this.slotName);
 
     textarea.addEventListener('input', e => {
       this.value = (e.target as HTMLTextAreaElement).value;
     });
 
+    for (let key of [
+      'font-size',
+      'line-height',
+      'font-family',
+      'font-weight',
+      'white-space',
+      'word-break'
+    ]) {
+      textarea.style.setProperty(key, 'inherit', 'important');//hostCss.getPropertyValue(key)
+    }
+
     this.host.prepend(textarea);
     return textarea;
+
   })();
 
   componentDidLoad() {
+    let nestedValue = this.host.childNodes;
+    for(let idx=0;idx<nestedValue.length;idx++) {
+      let el =  nestedValue[idx] as HTMLElement;
+      console.log(el.nodeType)
+      console.log(el.tagName)
+      console.log(el.tagName === undefined)
+      if(el.nodeType === 3 && el.tagName === undefined) {
+        this.el.append(el);
+      }
+    }
+
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
       excludeStyle: ['border', 'margin', 'padding', 'max', 'min'],
       copyStyle: (hostCss: CSSStyleDeclaration) => {
-
-        for (let key of [
-          'font-size',
-          'line-height',
-          'font-family',
-          'font-weight'
-        ]) {
-          this.el.style.setProperty(key, hostCss.getPropertyValue(key), 'important');
-        }
-
         // make text input fill the host
         let needAdjustment = false;
         let padding = [
@@ -95,7 +108,7 @@ export class SuiTextarea {
       // attCallback: (attName, val) => {
       //   console.log({attName,val})
       // },
-      excludeAttribute: ['value'],
+      excludeAttribute: ['value', 'rows', 'cols'],
       appendIdToSlotElement: true
     });
 
@@ -111,7 +124,11 @@ export class SuiTextarea {
     return (
       <Host>
         <div data-value={this.value}>
-          <slot name={this.slotName}></slot>
+          <slot name={this.slotName}>
+          </slot>
+          <span class='nested-value'>
+            <slot></slot>
+          </span>
         </div>
       </Host>
     );
