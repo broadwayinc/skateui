@@ -62,12 +62,9 @@ export class SuiTextarea {
 
   componentDidLoad() {
     let nestedValue = this.host.childNodes;
-    for(let idx=0;idx<nestedValue.length;idx++) {
-      let el =  nestedValue[idx] as HTMLElement;
-      console.log(el.nodeType)
-      console.log(el.tagName)
-      console.log(el.tagName === undefined)
-      if(el.nodeType === 3 && el.tagName === undefined) {
+    for (let idx = 0; idx < nestedValue.length; idx++) {
+      let el = nestedValue[idx] as HTMLElement;
+      if (el.nodeType === 3 && el.tagName === undefined) {
         this.el.append(el);
       }
     }
