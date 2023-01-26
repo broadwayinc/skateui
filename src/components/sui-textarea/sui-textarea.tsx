@@ -1,4 +1,4 @@
-import { Component, Host, h, Prop, Element, Watch } from '@stencil/core';
+import { State, Component, Host, h, Prop, Element, Watch } from '@stencil/core';
 import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
 
 @Component({
@@ -8,19 +8,29 @@ import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
 })
 export class SuiTextarea {
   @Element() host: HTMLElement;
-  @Prop({ mutable: true }) value: any = '';
+  @Prop({ mutable: true }) value: string = '';
   @Watch('value')
   valueHandler(n: string, o: string) {
-    if (n !== o && this.el && this.el.value !== n) {
-      this.el.value = (n || '').toString();
+    if (typeof n !== 'string') {
+      return;
+    }
+
+    if (n !== o && this.el) {
+      let val = n !== null && n !== undefined ? n : '';
+      this.el.value = val;
+      this.reflect = val;
     }
   }
 
   slotName: string = randomString();
 
+  @State()
+  reflect: string = '';
+
   @Prop()
   el = (() => {
-    let value = (this.value || '').toString();
+    let value = this.value !== null && this.value !== undefined ? this.value.toString() : '';
+    this.reflect = value;
 
     const previousInput = this.host.getElementsByTagName('textarea')?.[0];
     if (previousInput && previousInput.hasAttribute('slot')) {
@@ -41,6 +51,7 @@ export class SuiTextarea {
     textarea.setAttribute('slot', this.slotName);
     textarea.addEventListener('input', e => {
       this.value = (e.target as HTMLTextAreaElement).value;
+      this.reflect = this.value;
     });
 
     for (let key of [
@@ -59,8 +70,9 @@ export class SuiTextarea {
   })();
 
   componentWillLoad() {
-    let nestedValue = this.host.childNodes;
-    if (!this.value) {
+    let value = this.value !== null && this.value !== undefined ? this.value.toString() : '';
+    if (!value) {
+      let nestedValue = this.host.childNodes;
       for (let idx = 0; idx < nestedValue.length; idx++) {
         let el = nestedValue[idx] as HTMLElement;
         if (el.nodeType === Node.TEXT_NODE) {
@@ -68,6 +80,8 @@ export class SuiTextarea {
         }
       }
     }
+    
+    this.reflect = this.value;
 
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
@@ -75,7 +89,7 @@ export class SuiTextarea {
       appendIdToSlotElement: true
     });
 
-    cloneEvents.bind(this)(this.el);
+    cloneEvents(this.el);
 
     // dispatch mounted event when finished loading
     this.el.dispatchEvent(new CustomEvent('mounted'));
@@ -87,7 +101,7 @@ export class SuiTextarea {
         <div class='shell'>
           <slot name={this.slotName}>
           </slot>
-          <div class='text-value' text-value={this.value}>
+          <div class='text-value' text-value={this.reflect + ' '}>
             <div>
               <slot></slot>
             </div>

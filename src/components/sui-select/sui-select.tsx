@@ -127,7 +127,7 @@ export class SuiSelect {
       appendIdToSlotElement: true,
       excludeAttribute: this.isMultiple ? ['value'] : ['size', 'value'] // size attribute should not work for multiple select
     });
-    cloneEvents.bind(this)(this.el);
+    cloneEvents(this.el);
 
     // dispatch mounted event when finished loading
     this.el.dispatchEvent(new CustomEvent('mounted'));

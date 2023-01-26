@@ -75,7 +75,7 @@ export class SuiOverlay {
       screen.style.setProperty(k, css[this.position][k]);
     }
 
-    cloneEvents(screen, this.host);
+    cloneEvents(screen, { dispatchTo: this.host });
 
     // generate overlay id
     this.overlayId = randomString();

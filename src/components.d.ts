@@ -31,7 +31,7 @@ export namespace Components {
     }
     interface SuiTextarea {
         "el": HTMLTextAreaElement;
-        "value": any;
+        "value": string;
     }
     interface SuiTooltip {
     }
@@ -120,7 +120,7 @@ declare namespace LocalJSX {
     }
     interface SuiTextarea {
         "el"?: HTMLTextAreaElement;
-        "value"?: any;
+        "value"?: string;
     }
     interface SuiTooltip {
     }

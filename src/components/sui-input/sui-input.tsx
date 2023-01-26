@@ -14,7 +14,6 @@ export class SuiInput {
       this.el.value = n.toString();
     }
   }
-
   availableTypes: string[] = [
     // checker
     'checkbox',
@@ -36,13 +35,13 @@ export class SuiInput {
   slotName: string = randomString();
   isChecker = false;
   isButton = false;
-
+  closestLabel = null;
   @Prop()
   el = (() => {
     // add input element manually because shadow dom input is not recognized by forms
     let inputType = this.host.getAttribute('type'); // always use getAttribute() for proper casing
-    // let value = this.host.getAttribute('value');
-    let value = this.value;
+
+    let value = this.value !== null && this.value !== undefined ? this.value.toString() : null;
     if (!inputType || !this.availableTypes.includes(inputType)) {
       this.host.setAttribute('type', 'text');
       inputType = 'text';
@@ -75,11 +74,8 @@ export class SuiInput {
     // create new element
     const input = document.createElement('input');
     if (value) {
-      input.setAttribute('value', value.toString());
+      input.setAttribute('value', value);
     }
-    // if (this.value) {
-    //   input.setAttribute('value', this.value);
-    // }
 
     // setup new slot name
     // slot name is to prevent users adding custom elements
@@ -92,15 +88,6 @@ export class SuiInput {
     }
 
     // add eventlistener manually if type is checkbox | radio | reset | submit
-    const clicker = e => {
-      e.stopPropagation();
-      if (this.host.attributes.getNamedItem('disabled')) {
-        // does not trigger dummy when disabled
-        return;
-      }
-      this.el.click();
-    };
-
     if (this.isButton) {
       // hidden
       input.setAttribute('hidden', '');
@@ -110,18 +97,8 @@ export class SuiInput {
         this.host.setAttribute('tabindex', '0');
       }
 
-      this.host.addEventListener('keydown', e => {
-        if (e.key === 'Enter') {
-          // checkbox, radio should be able to trigger click on enter key
-          clicker(e);
-        }
-      });
-
-      this.host.addEventListener('click', clicker);
-
       // add button text
       let span = document.createElement('span');
-      // span.innerHTML = this.value || (inputType === 'submit' ? 'Submit' : 'Reset');
       span.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
       span.setAttribute('slot', 'value');
       this.host.prepend(span);
@@ -136,23 +113,14 @@ export class SuiInput {
         this.host.setAttribute('tabindex', '0');
       }
 
-      // add eventlistener manually if type is checkbox | radio
-      const clicker = () => {
-        if (this.host.attributes.getNamedItem('disabled')) {
-          // does not trigger dummy when disabled
-          return;
+      this.host.addEventListener('click', e => {
+        if (this.closestLabel && e.isTrusted) {
+          e.stopPropagation();
         }
-        this.el.click();
-      };
-
-      this.host.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          // checkbox, radio should be able to trigger click on enter | space key
-          clicker();
+        else {
+          input.click();
         }
-      }, true);
-
-      this.host.addEventListener('click', clicker);
+      });
 
       input.addEventListener('change', () => {
         // keep track of checked, update dom
@@ -184,7 +152,6 @@ export class SuiInput {
 
     else {
       // tab index is on input element
-
       for (const [key, value] of Object.entries({
         // set important styles
         // these value should not be editable
@@ -241,10 +208,12 @@ export class SuiInput {
       appendIdToSlotElement: true
     });
 
+
+    this.closestLabel = this.el.closest('label');
     // stop event propagation from input element,
     // emit events from host
-    cloneEvents.bind(this)(this.el);
 
+    cloneEvents(this.el);
     // dispatch mounted event when finished loading
     this.el.dispatchEvent(new CustomEvent('mounted'));
   }

@@ -1,4 +1,4 @@
-export function cloneEvents(el: HTMLElement, dispatchTo = null, eventCallback: { type: string; callback: (e: any) => void; } = null) {
+export function cloneEvents(el: HTMLElement, options?: { dispatchTo?: HTMLElement, eventCallback?: { type: string; callback: (e: any) => any; }; }) {
   const eventList = [
     // 'abort'
     // ,
@@ -209,6 +209,7 @@ export function cloneEvents(el: HTMLElement, dispatchTo = null, eventCallback: {
 
   // callback
   let cb = null;
+  let { dispatchTo = null, eventCallback = null } = options || {};
 
   if (dispatchTo) {
     cb = (ev: Event) => {
@@ -221,9 +222,13 @@ export function cloneEvents(el: HTMLElement, dispatchTo = null, eventCallback: {
   }
   else {
     cb = (ev: Event) => {
-      if (!ev.bubbles) {
+      if (eventCallback && eventCallback.type === ev.type && typeof eventCallback.callback === 'function') {
+        eventCallback.callback(ev);
+      }
+
+      else if (!ev.bubbles) {
         // re dispatch unbubbled events
-        ev.stopPropagation();
+        // ev.stopPropagation();
         // let new_ev = new ev.constructor(ev.type, ev);
         let new_ev = new Event(ev.type, {
           bubbles: true

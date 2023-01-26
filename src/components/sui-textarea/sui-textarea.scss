@@ -39,7 +39,7 @@
     font-weight: inherit;
 
     &::before {
-      content: attr(text-value) ' ';
+      content: attr(text-value);
       display: block;
       white-space: inherit;
       word-break: inherit;
