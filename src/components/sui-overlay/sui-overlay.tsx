@@ -154,7 +154,6 @@ export class SuiOverlay {
 
     this.overlayId = null;
   }
-
   @Method()
   open(cb = () => null) {
     return new Promise(res => {

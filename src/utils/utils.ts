@@ -1,15 +1,15 @@
 export function cloneEvents(el: HTMLElement, dispatchTo = null, eventCallback: { type: string; callback: (e: any) => void; } = null) {
   const eventList = [
-    'abort'
-    ,
-    'animationend'
-    ,
-    'animationiteration'
-    ,
-    'animationstart'
-    ,
-    'auxclick'
-    ,
+    // 'abort'
+    // ,
+    // 'animationend'
+    // ,
+    // 'animationiteration'
+    // ,
+    // 'animationstart'
+    // ,
+    // 'auxclick'
+    // ,
     'beforecopy'
     ,
     'beforecut'
@@ -24,64 +24,64 @@ export function cloneEvents(el: HTMLElement, dispatchTo = null, eventCallback: {
     ,
     'blur'
     ,
-    'cancel'
-    ,
-    'canplay'
-    ,
-    'canplaythrough'
-    ,
+    // 'cancel'
+    // ,
+    // 'canplay'
+    // ,
+    // 'canplaythrough'
+    // ,
     'change'
     ,
     'click'
     ,
-    'close'
-    ,
-    'contextlost'
-    ,
-    'contextmenu'
-    ,
-    'contextrestored'
-    ,
+    // 'close'
+    // ,
+    // 'contextlost'
+    // ,
+    // 'contextmenu'
+    // ,
+    // 'contextrestored'
+    // ,
     'copy'
     ,
-    'cuechange'
-    ,
+    // 'cuechange'
+    // ,
     'cut'
     ,
-    'dblclick'
-    ,
-    'drag'
-    ,
-    'dragend'
-    ,
-    'dragenter'
-    ,
-    'dragleave'
-    ,
-    'dragover'
-    ,
-    'dragstart'
-    ,
-    'drop'
-    ,
-    'durationchange'
-    ,
-    'emptied'
-    ,
-    'ended'
-    ,
+    // 'dblclick'
+    // ,
+    // 'drag'
+    // ,
+    // 'dragend'
+    // ,
+    // 'dragenter'
+    // ,
+    // 'dragleave'
+    // ,
+    // 'dragover'
+    // ,
+    // 'dragstart'
+    // ,
+    // 'drop'
+    // ,
+    // 'durationchange'
+    // ,
+    // 'emptied'
+    // ,
+    // 'ended'
+    // ,
     'error'
     ,
     'focus'
     ,
-    'formdata'
-    ,
-    'fullscreenchange'
-    ,
-    'fullscreenerror'
-    ,
-    'gotpointercapture'
-    ,
+    // 'formdata'
+    // ,
+    // 'fullscreenchange'
+    // ,
+    // 'fullscreenerror'
+    // ,
+    // 'gotpointercapture'
+    // ,
     'input'
     ,
     'invalid'
@@ -94,116 +94,116 @@ export function cloneEvents(el: HTMLElement, dispatchTo = null, eventCallback: {
     ,
     'load'
     ,
-    'loadeddata'
-    ,
-    'loadedmetadata'
-    ,
-    'loadstart'
-    ,
-    'lostpointercapture'
-    ,
-    'mousedown'
-    ,
-    'mouseenter'
-    ,
-    'mouseleave'
-    ,
-    'mousemove'
-    ,
-    'mouseout'
-    ,
-    'mouseover'
-    ,
-    'mouseup'
-    ,
-    'mousewheel'
-    ,
+    // 'loadeddata'
+    // ,
+    // 'loadedmetadata'
+    // ,
+    // 'loadstart'
+    // ,
+    // 'lostpointercapture'
+    // ,
+    // 'mousedown'
+    // ,
+    // 'mouseenter'
+    // ,
+    // 'mouseleave'
+    // ,
+    // 'mousemove'
+    // ,
+    // 'mouseout'
+    // ,
+    // 'mouseover'
+    // ,
+    // 'mouseup'
+    // ,
+    // 'mousewheel'
+    // ,
     'paste'
     ,
-    'pause'
-    ,
-    'play'
-    ,
-    'playing'
-    ,
-    'pointercancel'
-    ,
-    'pointerdown'
-    ,
-    'pointerenter'
-    ,
-    'pointerleave'
-    ,
-    'pointermove'
-    ,
-    'pointerout'
-    ,
-    'pointerover'
-    ,
-    'pointerrawupdate'
-    ,
-    'pointerup'
-    ,
-    'progress'
-    ,
-    'ratechange'
-    ,
-    'reset'
-    ,
-    'resize'
-    ,
+    // 'pause'
+    // ,
+    // 'play'
+    // ,
+    // 'playing'
+    // ,
+    // 'pointercancel'
+    // ,
+    // 'pointerdown'
+    // ,
+    // 'pointerenter'
+    // ,
+    // 'pointerleave'
+    // ,
+    // 'pointermove'
+    // ,
+    // 'pointerout'
+    // ,
+    // 'pointerover'
+    // ,
+    // 'pointerrawupdate'
+    // ,
+    // 'pointerup'
+    // ,
+    // 'progress'
+    // ,
+    // 'ratechange'
+    // ,
+    // 'reset'
+    // ,
+    // 'resize'
+    // ,
     'scroll'
     ,
     'search'
     ,
-    'securitypolicyviolation'
-    ,
-    'seeked'
-    ,
-    'seeking'
-    ,
+    // 'securitypolicyviolation'
+    // ,
+    // 'seeked'
+    // ,
+    // 'seeking'
+    // ,
     'select'
     ,
     'selectionchange'
     ,
     'selectstart'
     ,
-    'slotchange'
-    ,
-    'stalled'
-    ,
-    'submit'
-    ,
-    'suspend'
-    ,
-    'timeupdate'
-    ,
+    // 'slotchange'
+    // ,
+    // 'stalled'
+    // ,
+    // 'submit'
+    // ,
+    // 'suspend'
+    // ,
+    // 'timeupdate'
+    // ,
     'toggle'
     ,
-    'transitioncancel'
-    ,
-    'transitionend'
-    ,
-    'transitionrun'
-    ,
-    'transitionstart'
-    ,
-    'volumechange'
-    ,
-    'waiting'
-    ,
-    'webkitanimationend'
-    ,
-    'webkitanimationiteration'
-    ,
-    'webkitanimationstart'
-    ,
-    'webkitfullscreenchange'
-    ,
-    'webkitfullscreenerror'
-    ,
-    'webkittransitionend'
-    ,
+    // 'transitioncancel'
+    // ,
+    // 'transitionend'
+    // ,
+    // 'transitionrun'
+    // ,
+    // 'transitionstart'
+    // ,
+    // 'volumechange'
+    // ,
+    // 'waiting'
+    // ,
+    // 'webkitanimationend'
+    // ,
+    // 'webkitanimationiteration'
+    // ,
+    // 'webkitanimationstart'
+    // ,
+    // 'webkitfullscreenchange'
+    // ,
+    // 'webkitfullscreenerror'
+    // ,
+    // 'webkittransitionend'
+    // ,
     'wheel'
   ];
 
@@ -284,7 +284,7 @@ export function dummyHandler(options: {
 }): CSSStyleDeclaration {
 
   const { excludeStyle = [], computedStyle = null, excludeAttribute = [], trackNodes = false, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
-  const hostStyle = computedStyle || getComputedStyle(this.host);
+  const hostStyle = computedStyle || (copyStyle ? getComputedStyle(this.host) : null);
 
   excludeStyle.push(...['display', 'position', 'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height', 'font']);
 

@@ -7,7 +7,7 @@ import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
 })
 export class SuiInput {
   @Element() host: HTMLElement;
-  @Prop() value: any;
+  @Prop({ mutable: true }) value: any;
   @Watch('value')
   valueHandler(n: string, o: string) {
     if (n !== o && this.el) {
@@ -92,7 +92,8 @@ export class SuiInput {
     }
 
     // add eventlistener manually if type is checkbox | radio | reset | submit
-    const clicker = () => {
+    const clicker = e => {
+      e.stopPropagation();
       if (this.host.attributes.getNamedItem('disabled')) {
         // does not trigger dummy when disabled
         return;
@@ -109,12 +110,13 @@ export class SuiInput {
         this.host.setAttribute('tabindex', '0');
       }
 
-      this.host.addEventListener('keydown', (e) => {
+      this.host.addEventListener('keydown', e => {
         if (e.key === 'Enter') {
           // checkbox, radio should be able to trigger click on enter key
-          clicker();
+          clicker(e);
         }
       });
+
       this.host.addEventListener('click', clicker);
 
       // add button text
@@ -187,19 +189,12 @@ export class SuiInput {
         // set important styles
         // these value should not be editable
         'box-sizing': 'border-box',
-        display: 'block',
+        'display': 'block',
         'font-size': 'inherit',
         'line-height': '1.2'
       })) {
         input.style.setProperty(key, value, 'important');
       }
-      // for (const [key, value] of Object.entries({
-      //   'background-color': 'transparent',
-      //   color: 'inherit',
-      //   border: 'none',
-      // })) {
-      //   input.style.setProperty(key, value);
-      // }
     }
 
     this.host.prepend(input);
@@ -242,9 +237,6 @@ export class SuiInput {
             return p ? `-${p}px` : '0px';
           }).join(' '), 'important');
       } : null,
-      // attCallback: (attName, val) => {
-      //   console.log({attName,val})
-      // },
       excludeAttribute: ['value'],
       appendIdToSlotElement: true
     });
@@ -270,7 +262,7 @@ export class SuiInput {
     return (
       <Host>
         <svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24" fill="currentColor">
-          <polygon points="9.32,19.57 2.22,12.48 4.91,9.79 9.32,14.2 19.09,4.43 21.78,7.11     "/>
+          <polygon points="9.32,19.57 2.22,12.48 4.91,9.79 9.32,14.2 19.09,4.43 21.78,7.11     " />
         </svg>
         <slot name={this.slotName}></slot>
         {/* display value eg) button input */}
