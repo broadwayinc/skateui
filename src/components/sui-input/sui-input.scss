@@ -84,7 +84,7 @@
   display: inline-block;
 }
 
-:host([type='checkbox'][checked]) {
+:host([type='checkbox'][data-checked]) {
   svg {
     user-select: none;
     pointer-events: none;
@@ -124,7 +124,7 @@
   }
 }
 
-:host([type='radio'][checked]) {
+:host([type='radio'][data-checked]) {
   &::after {
     // radio checked
     box-shadow:

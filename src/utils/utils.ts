@@ -1,4 +1,11 @@
-export function cloneEvents(el: HTMLElement, options?: { dispatchTo?: HTMLElement, eventCallback?: { type: string; callback: (e: any) => any; }; }) {
+export function cloneEvents(
+  el: HTMLElement,
+  options?: {
+    bypass?: string[],
+    dispatchTo?: HTMLElement,
+    eventCallback?: { type: string; callback: (e: any) => any; };
+  }) {
+
   const eventList = [
     // 'abort'
     // ,
@@ -209,7 +216,7 @@ export function cloneEvents(el: HTMLElement, options?: { dispatchTo?: HTMLElemen
 
   // callback
   let cb = null;
-  let { dispatchTo = null, eventCallback = null } = options || {};
+  let { dispatchTo = null, eventCallback = null, bypass = [] } = options || {};
 
   if (dispatchTo) {
     cb = (ev: Event) => {
@@ -225,11 +232,9 @@ export function cloneEvents(el: HTMLElement, options?: { dispatchTo?: HTMLElemen
       if (eventCallback && eventCallback.type === ev.type && typeof eventCallback.callback === 'function') {
         eventCallback.callback(ev);
       }
-
       else if (!ev.bubbles) {
         // re dispatch unbubbled events
-        // ev.stopPropagation();
-        // let new_ev = new ev.constructor(ev.type, ev);
+        ev.stopPropagation();
         let new_ev = new Event(ev.type, {
           bubbles: true
         });
@@ -239,7 +244,9 @@ export function cloneEvents(el: HTMLElement, options?: { dispatchTo?: HTMLElemen
   }
 
   for (let name of eventList) {
-    el.addEventListener(name, cb, { passive: name.includes('scroll') || name.includes('wheel') });
+    if (!bypass.includes(name)) {
+      el.addEventListener(name, cb, { passive: name.includes('scroll') || name.includes('wheel') });
+    }
   }
 }
 
@@ -296,6 +303,7 @@ export function dummyHandler(options: {
   const setDummyAttribute = (attName: string, val: string) => {
     const copyStyleBypass = [];
 
+    // styling
     if (attName === 'style') {
       let styleProps = val.split(';');
       for (let s of styleProps) {

@@ -13,6 +13,7 @@ export namespace Components {
         "minSize": number;
     }
     interface SuiInput {
+        "checked": any;
         "el": HTMLInputElement;
         "value": any;
     }
@@ -104,6 +105,7 @@ declare namespace LocalJSX {
         "minSize"?: number;
     }
     interface SuiInput {
+        "checked"?: any;
         "el"?: HTMLInputElement;
         "value"?: any;
     }
