@@ -179,8 +179,8 @@ export class SuiOverlay {
 
       const css = {
         base: {
-          'overflow-y': 'auto',
-          'overflow-x': 'hidden',
+          // 'overflow-y': 'auto',
+          // 'overflow-x': 'auto',
           'opacity': '0',
           'display': 'block',
           'position': 'relative',
