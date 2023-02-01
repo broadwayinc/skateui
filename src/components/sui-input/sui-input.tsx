@@ -137,6 +137,7 @@ export class SuiInput {
 
       if (input.checked) {
         this.host.setAttribute('data-checked', '');
+        this.host.setAttribute('checked', '');
       }
 
       // tab index is on host
