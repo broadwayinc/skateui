@@ -158,9 +158,11 @@ export class SuiInput {
         if (inputType === 'checkbox') {
           if (input.checked) {
             this.host.setAttribute('data-checked', '');
+            this.host.setAttribute('checked', '');
           }
           else {
             this.host.removeAttribute('data-checked');
+            this.host.removeAttribute('checked');
           }
         }
 
@@ -174,9 +176,11 @@ export class SuiInput {
               radios[i] !== input
             ) {
               radios[i].parentElement.removeAttribute('data-checked'); // remove checked attribute from it's host
+              this.host.removeAttribute('checked');
             }
           }
           this.host.setAttribute('data-checked', '');
+          this.host.setAttribute('checked', '');
         }
       });
     }
