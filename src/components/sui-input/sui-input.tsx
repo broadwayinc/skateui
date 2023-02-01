@@ -240,7 +240,7 @@ export class SuiInput {
             return p ? `-${p}px` : '0px';
           }).join(' '), 'important');
       } : null,
-      excludeAttribute: ['value', 'data-checked'],
+      excludeAttribute: ['value', 'checked'],
       appendIdToSlotElement: true
     });
 
