@@ -1,5 +1,5 @@
 import { Component, Host, h, Element, Prop, Method } from '@stencil/core';
-import { cloneEvents, randomString } from '../../utils/utils';
+import { cloneEvents, randomString, eventList } from '../../utils/utils';
 
 @Component({
   tag: 'sui-overlay',
@@ -173,9 +173,11 @@ export class SuiOverlay {
         }
       }
 
-      el.addEventListener('click', e => {
-        e.stopPropagation();
-      });
+      for (let ev of eventList) {
+        el.addEventListener(ev, e => {
+          e.stopPropagation();
+        });
+      }
 
       const css = {
         base: {
