@@ -17,19 +17,17 @@ export class SuiInput {
   @Prop({ mutable: true }) checked: any;
   @Watch('checked')
   checkedHandler(n: any, o: any) {
-    if (!this.isChecker) {
-      return;
-    }
-
     if (n !== o && this.el) {
       this.el.checked = n || typeof n === 'string';
     }
 
     if (this.el.checked) {
       this.host.setAttribute('data-checked', '');
+      this.host.setAttribute('checked', '');
     }
     else {
       this.host.removeAttribute('data-checked');
+      this.host.removeAttribute('checked');
     }
   }
 
