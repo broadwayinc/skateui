@@ -22,11 +22,11 @@ export class SuiInput {
     }
 
     if (this.el.checked) {
-      this.host.setAttribute('data-checked', '');
+      // this.host.setAttribute('data-checked', '');
       this.host.setAttribute('checked', '');
     }
     else {
-      this.host.removeAttribute('data-checked');
+      // this.host.removeAttribute('data-checked');
       this.host.removeAttribute('checked');
     }
   }
@@ -136,7 +136,7 @@ export class SuiInput {
       }
 
       if (input.checked) {
-        this.host.setAttribute('data-checked', '');
+        // this.host.setAttribute('data-checked', '');
         this.host.setAttribute('checked', '');
       }
 
@@ -158,11 +158,11 @@ export class SuiInput {
         // keep track of checked, update dom
         if (inputType === 'checkbox') {
           if (input.checked) {
-            this.host.setAttribute('data-checked', '');
+            // this.host.setAttribute('data-checked', '');
             this.host.setAttribute('checked', '');
           }
           else {
-            this.host.removeAttribute('data-checked');
+            // this.host.removeAttribute('data-checked');
             this.host.removeAttribute('checked');
           }
         }
@@ -176,11 +176,11 @@ export class SuiInput {
               radios[i].getAttribute('type') === 'radio' &&
               radios[i] !== input
             ) {
-              radios[i].parentElement.removeAttribute('data-checked'); // remove checked attribute from it's host
+              // radios[i].parentElement.removeAttribute('data-checked'); // remove checked attribute from it's host
               radios[i].parentElement.removeAttribute('checked');
             }
           }
-          this.host.setAttribute('data-checked', '');
+          // this.host.setAttribute('data-checked', '');
           this.host.setAttribute('checked', '');
         }
       });

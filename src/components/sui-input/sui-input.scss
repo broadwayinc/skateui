@@ -84,7 +84,7 @@
   display: inline-block;
 }
 
-:host([type='checkbox'][data-checked]) {
+:host([type='checkbox'][checked]) {
   svg {
     user-select: none;
     pointer-events: none;
