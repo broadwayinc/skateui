@@ -177,7 +177,7 @@ export class SuiInput {
               radios[i] !== input
             ) {
               radios[i].parentElement.removeAttribute('data-checked'); // remove checked attribute from it's host
-              this.host.removeAttribute('checked');
+              radios[i].parentElement.removeAttribute('checked');
             }
           }
           this.host.setAttribute('data-checked', '');
