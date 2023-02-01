@@ -17,6 +17,7 @@ export class SuiInput {
   @Prop({ mutable: true }) checked: any;
   @Watch('checked')
   checkedHandler(n: any, o: any) {
+    console.log({ n, o, h: this.el });
     if (n !== o && this.el) {
       this.el.checked = n || typeof n === 'string';
     }
@@ -136,7 +137,6 @@ export class SuiInput {
       }
 
       if (input.checked) {
-        // this.host.setAttribute('data-checked', '');
         this.host.setAttribute('checked', '');
       }
 
@@ -154,34 +154,28 @@ export class SuiInput {
         }
       });
 
-      input.addEventListener('change', () => {
+      input.addEventListener('change', e => {
         // keep track of checked, update dom
-        if (inputType === 'checkbox') {
-          if (input.checked) {
-            // this.host.setAttribute('data-checked', '');
-            this.host.setAttribute('checked', '');
-          }
-          else {
-            // this.host.removeAttribute('data-checked');
-            this.host.removeAttribute('checked');
-          }
+        if ((e.target as HTMLInputElement).checked) {
+          this.host.setAttribute('checked', '');
+        }
+        else {
+          this.host.removeAttribute('checked');
         }
 
         if (inputType === 'radio') {
           // triggers only on checked, since radio button can't uncheck from user input
-          let radios = document.getElementsByName(input.name);
+          let radios = document.getElementsByName((e.target as HTMLInputElement).name);
           for (let i = 0; i < radios.length; i++) {
+            console.log({ r: radios[i], rr: e.target, rrr: radios[i] !== e.target, h: this.host });
             if (
               (radios[i] instanceof HTMLInputElement) &&
               radios[i].getAttribute('type') === 'radio' &&
-              radios[i] !== input
+              radios[i] !== e.target
             ) {
-              // radios[i].parentElement.removeAttribute('data-checked'); // remove checked attribute from it's host
               radios[i].parentElement.removeAttribute('checked');
             }
           }
-          // this.host.setAttribute('data-checked', '');
-          this.host.setAttribute('checked', '');
         }
       });
     }

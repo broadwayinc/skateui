@@ -124,7 +124,7 @@
   }
 }
 
-:host([type='radio'][data-checked]) {
+:host([type='radio'][checked]) {
   &::after {
     // radio checked
     box-shadow:
