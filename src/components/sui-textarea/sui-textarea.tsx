@@ -7,6 +7,7 @@ import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
   shadow: true
 })
 export class SuiTextarea {
+  observer: MutationObserver;
   @Element() host: HTMLElement;
   @Prop({ mutable: true }) value: string = '';
   @Watch('value')
@@ -80,7 +81,7 @@ export class SuiTextarea {
         }
       }
     }
-    
+
     this.reflect = this.value;
 
     dummyHandler.bind(this)({
@@ -94,7 +95,14 @@ export class SuiTextarea {
     // dispatch mounted event when finished loading
     this.el.dispatchEvent(new CustomEvent('mounted'));
   }
-
+  disconnectedCallback() {
+    // save memory by disconnecting mutation watch
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+    // remove dummy element
+    this.el.remove();
+  }
   render() {
     return (
       <Host>

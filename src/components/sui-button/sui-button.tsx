@@ -58,6 +58,8 @@ export class SuiButton {
     if (this.observer) {
       this.observer.disconnect();
     }
+    // remove dummy element
+    this.el.remove();
   }
 
   render() {

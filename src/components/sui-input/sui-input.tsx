@@ -17,7 +17,6 @@ export class SuiInput {
   @Prop({ mutable: true }) checked: any;
   @Watch('checked')
   checkedHandler(n: any, o: any) {
-    console.log({ n, o, h: this.el });
     if (n !== o && this.el) {
       this.el.checked = n || typeof n === 'string';
     }
@@ -167,7 +166,6 @@ export class SuiInput {
           // triggers only on checked, since radio button can't uncheck from user input
           let radios = document.getElementsByName((e.target as HTMLInputElement).name);
           for (let i = 0; i < radios.length; i++) {
-            console.log({ r: radios[i], rr: e.target, rrr: radios[i] !== e.target, h: this.host });
             if (
               (radios[i] instanceof HTMLInputElement) &&
               radios[i].getAttribute('type') === 'radio' &&
