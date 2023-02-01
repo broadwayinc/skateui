@@ -14,6 +14,25 @@ export class SuiInput {
       this.el.value = n.toString();
     }
   }
+  @Prop({ mutable: true }) checked: any;
+  @Watch('checked')
+  checkedHandler(n: any, o: any) {
+    if (!this.isChecker) {
+      return;
+    }
+
+    if (n !== o && this.el) {
+      this.el.checked = n || typeof n === 'string';
+    }
+
+    if (this.el.checked) {
+      this.host.setAttribute('data-checked', '');
+    }
+    else {
+      this.host.removeAttribute('data-checked');
+    }
+  }
+
   availableTypes: string[] = [
     // checker
     'checkbox',
@@ -50,6 +69,7 @@ export class SuiInput {
     this.isButton = inputType === 'reset' || inputType === 'submit';
     this.isChecker = inputType === 'checkbox' || inputType === 'radio';
 
+    // if class has reusable previous element
     const previousInput = this.host.getElementsByTagName('input')?.[0];
     if (previousInput && previousInput.hasAttribute('slot')) {
       // if element already exists, return
@@ -61,7 +81,7 @@ export class SuiInput {
       // button input use additional span to display text
       const previousSpan = this.host.getElementsByTagName('span')?.[0];
       if (previousSpan) {
-        if (previousSpan && previousSpan.hasAttribute('slot') && previousSpan.getAttribute('slot') === 'value' && this.isButton) {
+        if (previousSpan.hasAttribute('slot') && previousSpan.getAttribute('slot') === 'value' && this.isButton) {
           previousSpan.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
         }
         else {
@@ -97,6 +117,11 @@ export class SuiInput {
         this.host.setAttribute('tabindex', '0');
       }
 
+      this.host.addEventListener('click', e => {
+        e.stopPropagation();
+        input.click();
+      });
+
       // add button text
       let span = document.createElement('span');
       span.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
@@ -107,6 +132,14 @@ export class SuiInput {
     else if (this.isChecker) {
       // hidden
       input.setAttribute('hidden', '');
+
+      if (this.checked || typeof this.checked === 'string') {
+        input.setAttribute('checked', '');
+      }
+
+      if (input.checked) {
+        this.host.setAttribute('data-checked', '');
+      }
 
       // tab index is on host
       if (!this.host.hasAttribute('disabled')) {
@@ -126,10 +159,10 @@ export class SuiInput {
         // keep track of checked, update dom
         if (inputType === 'checkbox') {
           if (input.checked) {
-            this.host.setAttribute('checked', '');
+            this.host.setAttribute('data-checked', '');
           }
           else {
-            this.host.removeAttribute('checked');
+            this.host.removeAttribute('data-checked');
           }
         }
 
@@ -142,10 +175,10 @@ export class SuiInput {
               radios[i].getAttribute('type') === 'radio' &&
               radios[i] !== input
             ) {
-              radios[i].parentElement.removeAttribute('checked'); // remove checked attribute from it's host
+              radios[i].parentElement.removeAttribute('data-checked'); // remove checked attribute from it's host
             }
           }
-          this.host.setAttribute('checked', '');
+          this.host.setAttribute('data-checked', '');
         }
       });
     }
@@ -204,7 +237,7 @@ export class SuiInput {
             return p ? `-${p}px` : '0px';
           }).join(' '), 'important');
       } : null,
-      excludeAttribute: ['value'],
+      excludeAttribute: ['value', 'data-checked'],
       appendIdToSlotElement: true
     });
 
