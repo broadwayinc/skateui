@@ -206,7 +206,7 @@ export const eventList = [
   'wheel'
 ];
 
-export function cloneEvents(el: HTMLElement, options?: { dispatchTo?: HTMLElement, eventCallback?: { type: string; callback: (e: any) => any; }; }) {
+export function cloneEvents(el: HTMLElement, options?: { bypass?: string[], dispatchTo?: HTMLElement, eventCallback?: { type: string; callback: (e: any) => any; }; }) {
   // callback
   let cb = null;
   let { dispatchTo = null, eventCallback = null, bypass = [] } = options || {};
