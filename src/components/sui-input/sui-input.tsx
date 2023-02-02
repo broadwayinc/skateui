@@ -11,7 +11,7 @@ export class SuiInput {
   @Watch('value')
   valueHandler(n: string, o: string) {
     if (n !== o && this.el) {
-      this.el.value = n.toString();
+      this.el.value = n === null && n === undefined ? '' : n.toString();
     }
   }
   @Prop({ mutable: true }) checked: any;

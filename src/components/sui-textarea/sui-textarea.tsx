@@ -12,12 +12,8 @@ export class SuiTextarea {
   @Prop({ mutable: true }) value: string = '';
   @Watch('value')
   valueHandler(n: string, o: string) {
-    if (typeof n !== 'string') {
-      return;
-    }
-
     if (n !== o && this.el) {
-      let val = n !== null && n !== undefined ? n : '';
+      let val = n === null && n === undefined ? '' : n.toString();
       this.el.value = val;
       this.reflect = val;
     }
