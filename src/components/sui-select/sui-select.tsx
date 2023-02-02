@@ -73,6 +73,12 @@ export class SuiSelect {
     return select;
   })();
 
+  componentWillRender() {
+    if (this.el && this.el.parentElement === null) {
+      this.host.prepend(this.el);
+    }
+  }
+  
   componentDidLoad() {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),

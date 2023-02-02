@@ -15,29 +15,18 @@ export class SuiTextarea {
     if (n !== o && this.el) {
       let val = n === null && n === undefined ? '' : n.toString();
       this.el.value = val;
-      this.reflect = val;
+      this.textValue = val;
     }
   }
 
   slotName: string = randomString();
 
   @State()
-  reflect: string = '';
+  textValue: string = '';
 
   @Prop()
   el = (() => {
     let value = this.value !== null && this.value !== undefined ? this.value.toString() : '';
-    this.reflect = value;
-
-    const previousInput = this.host.getElementsByTagName('textarea')?.[0];
-    if (previousInput && previousInput.hasAttribute('slot')) {
-      // if element already exists, return
-      // element can already exist when working on hot reloads
-
-      // setup new slot name
-      previousInput.setAttribute('slot', this.slotName);
-      return previousInput;
-    }
 
     // create new element
     const textarea = document.createElement('textarea');
@@ -48,7 +37,6 @@ export class SuiTextarea {
     textarea.setAttribute('slot', this.slotName);
     textarea.addEventListener('input', e => {
       this.value = (e.target as HTMLTextAreaElement).value;
-      this.reflect = this.value;
     });
 
     for (let key of [
@@ -66,6 +54,12 @@ export class SuiTextarea {
     return textarea;
   })();
 
+  componentWillRender() {
+    if (this.el && this.el.parentElement === null) {
+      this.host.prepend(this.el);
+    }
+  }
+
   componentWillLoad() {
     let value = this.value !== null && this.value !== undefined ? this.value.toString() : '';
     if (!value) {
@@ -78,7 +72,7 @@ export class SuiTextarea {
       }
     }
 
-    this.reflect = this.value;
+    this.textValue = this.value;
 
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
@@ -91,6 +85,7 @@ export class SuiTextarea {
     // dispatch mounted event when finished loading
     this.el.dispatchEvent(new CustomEvent('mounted'));
   }
+  
   disconnectedCallback() {
     // save memory by disconnecting mutation watch
     if (this.observer) {
@@ -99,13 +94,14 @@ export class SuiTextarea {
     // remove dummy element
     this.el.remove();
   }
+
   render() {
     return (
       <Host>
         <div class='shell'>
           <slot name={this.slotName}>
           </slot>
-          <div class='text-value' text-value={this.reflect + ' '}>
+          <div class='text-value' text-value={this.textValue + ' '}>
             <div>
               <slot></slot>
             </div>
