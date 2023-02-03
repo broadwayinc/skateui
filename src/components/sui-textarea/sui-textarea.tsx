@@ -54,7 +54,7 @@ export class SuiTextarea {
     return textarea;
   })();
 
-  componentWillRender() {
+  componentDidRender() {
     if (this.el && this.el.parentElement === null) {
       this.host.prepend(this.el);
     }
@@ -85,7 +85,7 @@ export class SuiTextarea {
     // dispatch mounted event when finished loading
     this.el.dispatchEvent(new CustomEvent('mounted'));
   }
-  
+
   disconnectedCallback() {
     // save memory by disconnecting mutation watch
     if (this.observer) {
@@ -99,7 +99,7 @@ export class SuiTextarea {
     return (
       <Host>
         <div class='shell'>
-          <slot name={this.slotName}>
+          <slot name={this.slotName} onSlotchange={()=>this.componentDidRender()}>
           </slot>
           <div class='text-value' text-value={this.textValue + ' '}>
             <div>

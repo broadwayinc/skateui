@@ -1,6 +1,5 @@
 import { Component, Host, h, Element, Prop, Method } from '@stencil/core';
 import { cloneEvents, randomString, eventList } from '../../utils/utils';
-
 @Component({
   tag: 'sui-overlay',
   styleUrl: 'sui-overlay.scss',
@@ -169,7 +168,9 @@ export class SuiOverlay {
       if (this.host.children.length) {
         let len = this.host.children.length;
         while (len--) {
-          el.prepend(this.host.children[len]);
+          let child = this.host.children[len];
+          el.prepend(child);
+          console.log(child);
         }
       }
 

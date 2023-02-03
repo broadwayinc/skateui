@@ -53,6 +53,12 @@ export class SuiButton {
     this.el.dispatchEvent(new CustomEvent('mounted'));
   }
 
+  slotChanged() {
+    if(this.el && this.el.parentElement === null) {
+      this.host.append(this.el);
+    }
+  }
+
   disconnectedCallback() {
     // save memory by disconnecting mutation watch
     if (this.observer) {
@@ -65,7 +71,7 @@ export class SuiButton {
   render() {
     return (
       <Host>
-        <slot></slot>
+        <slot onSlotchange={()=>this.slotChanged()}></slot>
       </Host>
     );
   }
