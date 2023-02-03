@@ -53,6 +53,8 @@ export class SuiInput {
   isChecker = false;
   isButton = false;
   closestLabel = null;
+  span: HTMLSpanElement = null;
+
   @Prop()
   el = (() => {
     // add input element manually because shadow dom input is not recognized by forms
@@ -66,28 +68,6 @@ export class SuiInput {
 
     this.isButton = inputType === 'reset' || inputType === 'submit';
     this.isChecker = inputType === 'checkbox' || inputType === 'radio';
-
-    // if class has reusable previous element
-    const previousInput = this.host.getElementsByTagName('input')?.[0];
-    if (previousInput && previousInput.hasAttribute('slot')) {
-      // if element already exists, return
-      // element can already exist when working on hot reloads
-
-      // setup new slot name
-      previousInput.setAttribute('slot', this.slotName);
-
-      // button input use additional span to display text
-      const previousSpan = this.host.getElementsByTagName('span')?.[0];
-      if (previousSpan) {
-        if (previousSpan.hasAttribute('slot') && previousSpan.getAttribute('slot') === 'value' && this.isButton) {
-          previousSpan.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
-        }
-        else {
-          previousSpan.remove();
-        }
-      }
-      return previousInput;
-    }
 
     // create new element
     const input = document.createElement('input');
@@ -121,10 +101,10 @@ export class SuiInput {
       });
 
       // add button text
-      let span = document.createElement('span');
-      span.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
-      span.setAttribute('slot', 'value');
-      this.host.prepend(span);
+      this.span = document.createElement('span');
+      this.span.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
+      this.span.setAttribute('slot', 'value');
+      this.host.prepend(this.span);
     }
 
     else if (this.isChecker) {
@@ -195,6 +175,15 @@ export class SuiInput {
     this.host.prepend(input);
     return input;
   })();
+
+  componentDidRender() {
+    if (this.span && this.span.parentElement === null) {
+      this.host.prepend(this.span);
+    }
+    if (this.el && this.el.parentElement === null) {
+      this.host.prepend(this.el);
+    }
+  }
 
   componentDidLoad() {
     dummyHandler.bind(this)({
