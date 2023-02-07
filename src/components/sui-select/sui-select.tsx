@@ -131,6 +131,20 @@ export class SuiSelect {
           }).join(' '), 'important');
       },
       appendIdToSlotElement: true,
+      attCallback: (name: string, val: any) => {
+        if (name === 'disabled') {
+          if (val === null || val === false || val === 'false') {
+            this.el.removeAttribute('disabled');
+          }
+          else {
+            this.el.setAttribute('disabled', '');
+          }
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      },
       excludeAttribute: this.isMultiple ? ['value'] : ['size', 'value'] // size attribute should not work for multiple select
     });
     cloneEvents(this.el);
@@ -139,14 +153,14 @@ export class SuiSelect {
     this.el.dispatchEvent(new CustomEvent('mounted'));
   }
 
-  disconnectedCallback() {
-    // save memory by disconnecting mutation watch
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-    // remove dummy element
-    this.el.remove();
-  }
+  // disconnectedCallback() {
+  //   // save memory by disconnecting mutation watch
+  //   if (this.observer) {
+  //     this.observer.disconnect();
+  //   }
+  //   // remove dummy element
+  //   this.el.remove();
+  // }
 
   render() {
     return (

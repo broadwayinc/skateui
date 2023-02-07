@@ -222,9 +222,22 @@ export class SuiInput {
           }).join(' '), 'important');
       } : null,
       excludeAttribute: ['value', 'checked'],
-      appendIdToSlotElement: true
+      appendIdToSlotElement: true,
+      attCallback: (name: string, val: any) => {
+        if (name === 'disabled') {
+          if (val === null || val === false || val === 'false') {
+            this.el.removeAttribute('disabled');
+          }
+          else {
+            this.el.setAttribute('disabled', '');
+          }
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      }
     });
-
 
     this.closestLabel = this.el.closest('label');
     // stop event propagation from input element,
@@ -235,22 +248,13 @@ export class SuiInput {
     this.el.dispatchEvent(new CustomEvent('mounted'));
   }
 
-  disconnectedCallback() {
-    // save memory by disconnecting mutation watch
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-    // remove dummy element
-    this.el.remove();
-  }
-
   render() {
     return (
       <Host>
         <svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24" fill="currentColor">
           <polygon points="9.32,19.57 2.22,12.48 4.91,9.79 9.32,14.2 19.09,4.43 21.78,7.11     " />
         </svg>
-        <slot name={this.slotName} onSlotchange={()=>this.componentDidRender()}></slot>
+        <slot name={this.slotName} onSlotchange={() => this.componentDidRender()}></slot>
         {/* display value eg) button input */}
         <slot name='value'></slot>
       </Host>

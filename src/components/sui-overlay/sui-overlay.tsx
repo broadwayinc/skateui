@@ -170,7 +170,6 @@ export class SuiOverlay {
         while (len--) {
           let child = this.host.children[len];
           el.prepend(child);
-          console.log(child);
         }
       }
 

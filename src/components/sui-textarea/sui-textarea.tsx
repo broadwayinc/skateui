@@ -77,7 +77,21 @@ export class SuiTextarea {
     dummyHandler.bind(this)({
       computedStyle: window.getComputedStyle(this.host),
       excludeAttribute: ['value', 'rows', 'cols'],
-      appendIdToSlotElement: true
+      appendIdToSlotElement: true,
+      attCallback: (name: string, val: any) => {
+        if (name === 'disabled') {
+          if (val === null || val === false || val === 'false') {
+            this.el.removeAttribute('disabled');
+          }
+          else {
+            this.el.setAttribute('disabled', '');
+          }
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      }
     });
 
     cloneEvents(this.el);
@@ -86,14 +100,14 @@ export class SuiTextarea {
     this.el.dispatchEvent(new CustomEvent('mounted'));
   }
 
-  disconnectedCallback() {
-    // save memory by disconnecting mutation watch
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-    // remove dummy element
-    this.el.remove();
-  }
+  // disconnectedCallback() {
+  //   // save memory by disconnecting mutation watch
+  //   if (this.observer) {
+  //     this.observer.disconnect();
+  //   }
+  //   // remove dummy element
+  //   this.el.remove();
+  // }
 
   render() {
     return (

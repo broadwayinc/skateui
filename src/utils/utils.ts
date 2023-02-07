@@ -326,10 +326,15 @@ export function dummyHandler(options: {
 
     else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
       // skip 'hidden' | 'class' | 'id' | excluded list
-      this.el.setAttribute(attName, val);
-      // attribute update callback
+
+      let cb: undefined | boolean | number;
       if (typeof options.attCallback === 'function') {
-        options.attCallback(attName, val);
+        cb = options.attCallback(attName, val);
+      }
+
+      if (!cb) {
+        this.el.setAttribute(attName, val);
+        // attribute update callback
       }
     }
 
@@ -369,7 +374,6 @@ export function dummyHandler(options: {
       this.el.setAttribute(attName, hostAttributes[attName]);
       this.host.removeAttribute(attName);
     }
-
     if (attName === 'autofocus') {
       // auto focus
       this.host.focus();
