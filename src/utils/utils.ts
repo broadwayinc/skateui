@@ -227,7 +227,7 @@ export function cloneEvents(el: HTMLElement, options?: { bypass?: string[], disp
       }
       else if (!ev.bubbles) {
         // re dispatch unbubbled events
-        ev.stopPropagation();
+        // ev.stopPropagation();
         let new_ev = new Event(ev.type, {
           bubbles: true
         });

@@ -34,10 +34,19 @@ def publish():
 
 def distribute():
     ret = os.system(
-        f"aws s3 sync ./dist/skateui s3://broadwayinc.dev/jslib/skateui/{package['version']} --acl public-read")
+        f"aws s3 sync ./dist/skateui s3://broadwayinc.dev/lib/js/skateui/{package['version']} --acl public-read")
 
     if ret != 0:
         print('==Failed to upload==')
+
+    ret = os.system(
+        f"aws s3 sync ./dist/skateui s3://broadwayinc.dev/lib/js/skateui/latest --acl public-read")
+
+    if ret != 0:
+        print('==Failed to upload==')
+
+    os.system(
+        'aws cloudfront create-invalidation --distribution-id EEQNKEUZOF5VB --paths "/lib/js/skateui/latest/*"')
 
 
 if __name__ == '__main__':
