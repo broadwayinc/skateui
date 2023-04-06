@@ -26,8 +26,8 @@ def publish():
     if ret != 0:
         print('==Failed to publish==')
 
-    else:
-        distribute()
+    # else:
+    #     distribute()
 
     print('==END==')
 
