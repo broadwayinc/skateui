@@ -50,6 +50,7 @@ export class SuiTextarea {
       textarea.style.setProperty(key, 'inherit', 'important');
     }
 
+    textarea.style.setProperty('height', '100%', 'important');
     this.host.prepend(textarea);
     return textarea;
   })();
@@ -113,7 +114,7 @@ export class SuiTextarea {
     return (
       <Host>
         <div class='shell'>
-          <slot name={this.slotName} onSlotchange={()=>this.componentDidRender()}>
+          <slot name={this.slotName} onSlotchange={() => this.componentDidRender()}>
           </slot>
           <div class='text-value' text-value={this.textValue + ' '}>
             <div>
