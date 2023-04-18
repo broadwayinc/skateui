@@ -13,15 +13,15 @@
     <h1>skate ui</h1>
     <pre>
   Objective:
-    - Make UI component 100% compatible with vanila HTML.
+    - UI component 100% compatible with vanilla HTML.
     - All HTMl attributes should be functional.
     - Style should be easily customizable via css without implementing additional custom attributes.
   
   Note:
     - skateui component is reactive to font-size.
-      this was intended decision.
+      this was an intended decision.
     - skateui has shallow bevels on most components.
-      if you are not a fan of the looks, simply set box-shadow to none
+      If you are not a fan of the looks, simply set box-shadow to none
 
   Known issues:
     - In safari, outline does not follow border radius.
@@ -35,14 +35,15 @@
         - working on live reloads.
       
       but when refreshed, the quirks will go away.
+    - Form reset will not reset the input radio/checkbox status
 
   </pre>
     <hr>
     <h2>sui-button</h2>
     <form onsubmit="console.log(this);return false;">
-      <sui-button>sui-button</sui-button>
+      <sui-button onclick="console.log('onclick')">sui-button</sui-button>
     </form>
-    <sui-button disabled>Disabled</sui-button><br>
+    <sui-button onclick="console.log('onclick')" disabled>Disabled</sui-button><br>
     <sui-button class="text">Text</sui-button><br>
     <sui-button class="outline">Outline</sui-button>
     <pre>
@@ -85,7 +86,8 @@
           inputForm.append(document.createElement('br'));
         }
       </script>
-      <label for="sui-input-styled">Text input (Styled)</label>
+
+      <label for="sui-input-styled">Styled Input</label>
       <sui-input class='sui-input-styled' id='sui-input-styled' name="styled" placeholder="sui-input (styled)">
       </sui-input>
       <br><br>
@@ -108,10 +110,8 @@
         value="radio styled">
       </sui-input>
       <br><br>
-      <sui-input type="reset">
-      </sui-input>
-      <sui-input type="submit" value="Send">
-      </sui-input>
+      <sui-input type="reset"></sui-input>
+      <sui-input type="submit" value="Send"></sui-input>
     </form>
     <pre>
   autofocus &#x2713;
@@ -143,6 +143,11 @@
       'password'
       'number'
       'reset'
+
+    - For, styling input specific pseudo elements of the text type inputs (ex. email, text, search...)
+      You need to target the underlaying input element inside the sui-input
+      sui-input input::placeholder
+      sui-input input:focus
   </pre>
     <hr>
     <h2>sui-select</h2>
@@ -179,12 +184,19 @@
     </sui-select>
     <br>
     <pre>
-  Progress so far:
-    - option elements should work just like html &#x2713;
-    - select multiple &#x2713;
-    - shell is stylable &#x2713;
-    - size attribute works &#x2713;
-    - text ellipsis for long values &#x2713;
+  option elements should work just like html &#x2713;
+  select multiple &#x2713;
+  shell is stylable &#x2713;
+  size attribute works &#x2713;
+  text ellipsis for long values &#x2713;
+
+  Notes:
+    - For styling the focus state of the element use focus-within:
+      sui-select:focus-within
+  
+  Issues:
+    - Changing option element is not reactive.
+
   Working:
     - Need custom design
   </pre>
@@ -204,7 +216,9 @@
       </div>
     </sui-tooltip>
     <sui-tooltip style="float: right;">
-      <p slot="tool">Hover Me</p>
+      <div slot="tool"
+        style="font-size: 1.2em; font-weight: bold; background-color: blue;color:white;padding: .25em;border-radius: 1.2em;width: 1.2em;text-align: center;cursor: pointer;">
+        ?</div>
       <div slot="tip"
         style="background-color: blue;color:white;box-shadow: 0 0 0 4px red;border-radius: 4px;padding:.5em;width: 300px;max-width: 50vw;">
         <p>Hello I'm the blue dialog</p>
@@ -283,13 +297,13 @@
     </pre>
     <hr>
     <h2>sui-textarea</h2>
-    <sui-textarea></sui-textarea>
     <sui-textarea placeholder="placeholder"></sui-textarea>
     <sui-textarea value="Text area value"></sui-textarea>
     <sui-textarea style="max-height: 10em;white-space:pre;">Text area value nested,
-White space pre,
-max-height: 10em;
+      White space pre,
+      max-height: 10em;
     </sui-textarea>
+    <sui-textarea disabled>Disabled Textarea</sui-textarea>
     <pre>
     Can vertically, horizontally expand  &#x2713;
 

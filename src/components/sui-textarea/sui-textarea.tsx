@@ -1,15 +1,16 @@
 import { State, Component, Host, h, Prop, Element, Watch } from '@stencil/core';
-import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
+import { dummyHandler, randomString } from '../../utils/utils';
 
 @Component({
   tag: 'sui-textarea',
-  styleUrl: 'sui-textarea.scss',
+  styleUrl: 'sui-textarea.css',
   shadow: true
 })
 export class SuiTextarea {
   observer: MutationObserver;
   @Element() host: HTMLElement;
   @Prop({ mutable: true }) value: string = '';
+  @Prop() disabled: boolean;
   @Watch('value')
   valueHandler(n: string, o: string) {
     if (n !== o && this.el) {
@@ -76,43 +77,17 @@ export class SuiTextarea {
     this.textValue = this.value;
 
     dummyHandler.bind(this)({
-      computedStyle: window.getComputedStyle(this.host),
       excludeAttribute: ['value', 'rows', 'cols'],
-      appendIdToSlotElement: true,
-      attCallback: (name: string, val: any) => {
-        if (name === 'disabled') {
-          if (val === null || val === false || val === 'false') {
-            this.el.removeAttribute('disabled');
-          }
-          else {
-            this.el.setAttribute('disabled', '');
-          }
-          return 1;
-        }
-        else {
-          return 0;
-        }
-      }
+      moveIdToSlotElement: true
     });
 
-    cloneEvents(this.el);
-
     // dispatch mounted event when finished loading
-    this.el.dispatchEvent(new CustomEvent('mounted'));
+    this.host.dispatchEvent(new CustomEvent('mounted'));
   }
-
-  // disconnectedCallback() {
-  //   // save memory by disconnecting mutation watch
-  //   if (this.observer) {
-  //     this.observer.disconnect();
-  //   }
-  //   // remove dummy element
-  //   this.el.remove();
-  // }
 
   render() {
     return (
-      <Host>
+      <Host disabled={this.disabled}>
         <div class='shell'>
           <slot name={this.slotName} onSlotchange={() => this.componentDidRender()}>
           </slot>

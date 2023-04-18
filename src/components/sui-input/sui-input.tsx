@@ -1,34 +1,23 @@
-import { Component, Host, h, Element, Prop, Watch } from '@stencil/core'; //Method, 
-import { dummyHandler, randomString, cloneEvents } from '../../utils/utils';
+import { Component, Host, h, Element, Prop, Watch, Listen } from '@stencil/core'; //Method, 
+import { dummyHandler, randomString } from '../../utils/utils';
 @Component({
   tag: 'sui-input',
-  styleUrl: 'sui-input.scss',
+  styleUrl: 'sui-input.css',
   shadow: true,
 })
 export class SuiInput {
+  observer: MutationObserver;
   @Element() host: HTMLElement;
-  @Prop({ mutable: true }) value: any;
-  @Watch('value')
-  valueHandler(n: string, o: string) {
-    if (n !== o && this.el) {
-      this.el.value = n === null && n === undefined ? '' : n.toString();
-    }
-  }
-  @Prop({ mutable: true }) checked: any;
-  @Watch('checked')
-  checkedHandler(n: any, o: any) {
-    if (n !== o && this.el) {
-      this.el.checked = n || typeof n === 'string';
-    }
-
-    if (this.el.checked) {
-      // this.host.setAttribute('data-checked', '');
-      this.host.setAttribute('checked', '');
-    }
-    else {
-      // this.host.removeAttribute('data-checked');
-      this.host.removeAttribute('checked');
-    }
+  @Prop() value: any;
+  @Prop() disabled: boolean = false;
+  @Prop({ mutable: true }) checked: boolean = false;
+  @Prop() required: boolean = false;
+  @Prop() type: string = 'text';
+  @Watch('type')
+  typeHandler(n: any) {
+    if (n === 'reset' || n === 'submit') this.inputType = 'button';
+    else if (n === 'checkbox' || n === 'radio') this.inputType = 'checker';
+    else this.inputType = 'input';
   }
 
   availableTypes: string[] = [
@@ -48,101 +37,73 @@ export class SuiInput {
     'submit'
   ];
 
-  observer: MutationObserver;
   slotName: string = randomString();
-  isChecker = false;
-  isButton = false;
-  closestLabel = null;
-  span: HTMLSpanElement = null;
+  inputType: 'button' | 'checker' | 'input' = 'input';
+  dispatchClick = () => {
+    this.el.dispatchEvent(new MouseEvent('click', { bubbles: false }));
+  };
+  @Listen('click')
+  clickEventHandler() {
+    if (this.inputType === 'button') {
+      this.host.parentElement.insertBefore(this.el, this.host);
+      this.el.click();
+      this.el.remove();
+    }
+    else if (this.inputType === 'checker') {
+      this.dispatchClick();
+    }
+  }
+
+  @Listen('keypress')
+  keyEventHandler(e: KeyboardEvent) {
+    let key = e.key.toLowerCase();
+    if (key === 'enter' || key === ' ') {
+      e.preventDefault();
+      if (this.inputType === 'button') {
+        this.host.parentElement.insertBefore(this.el, this.host);
+        this.el.click();
+        this.el.remove();
+      }
+      else if (this.inputType === 'checker') {
+        this.dispatchClick();
+      }
+    }
+  }
 
   @Prop()
   el = (() => {
     // add input element manually because shadow dom input is not recognized by forms
-    let inputType = this.host.getAttribute('type'); // always use getAttribute() for proper casing
-
-    let value = this.value !== null && this.value !== undefined ? this.value.toString() : null;
-    if (!inputType || !this.availableTypes.includes(inputType)) {
-      this.host.setAttribute('type', 'text');
-      inputType = 'text';
-    }
-
-    this.isButton = inputType === 'reset' || inputType === 'submit';
-    this.isChecker = inputType === 'checkbox' || inputType === 'radio';
+    if (this.type === 'reset' || this.type === 'submit') this.inputType = 'button';
+    else if (this.type === 'checkbox' || this.type === 'radio') this.inputType = 'checker';
+    else this.inputType = 'input';
 
     // create new element
     const input = document.createElement('input');
-    if (value) {
-      input.setAttribute('value', value);
-    }
 
     // setup new slot name
     // slot name is to prevent users adding custom elements
     input.setAttribute('slot', this.slotName);
 
-    if (!this.availableTypes.includes(inputType)) {
-      // type not available (yet)
+    if (this.type && !this.availableTypes.includes(this.type)) {
+      // type customization is not available (yet)
       this.host.prepend(input);
       return input;
     }
 
-    // add eventlistener manually if type is checkbox | radio | reset | submit
-    if (this.isButton) {
+    if (this.inputType === 'button') {
       // hidden
       input.setAttribute('hidden', '');
-
-      // tab index is on host
-      if (!this.host.hasAttribute('disabled')) {
-        this.host.setAttribute('tabindex', '0');
-      }
-
-      this.host.addEventListener('click', e => {
-        e.stopPropagation();
-        input.click();
-      });
-
-      // add button text
-      this.span = document.createElement('span');
-      this.span.innerHTML = value || (inputType === 'submit' ? 'Submit' : 'Reset');
-      this.span.setAttribute('slot', 'value');
-      this.host.prepend(this.span);
+      return input;
     }
 
-    else if (this.isChecker) {
+    else if (this.inputType === 'checker') {
       // hidden
       input.setAttribute('hidden', '');
 
-      if (this.checked || typeof this.checked === 'string') {
-        input.setAttribute('checked', '');
-      }
-
-      if (input.checked) {
-        this.host.setAttribute('checked', '');
-      }
-
-      // tab index is on host
-      if (!this.host.hasAttribute('disabled')) {
-        this.host.setAttribute('tabindex', '0');
-      }
-
-      this.host.addEventListener('click', e => {
-        if (this.closestLabel && e.isTrusted) {
-          e.stopPropagation();
-        }
-        else {
-          input.click();
-        }
-      });
-
       input.addEventListener('change', e => {
+        this.checked = (e.target as HTMLInputElement).checked;
         // keep track of checked, update dom
-        if ((e.target as HTMLInputElement).checked) {
-          this.host.setAttribute('checked', '');
-        }
-        else {
-          this.host.removeAttribute('checked');
-        }
-
-        if (inputType === 'radio') {
+        if (this.type === 'radio') {
           // triggers only on checked, since radio button can't uncheck from user input
           let radios = document.getElementsByName((e.target as HTMLInputElement).name);
           for (let i = 0; i < radios.length; i++) {
@@ -158,39 +119,33 @@ export class SuiInput {
       });
     }
 
-    else {
-      // tab index is on input element
-      for (const [key, value] of Object.entries({
-        // set important styles
-        // these value should not be editable
-        'box-sizing': 'border-box',
-        'display': 'block',
-        'font-size': 'inherit',
-        'line-height': '1.2'
-      })) {
-        input.style.setProperty(key, value, 'important');
-      }
-    }
-
-    this.host.prepend(input);
     return input;
   })();
 
   componentDidRender() {
-    if (this.span && this.span.parentElement === null) {
-      this.host.prepend(this.span);
-    }
-    if (this.el && this.el.parentElement === null) {
+    if (this.el && this.el.parentElement === null && this.inputType !== 'button') {
       this.host.prepend(this.el);
     }
   }
 
+  dummyHandle;
   componentDidLoad() {
-    dummyHandler.bind(this)({
-      computedStyle: window.getComputedStyle(this.host),
+    this.dummyHandle = dummyHandler.bind(this)({
+      bounceEvents: this.inputType === 'checker' ? ['blur', 'change', 'focus', 'invalid', 'input'] : null,
       excludeStyle: ['border', 'margin', 'padding', 'max', 'min'],
-      copyStyle: this.isChecker ? null : !this.isButton ? (hostCss: CSSStyleDeclaration) => {
+      mirrorStyle: this.inputType === 'checker' ? null : this.inputType === 'input' ? (hostCss: CSSStyleDeclaration) => {
         this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+
+        for (const [key, value] of Object.entries({
+          // set important styles
+          // these value should not be editable
+          'box-sizing': 'border-box',
+          'display': 'block',
+          'font-size': 'inherit',
+          'line-height': 'inherit'
+        })) {
+          this.el.style.setProperty(key, value, 'important');
+        }
 
         // make text input fill the host
         let needAdjustment = false;
@@ -221,42 +176,23 @@ export class SuiInput {
             return p ? `-${p}px` : '0px';
           }).join(' '), 'important');
       } : null,
-      excludeAttribute: ['value', 'checked'],
-      appendIdToSlotElement: true,
-      attCallback: (name: string, val: any) => {
-        if (name === 'disabled') {
-          if (val === null || val === false || val === 'false') {
-            this.el.removeAttribute('disabled');
-          }
-          else {
-            this.el.setAttribute('disabled', '');
-          }
-          return 1;
-        }
-        else {
-          return 0;
-        }
-      }
+      excludeAttribute: ['tabindex', 'aria-role'],
+      moveIdToSlotElement: this.inputType !== 'button'
     });
 
-    this.closestLabel = this.el.closest('label');
-    // stop event propagation from input element,
-    // emit events from host
-
-    cloneEvents(this.el);
-    // dispatch mounted event when finished loading
-    this.el.dispatchEvent(new CustomEvent('mounted'));
+    this.host.dispatchEvent(new CustomEvent('mounted'));
   }
 
   render() {
     return (
-      <Host>
+      <Host tabindex={this.inputType === 'input' ? null : '0'} aria-role='input' disabled={this.disabled} required={this.required} value={this.value} type={this.type || 'text'} checked={this.checked}>
         <svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24" fill="currentColor">
           <polygon points="9.32,19.57 2.22,12.48 4.91,9.79 9.32,14.2 19.09,4.43 21.78,7.11     " />
         </svg>
-        <slot name={this.slotName} onSlotchange={() => this.componentDidRender()}></slot>
-        {/* display value eg) button input */}
-        <slot name='value'></slot>
+        <slot name={this.slotName} onSlotchange={() => { this.componentDidRender(); this.dummyHandle.init(); }}></slot>
+        <span button-text={this.inputType === 'button' ? true : null}>
+          {this.inputType === 'button' ? this.value || (this.type === 'submit' ? 'Submit' : 'Reset') : ''}
+        </span>
       </Host>
     );
   }

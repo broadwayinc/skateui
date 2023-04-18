@@ -2,7 +2,7 @@ import { Component, Host, h, Prop, Element } from '@stencil/core';
 
 @Component({
   tag: 'sui-flextext',
-  styleUrl: 'sui-flextext.scss',
+  styleUrl: 'sui-flextext.css',
   shadow: true,
 })
 export class SuiFlextext {

@@ -7,14 +7,18 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface SuiButton {
+        "disabled": boolean;
     }
     interface SuiFlextext {
         "maxSize": number;
         "minSize": number;
     }
     interface SuiInput {
-        "checked": any;
+        "checked": boolean;
+        "disabled": boolean;
         "el": HTMLInputElement;
+        "required": boolean;
+        "type": string;
         "value": any;
     }
     interface SuiNav {
@@ -27,10 +31,14 @@ export namespace Components {
         "transitionTime": string;
     }
     interface SuiSelect {
+        "disabled": boolean;
         "el": HTMLSelectElement;
+        "multiple": boolean;
+        "required": boolean;
         "value": any;
     }
     interface SuiTextarea {
+        "disabled": boolean;
         "el": HTMLTextAreaElement;
         "value": string;
     }
@@ -99,14 +107,18 @@ declare global {
 }
 declare namespace LocalJSX {
     interface SuiButton {
+        "disabled"?: boolean;
     }
     interface SuiFlextext {
         "maxSize"?: number;
         "minSize"?: number;
     }
     interface SuiInput {
-        "checked"?: any;
+        "checked"?: boolean;
+        "disabled"?: boolean;
         "el"?: HTMLInputElement;
+        "required"?: boolean;
+        "type"?: string;
         "value"?: any;
     }
     interface SuiNav {
@@ -117,10 +129,14 @@ declare namespace LocalJSX {
         "transitionTime"?: string;
     }
     interface SuiSelect {
+        "disabled"?: boolean;
         "el"?: HTMLSelectElement;
+        "multiple"?: boolean;
+        "required"?: boolean;
         "value"?: any;
     }
     interface SuiTextarea {
+        "disabled"?: boolean;
         "el"?: HTMLTextAreaElement;
         "value"?: string;
     }

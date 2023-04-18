@@ -1,14 +1,8 @@
 import { Config } from '@stencil/core';
-import { sass } from '@stencil/sass';
 
 export const config: Config = {
   namespace: 'skateui',
-  invisiblePrehydration: false,
-  plugins: [sass({
-    injectGlobalPaths: [
-      "src/variables.scss"
-    ]
-  })],
+  invisiblePrehydration: true,
   outputTargets: [
     {
       type: 'dist',

@@ -2,7 +2,7 @@ import { Component, Host, h, Listen, State } from '@stencil/core';
 
 @Component({
   tag: 'sui-tooltip',
-  styleUrl: 'sui-tooltip.scss',
+  styleUrl: 'sui-tooltip.css',
   shadow: true
 })
 export class SuiTooltip {

@@ -1,47 +1,58 @@
 import { Component, Host, h, Element, State, Prop, Watch } from '@stencil/core';
-import { dummyHandler, cloneEvents } from '../../utils/utils';
+import { dummyHandler } from '../../utils/utils';
 
 @Component({
   tag: 'sui-select',
-  styleUrl: 'sui-select.scss',
+  styleUrl: 'sui-select.css',
   shadow: true,
 })
 export class SuiSelect {
   @Element() host: HTMLElement;
   observer: MutationObserver;
-  @State() leftPadding: string = '0px';
-  @State() rightPadding: string = '0px';
-  @State() topPadding: string = '0px';
-  @State() valueDisplay: string;
-  @Prop() value: any;
+
+  @State() displayedValue: string;
+  @Prop({ mutable: true }) value: any;
   @Watch('value')
   valueHandler(n: string, o: string) {
     if (n !== o && this.el) {
       this.el.value = n.toString();
-      this.valueDisplay = this.el.getElementsByTagName('option')[this.el.selectedIndex || 0]?.textContent || this.el.value || '';
+      let currOpt = this.el.getElementsByTagName('option')[this.el.selectedIndex || 0];
+      this.displayedValue = currOpt?.textContent || currOpt.value || '';
     }
   }
-
-  isMultiple: boolean = (() => {
-    return this.host.hasAttribute('multiple');
-  })();
+  @Prop() disabled: boolean;
+  @Prop() required: boolean;
+  @Prop() multiple: boolean;
 
   @Prop()
   el = (() => {
     const select = document.createElement('select');
-
+    select.setAttribute('tabindex', '0');
     if (this.host.children.length) {
       let len = this.host.children.length;
+      let got = false;
       while (len--) {
-        select.prepend(this.host.children[len]);
+        if (got && len === 1) {
+          // skipped select element & has only 1 left(...which is the select element)
+          break;
+        }
+
+        if (!select.isSameNode(this.host.children[len])) {
+          select.prepend(this.host.children[len]);
+        }
+        else {
+          // skip select element
+          got = true;
+        }
       }
     }
 
-    if (this.value) {
-      select.value = this.value.toString();
+    let currOpt = select.getElementsByTagName('option')[select.selectedIndex || 0];
+    this.displayedValue = currOpt?.textContent || currOpt.value || '';
+    if (!this.value) {
+      this.value = currOpt.value;
     }
 
-    this.valueDisplay = select.getElementsByTagName('option')[select.selectedIndex || 0]?.textContent || select.value || '';
     select.addEventListener('change', () => {
       if (select.value !== this.value) {
         this.value = select.value || '';
@@ -51,25 +62,20 @@ export class SuiSelect {
     for (const [key, value] of Object.entries({
       // set important styles
       // these value should not be editable
-      background: 'transparent',
+      'background': 'transparent',
       'box-sizing': 'border-box',
-      border: 'none',
-      display: 'block',
+      'border': 'none',
+      'display': 'block',
       'font-size': 'inherit',
-      'line-height': '1.2',
+      'line-height': 'inherit',
       '-webkit-appearance': 'none',
       '-moz-appearance': 'none',
       'appearance': 'none',
-      'cursor': this.isMultiple ? 'default' : 'pointer'
+      'cursor': this.multiple ? 'default' : 'pointer'
     })) {
       select.style.setProperty(key, value, 'important');
     }
 
-    if (!this.isMultiple) {
-      // select.style.setProperty('color', 'rgba(0 0 0 / 0%)');
-    }
-
-    this.host.append(select);
     return select;
   })();
 
@@ -81,10 +87,9 @@ export class SuiSelect {
 
   componentDidLoad() {
     dummyHandler.bind(this)({
-      computedStyle: window.getComputedStyle(this.host),
-      copyStyle: (hostCss: CSSStyleDeclaration) => {
+      // bounceEvents: ['blur', 'change', 'focus', 'invalid', 'input', 'contextmenu', 'reset', 'select', 'submit', 'keydown', 'keypress', 'keyup'],
+      mirrorStyle: (hostCss: CSSStyleDeclaration) => {
         this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
-
         // make text input fill the host
         let needAdjustment = false;
         let padding = [
@@ -100,7 +105,7 @@ export class SuiSelect {
           return val;
         });
 
-        if (!this.isMultiple) {
+        if (!this.multiple) {
           this.el.style.setProperty('opacity', '0', 'important');
         }
 
@@ -110,67 +115,41 @@ export class SuiSelect {
         }
 
         if (padding[0] || padding[2]) {
-          this.topPadding = `${padding[0]}px`;
           this.el.style.setProperty('height', `calc(100% + ${padding[0]}px + ${padding[2]}px)`, 'important');
         }
 
-        else if (!this.isMultiple) {
+        else if (!this.multiple) {
           this.el.style.setProperty('height', hostCss['height'], 'important');
         }
 
         if (padding[1] || padding[3]) {
-          this.leftPadding = `${padding[3]}px`;
-          this.rightPadding = `${padding[1]}px`;
-          this.el.style.setProperty('width', `calc(100% + ${this.leftPadding} + ${this.rightPadding})`, 'important');
+          let leftPadding = `${padding[3]}px`;
+          let rightPadding = `${padding[1]}px`;
+          this.el.style.setProperty('width', `calc(100% + ${leftPadding} + ${rightPadding})`, 'important');
         }
 
         this.el.style.setProperty('padding', hostCss['padding'], 'important');
         this.el.style.setProperty('margin',
           padding.map(p => {
-            return p ? `-${p}px` : '0px';
+            return p ? `-${p - (this.multiple ? 2 : 0)}px` : '0px';
           }).join(' '), 'important');
       },
-      appendIdToSlotElement: true,
-      attCallback: (name: string, val: any) => {
-        if (name === 'disabled') {
-          if (val === null || val === false || val === 'false') {
-            this.el.removeAttribute('disabled');
-          }
-          else {
-            this.el.setAttribute('disabled', '');
-          }
-          return 1;
-        }
-        else {
-          return 0;
-        }
-      },
-      excludeAttribute: this.isMultiple ? ['value'] : ['size', 'value'] // size attribute should not work for multiple select
+      excludeAttribute: ['aria-role', 'value']
     });
-    cloneEvents(this.el);
 
     // dispatch mounted event when finished loading
-    this.el.dispatchEvent(new CustomEvent('mounted'));
+    this.host.dispatchEvent(new CustomEvent('mounted'));
   }
-
-  // disconnectedCallback() {
-  //   // save memory by disconnecting mutation watch
-  //   if (this.observer) {
-  //     this.observer.disconnect();
-  //   }
-  //   // remove dummy element
-  //   this.el.remove();
-  // }
 
   render() {
     return (
-      <Host>
+      <Host aria-role='select' disabled={this.disabled} required={this.required} value={this.value}>
         <div>
-          <svg style={{ display: this.isMultiple ? 'none' : 'block' }} fill="currentColor" viewBox="0 -100 700 700" xmlns="http://www.w3.org/2000/svg">
+          <svg style={{ display: this.multiple ? 'none' : 'block' }} fill="currentColor" viewBox="0 -100 700 700" xmlns="http://www.w3.org/2000/svg">
             <path d="m81.957 144.91 252.97 305.17c4.7695 5.293 10.496 7.9336 17.16 7.9336 6.1875 0 11.676-2.6445 16.438-7.9453l250.12-305.17c6.1875-8.4844 7.3984-17.746 3.5742-27.82-3.8008-10.051-10.703-15.094-20.727-15.094l-202.93 0.003906h-300.16c-9.5352 0-16.438 5.0391-20.727 15.094-3.8008 10.078-2.3672 19.355 4.2852 27.828z" />
           </svg>
-          <slot onSlotchange={()=>this.componentDidRender()}></slot>
-          <span data-selected={this.valueDisplay} style={{ display: this.isMultiple ? 'none' : 'flex', width: `calc(100% - ${this.isMultiple ? 0 : 0.75}em)` }}></span>
+          <slot onSlotchange={() => { this.componentDidRender(); }}></slot>
+          <span data-selected={this.displayedValue} style={{ display: this.multiple ? 'none' : 'flex', width: `calc(100% - ${this.multiple ? 0 : 0.75}em)` }}></span>
         </div>
       </Host>
     );

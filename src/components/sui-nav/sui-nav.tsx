@@ -2,7 +2,7 @@ import { Component, Host, h, Element, Prop } from '@stencil/core';
 
 @Component({
   tag: 'sui-nav',
-  styleUrl: 'sui-nav.scss',
+  styleUrl: 'sui-nav.css',
   shadow: true,
 })
 export class SuiNav {

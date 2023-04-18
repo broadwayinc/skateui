@@ -2,7 +2,7 @@ import { Component, Host, h, Element, Prop, Method } from '@stencil/core';
 import { cloneEvents, randomString, eventList } from '../../utils/utils';
 @Component({
   tag: 'sui-overlay',
-  styleUrl: 'sui-overlay.scss',
+  styleUrl: 'sui-overlay.css',
   shadow: true
 })
 export class SuiOverlay {

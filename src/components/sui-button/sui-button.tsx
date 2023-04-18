@@ -1,9 +1,9 @@
-import { Component, h, Element, Listen, Host } from '@stencil/core';
+import { Component, h, Element, Host, Listen, Prop } from '@stencil/core';
 import { dummyHandler } from '../../utils/utils';
 
 @Component({
   tag: 'sui-button',
-  styleUrl: 'sui-button.scss',
+  styleUrl: 'sui-button.css',
   shadow: true
 })
 export class SuiButton {
@@ -16,62 +16,51 @@ export class SuiButton {
 
   el = (() => {
     // element only needs to be created once, hence creating on class init
-    if (!this.host.hasAttribute('disabled')) {
-      this.host.setAttribute('tabindex', '0');
-    }
     const button = Object.assign(document.createElement('button'), { hidden: true });
-    if (!this.isFormButton) {
-      this.host.append(button);
-    }
     return button;
   })();
 
+  @Prop() disabled: boolean;
+
   @Listen('click')
   clickEventHandler() {
-    if (this.host.attributes.getNamedItem('disabled')) {
-      // does not trigger dummy when disabled
-      return;
-    }
     if (this.isFormButton) {
       this.host.parentElement.insertBefore(this.el, this.host);
       this.el.click();
       this.el.remove();
     }
   }
-  @Listen('keyup')
-  keyEventHandler(e) {
-    if (e.key === 'Enter') {
+
+  @Listen('keypress')
+  keyEventHandler(e: KeyboardEvent) {
+    let key = e.key.toLowerCase();
+    if (key === 'enter' || key === ' ') {
       // trigger click on enter
-      this.clickEventHandler();
+      e.preventDefault();
+      this.host.parentElement.insertBefore(this.el, this.host);
+      this.el.click();
+      this.el.remove();
     }
   }
 
   componentDidLoad() {
-    dummyHandler.bind(this)({ computedStyle: window.getComputedStyle(this.host) });
+    dummyHandler.bind(this)({
+      excludeAttribute: ['tabindex', 'aria-role']
+    });
 
-    // dispatch mounted event when finished loading
-    this.el.dispatchEvent(new CustomEvent('mounted'));
-  }
-
-  slotChanged() {
-    if(this.el && this.el.parentElement === null) {
-      this.host.append(this.el);
-    }
+    this.host.dispatchEvent(new CustomEvent('mounted'));
   }
 
   disconnectedCallback() {
-    // save memory by disconnecting mutation watch
     if (this.observer) {
       this.observer.disconnect();
     }
-    // remove dummy element
-    this.el.remove();
   }
 
   render() {
     return (
-      <Host>
-        <slot onSlotchange={()=>this.slotChanged()}></slot>
+      <Host tabindex='0' aria-role='button' disabled={this.disabled}>
+        <slot></slot>
       </Host>
     );
   }

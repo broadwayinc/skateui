@@ -15,12 +15,12 @@ export const eventList = [
   ,
   'beforeinput'
   ,
-  'beforematch'
-  ,
+  // 'beforematch'
+  // ,
   'beforepaste'
   ,
-  'beforexrselect'
-  ,
+  // 'beforexrselect'
+  // ,
   'blur'
   ,
   // 'cancel'
@@ -35,42 +35,42 @@ export const eventList = [
   ,
   // 'close'
   // ,
-  // 'contextlost'
-  // ,
-  // 'contextmenu'
-  // ,
-  // 'contextrestored'
-  // ,
+  'contextlost'
+  ,
+  'contextmenu'
+  ,
+  'contextrestored'
+  ,
   'copy'
   ,
   // 'cuechange'
   // ,
   'cut'
   ,
-  // 'dblclick'
-  // ,
-  // 'drag'
-  // ,
-  // 'dragend'
-  // ,
-  // 'dragenter'
-  // ,
-  // 'dragleave'
-  // ,
-  // 'dragover'
-  // ,
-  // 'dragstart'
-  // ,
-  // 'drop'
-  // ,
+  'dblclick'
+  ,
+  'drag'
+  ,
+  'dragend'
+  ,
+  'dragenter'
+  ,
+  'dragleave'
+  ,
+  'dragover'
+  ,
+  'dragstart'
+  ,
+  'drop'
+  ,
   // 'durationchange'
   // ,
   // 'emptied'
   // ,
   // 'ended'
   // ,
-  'error'
-  ,
+  // 'error'
+  // ,
   'focus'
   ,
   // 'formdata'
@@ -91,8 +91,8 @@ export const eventList = [
   ,
   'keyup'
   ,
-  'load'
-  ,
+  // 'load'
+  // ,
   // 'loadeddata'
   // ,
   // 'loadedmetadata'
@@ -103,10 +103,10 @@ export const eventList = [
   // ,
   'mousedown'
   ,
-  'mouseenter'
-  ,
-  'mouseleave'
-  ,
+  // 'mouseenter'
+  // ,
+  // 'mouseleave'
+  // ,
   'mousemove'
   ,
   'mouseout'
@@ -147,8 +147,8 @@ export const eventList = [
   // ,
   // 'ratechange'
   // ,
-  // 'reset'
-  // ,
+  'reset'
+  ,
   // 'resize'
   // ,
   'scroll'
@@ -163,22 +163,22 @@ export const eventList = [
   // ,
   'select'
   ,
-  'selectionchange'
-  ,
-  'selectstart'
-  ,
+  // 'selectionchange'
+  // ,
+  // 'selectstart'
+  // ,
   // 'slotchange'
   // ,
   // 'stalled'
   // ,
-  // 'submit'
-  // ,
+  'submit'
+  ,
   // 'suspend'
   // ,
   // 'timeupdate'
   // ,
-  'toggle'
-  ,
+  // 'toggle'
+  // ,
   // 'transitioncancel'
   // ,
   // 'transitionend'
@@ -206,7 +206,15 @@ export const eventList = [
   'wheel'
 ];
 
-export function cloneEvents(el: HTMLElement, options?: { bypass?: string[], dispatchTo?: HTMLElement, eventCallback?: { type: string; callback: (e: any) => any; }; }) {
+export function cloneEvents(
+  el: HTMLElement,
+  options?: {
+    bypass?: string[],
+    dispatchTo?: HTMLElement,
+    eventCallback?: { type: string; callback: (e: any) => any; };
+  }) {
+  // clone events to hidden el
+
   // callback
   let cb = null;
   let { dispatchTo = null, eventCallback = null, bypass = [] } = options || {};
@@ -277,76 +285,129 @@ export function randomString(length = 5) {
   return result;
 }
 
-export function dummyHandler(options: {
-  computedStyle?: CSSStyleDeclaration;
-  appendIdToSlotElement?: boolean;
-  excludeAttribute: string[];
-  copyStyle?: string[] | ((css: CSSStyleDeclaration) => any);
-  attCallback?: ((attName: string, value: string) => any);
-  excludeStyle?: string[];
+/**
+ * 
+ * Dummy handler copies all attribute to the hidden element.
+ * It is useful when dealing with input elements in forms.
+ */
+export function dummyHandler(options: any | {
+  moveIdToSlotElement?: boolean;
+  excludeAttribute?: string[];
+  mirrorStyle?: string[] | ((css: CSSStyleDeclaration) => any); // true mirrors all styles, use callback for fine tuning.
+  excludeStyle?: string[]; // excludes certain styles on mirrorStyle = true(mirror all) and on style attributes.
   trackNodes?: boolean | ((n: MutationRecord) => any);
   log?: boolean | ((l: { attributeName: string; newValue?: string; oldValue?: string; mutationRecord?: MutationRecord; }) => any);
-}): CSSStyleDeclaration {
+  mirrorEvents: boolean | string[] | Record<string, (e: Event) => any> | ((e: Event) => any);
+  excludeEvents: string[];
+  bounceEvents: boolean | string[] | Record<string, (e: Event) => any> | ((e: Event) => any);
+} = {}): { init: (fullInit: boolean) => void; } {
 
-  const { excludeStyle = [], computedStyle = null, excludeAttribute = [], trackNodes = false, log = false, copyStyle = null, appendIdToSlotElement = false } = options;
-  const hostStyle = computedStyle || (copyStyle ? getComputedStyle(this.host) : null);
+  const {
+    excludeStyle = [],
+    excludeAttribute = [],
+    trackNodes = false,
+    log = false,
+    mirrorStyle = null,
+    moveIdToSlotElement = false,
+    excludeEvents = [],
+    bounceEvents = false,
+    mirrorEvents = false
+  } = options || {};
 
-  excludeStyle.push(...['display', 'position', 'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height', 'font']);
+  excludeStyle.push(...['display', 'position', 'width', 'height', 'min-width', 'min-height', 'max-width', 'max-height', 'font', 'box-sizing']);
 
-  const setDummyAttribute = (attName: string, val: string) => {
-    const copyStyleBypass = [];
-
-    // styling
-    if (attName === 'style') {
-      let styleProps = val.split(';');
-      for (let s of styleProps) {
-        if (!s) {
-          continue;
+  const initEvents = () => {
+    if (mirrorEvents) {
+      // dispatch the host event to hidden this.el
+      let iter = (Array.isArray(mirrorEvents) && mirrorEvents.length ? mirrorEvents : eventList);
+      for (let name of iter) {
+        let cb;
+        if (typeof mirrorEvents === 'object' && Object.keys(mirrorEvents).length && !Array.isArray(mirrorEvents) && mirrorEvents.hasOwnProperty(name) && typeof mirrorEvents[name] === 'function') {
+          cb = mirrorEvents[name];
         }
-        let keyVal = s.split(':');
-        let val = keyVal[1].split('!');
-        if (!excludeStyle.includes(keyVal[0]) && (() => {
-          // exclude related styles ex) border-xxxx
-          for (let e of excludeStyle) {
-            if (e.includes(keyVal[0] + '-')) {
-              return false;
-            }
-          }
-          return true;
-        })() && CSS.supports(keyVal[0], val[0])) {
-          this.el.style.setProperty(keyVal[0], val[0], val[1] || null);
-
-          if (Array.isArray(copyStyle) && copyStyle.includes(keyVal[0])) {
-            // add to style copy bypass list
-            copyStyleBypass.push(keyVal[0]);
-          }
+        if (!excludeEvents.includes(name)) {
+          cb = cb || typeof mirrorEvents === 'function' ? mirrorEvents : (e: Event) => {
+            this.el.dispatchEvent(new Event(e.type, {
+              bubbles: false
+            }));
+          };
+          this.host.addEventListener(name, cb, { passive: name.includes('scroll') || name.includes('wheel') });
         }
       }
     }
 
-    else if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
-      // skip 'hidden' | 'class' | 'id' | excluded list
+    if (bounceEvents) {
+      // dispatch the host event to hidden this.el
+      let iter = (Array.isArray(bounceEvents) && bounceEvents.length ? bounceEvents : eventList);
+
+      for (let name of iter) {
+        let cb;
+        if (typeof bounceEvents === 'object' && Object.keys(bounceEvents).length && !Array.isArray(bounceEvents) && bounceEvents.hasOwnProperty(name) && typeof bounceEvents[name] === 'function') {
+          cb = bounceEvents[name];
+        }
+        cb = cb || typeof bounceEvents === 'function' ? bounceEvents : (e: Event) => {
+          if (!e.bubbles) {
+            this.host.dispatchEvent(new Event(e.type, {
+              bubbles: true
+            }));
+          }
+        };
+        this.el.addEventListener(name, cb);
+      }
+    }
+  };
+
+  const setDummyAttribute = (attName: string, val: string) => {
+    if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
+      // skip settings 'hidden' | 'class' | 'id' | excluded attribute list
 
       let cb: undefined | boolean | number;
-      if (typeof options.attCallback === 'function') {
-        cb = options.attCallback(attName, val);
-      }
-
+      // setAttribute is hijacked if there is return
       if (!cb) {
         this.el.setAttribute(attName, val);
         // attribute update callback
       }
     }
 
-    if (copyStyle) {
-      if (typeof copyStyle === 'function') {
-        copyStyle(hostStyle);
+    if (mirrorStyle) {
+      const mirrorStyleBypass = [];
+      // mirror styling
+      if (attName === 'style') {
+        let styleProps = val.split(';');
+        for (let s of styleProps) {
+          if (!s) {
+            continue;
+          }
+          let keyVal = s.split(':');
+          let val = keyVal[1].split('!');
+          if (!excludeStyle.includes(keyVal[0]) && (() => {
+            // exclude related styles ex) border-xxxx
+            for (let e of excludeStyle) {
+              if (e.includes(keyVal[0] + '-')) {
+                return false;
+              }
+            }
+            return true;
+          })() && CSS.supports(keyVal[0], val[0])) {
+            this.el.style.setProperty(keyVal[0], val[0], val[1] || null);
+
+            if (Array.isArray(mirrorStyle) && mirrorStyle.includes(keyVal[0])) {
+              // add to style copy bypass list
+              mirrorStyleBypass.push(keyVal[0]);
+            }
+          }
+        }
+      }
+
+      let hostStyle = getComputedStyle(this.host);
+      if (typeof mirrorStyle === 'function') {
+        mirrorStyle(hostStyle);
       }
 
       else {
         // copy css styles
-        for (let s of copyStyle) {
-          if (!copyStyleBypass.includes(s)) {
+        for (let s of mirrorStyle) {
+          if (!mirrorStyleBypass.includes(s)) {
             if (!excludeStyle.includes(s) && (() => {
               // exclude related styles ex) border-xxxx
               for (let e of excludeStyle) {
@@ -364,72 +425,90 @@ export function dummyHandler(options: {
     }
   };
 
-  const hostAttributes = getElementAttributes(this.host.attributes);
-
-  for (let attName in hostAttributes) {
-    if (attName.substring(0, 2) !== 'on') {
-      setDummyAttribute(attName, hostAttributes[attName]);
-    }
-    if (attName === 'id' && appendIdToSlotElement) {
-      this.el.setAttribute(attName, hostAttributes[attName]);
-      this.host.removeAttribute(attName);
-    }
-    if (attName === 'autofocus') {
-      // auto focus
-      this.host.focus();
-    }
-  }
-
-  this.observer = new MutationObserver((mutations) => {
-    let logger = (l) => {
-      if (!log) {
-        return;
-      }
-
-      if (typeof log === 'boolean') {
-        return console.log(l);
-      }
-
-      if (typeof log === 'function') {
-        return log(l);
-      }
-    };
-
-    for (let m of mutations) {
-      let attributeName = m.attributeName;
-      if (!attributeName && trackNodes) {
-        if (typeof trackNodes === 'function') {
-          logger({ attributeName, mutationRecord: m });
-          trackNodes(m);
+  const observe = () => {
+    this.observer = new MutationObserver((mutations) => {
+      let logger = (l: any) => {
+        if (!log) {
+          return;
         }
-        continue;
+
+        if (typeof log === 'boolean') {
+          return console.log(l);
+        }
+
+        if (typeof log === 'function') {
+          return log(l);
+        }
+      };
+
+      for (let m of mutations) {
+        let attributeName = m.attributeName;
+        if (!attributeName && trackNodes) {
+          if (typeof trackNodes === 'function') {
+            logger({ attributeName, mutationRecord: m });
+            trackNodes(m);
+          }
+          continue;
+        }
+
+        let newValue = (m.target as HTMLElement).getAttribute(attributeName);
+        let oldValue = m.oldValue;
+
+        if (newValue === oldValue) {
+          // skip same values
+          continue;
+        }
+        logger({ attributeName, newValue, oldValue });
+        // ! do not change the order of execution below !
+
+        if (newValue === null) {
+          // attribute is removed
+          this.el.removeAttribute(attributeName);
+          continue;
+        }
+
+        setDummyAttribute(attributeName, newValue);
       }
+    });
 
-      let newValue = (m.target as HTMLElement).getAttribute(attributeName);
-      let oldValue = m.oldValue;
+    this.observer.observe(this.host, {
+      attributes: true,
+      attributeOldValue: true,
+      childList: !!trackNodes
+    });
+  };
 
-      if (newValue === oldValue) {
-        // skip same values
-        continue;
-      }
-      logger({ attributeName, newValue, oldValue });
-      // ! do not change the order of execution below !
-
-      if (newValue === null) {
-        // attribute is removed
-        this.el.removeAttribute(attributeName);
-        continue;
-      }
-
-      setDummyAttribute(attributeName, newValue);
+  const init = (fullInit: boolean = false) => {
+    if (fullInit) {
+      initEvents();
     }
-  });
 
-  this.observer.observe(this.host, {
-    attributes: true,
-    attributeOldValue: true,
-    childList: !!trackNodes
-  });
+    // attribute setup on load
+    const hostAttributes = getElementAttributes(this.host.attributes);
 
-  return hostStyle;
+    for (let attName in hostAttributes) {
+      if (attName.substring(0, 2) !== 'on') {
+        // skip onevent attributes
+        setDummyAttribute(attName, hostAttributes[attName]);
+      }
+
+      if (attName === 'id' && moveIdToSlotElement) {
+        // move id attribute to this.el if allowed
+        this.el.setAttribute(attName, hostAttributes[attName]);
+        this.host.removeAttribute(attName);
+      }
+
+      if (attName === 'autofocus') {
+        // auto focus on load
+        this.host.focus();
+      }
+    }
+
+    if (fullInit) {
+      observe();
+    }
+  };
+
+  init(true);
+  return { init };
 }
