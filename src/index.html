@@ -35,7 +35,6 @@
         - working on live reloads.
       
       but when refreshed, the quirks will go away.
-    - Form reset will not reset the input radio/checkbox status
 
   </pre>
     <hr>
@@ -387,6 +386,10 @@
   sui-input.input-checkbox {
     color: red;
     border-radius: 100%;
+  }
+
+  sui-input.input-checkbox:focus {
+    outline-color: green;
   }
 
   sui-input.input-checkbox[checked] {
