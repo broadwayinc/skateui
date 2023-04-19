@@ -11,12 +11,8 @@
 
 ### Known quirks
 - In safari, outline does not follow border radius.
-<!-- - In fireFox, outline does not follow border radius on inline-table elements. -->
-<!-- - Safari makes cursor to text cursor when element is clicked. -->
-<!-- - FireFox does not display sui-select option element text value as vertically aligned middle when using min-height. -->
 - Chrome on linux use text color for input focus outline.
-- skateui use getComputedStyle and mutationobserver internally.
-    when developing, depending on the os/browser, there can be some minor quirks when:
+- skateui use MutationObserver internally. When developing, depending on the os/browser, there can be some minor quirks when:
     - trying to modify css styles directly from developers panel in web browsers.
     - working on live reloads in SPA development.
     
