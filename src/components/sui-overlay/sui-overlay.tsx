@@ -141,14 +141,18 @@ export class SuiOverlay {
     if (wait) {
       setTimeout(() => {
         removeEl();
-        screen.remove();
+        if (screen) {
+          screen.remove();
+        }
         cb();
       }, wait);
     }
     else {
       // close popup
       removeEl();
-      screen.remove();
+      if (screen) {
+        screen.remove();
+      }
     }
 
     this.overlayId = null;

@@ -1,8 +1,27 @@
 # Skate UI
 
-Skate UI is a UI component for HTML.
+## Objective:
+- UI component 100% compatible with vanilla HTML.
+- All HTML attributes should be functional.
+- Style should be easily customizable via css without implementing additional custom attributes.
 
-Skate UI is designed to be compatible with HTML attributes and CSS customizable.
+## Notes
+- skateui component is reactive to font-size. this was an intended decision.
+- skateui has shallow bevels on most components. If you are not a fan of the looks, set css box-shadow to none.
+
+### Known quirks
+- In safari, outline does not follow border radius.
+<!-- - In fireFox, outline does not follow border radius on inline-table elements. -->
+<!-- - Safari makes cursor to text cursor when element is clicked. -->
+<!-- - FireFox does not display sui-select option element text value as vertically aligned middle when using min-height. -->
+- Chrome on linux use text color for input focus outline.
+- skateui use getComputedStyle and mutationobserver internally.
+    when developing, depending on the os/browser, there can be some minor quirks when:
+    - trying to modify css styles directly from developers panel in web browsers.
+    - working on live reloads in SPA development.
+    
+    but when refreshed, the quirks will go away.
+
 
 ## Example
 
@@ -13,31 +32,39 @@ Skate UI is designed to be compatible with HTML attributes and CSS customizable.
     <script type='module' src="https://cdn.jsdelivr.net/npm/skateui@latest/dist/skateui/skateui.esm.js"></script>
 </head>
 
-<body>
+<body style="margin:0;">
     <!-- You can now use skateui components -->
-    <sui-nav>Skate UI</sui-nav>
-    <sui-overlay id="ovrly" onclick="this.close()">
+    <sui-nav style='padding: .5em;background-color:blue;color:white'>
+        <h2>Skate Navbar</h2>
+    </sui-nav>
+
+    <sui-overlay id="overlay" onclick="this.close()">
         <div style="background-color:antiquewhite;border: solid 4px black;padding:1em;">
-            <h1>Skate UI</h1>
+            <h1>Hello Skate UI</h1>
         </div>
     </sui-overlay>
-    <sui-button onclick="ovrly.open()">Skate UI</sui-button>
-    <br>
-    <sui-input value="Skate UI"></sui-input>
-    <br>
+    
+    <br><br>
+    
+    <sui-button onclick="overlay.open()">Skate Button</sui-button>
+
+    <br><br>
+
+    <sui-input value='Skate Input'></sui-input>
+
+    <br><br>
+
     <sui-select>
-        <option value="skateui">Skate UI</option>
+        <option value="skateui">Skate Selector</option>
     </sui-select>
-    <br>
-    <sui-textarea>Skate UI</sui-textarea>
-    <br>
-    <sui-tooltip>
-        <div slot='tool'
-            style="width: 2em;height:2em;background-color:black;color:white;font-size:1.5;font-weight: bold;display: flex;align-items: center;justify-content: center;">
-            ?</div>
-        <div slot='tip' style="background-color:blue;color:white;padding:1em;">
-            <p style="margin:0;">Skate UI</p>
-        </div>
-    </sui-tooltip>
+
+    <br><br>
+
+    <sui-textarea placeholder="Skate Textarea"></sui-textarea>
 </body>
 ```
+<!-- 
+```js
+import { defineCustomElements } from 'skateui/loader';
+defineCustomElements(window);
+``` -->

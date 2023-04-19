@@ -10,7 +10,7 @@ export class SuiInput {
   @Element() host: HTMLElement;
   @Prop() value: any;
   @Prop() disabled: boolean = false;
-  @Prop({ mutable: true }) checked: boolean = false;
+  @Prop({ mutable: true }) checked: boolean | null = false;
   @Prop() required: boolean = false;
   @Prop() type: string = 'text';
   @Watch('type')
@@ -39,33 +39,50 @@ export class SuiInput {
 
   slotName: string = randomString();
   inputType: 'button' | 'checker' | 'input' = 'input';
+
+  @Prop()
+  checkedDefault = this.checked;
+
   dispatchClick = () => {
     this.el.dispatchEvent(new MouseEvent('click', { bubbles: false }));
   };
-  @Listen('click')
-  clickEventHandler() {
-    if (this.inputType === 'button') {
-      this.host.parentElement.insertBefore(this.el, this.host);
-      this.el.click();
-      this.el.remove();
-    }
-    else if (this.inputType === 'checker') {
-      this.dispatchClick();
-    }
-  }
 
-  @Listen('keypress')
-  keyEventHandler(e: KeyboardEvent) {
-    let key = e.key.toLowerCase();
-    if (key === 'enter' || key === ' ') {
-      e.preventDefault();
+  hasLabelParent = (() => {
+    // prevents doubble event caused by label click
+    return this.host.closest('label');
+  })();
+
+  @Listen('click')
+  clickEventHandler(e: Event) {
+    if (!(e.target instanceof HTMLInputElement)) {
       if (this.inputType === 'button') {
         this.host.parentElement.insertBefore(this.el, this.host);
         this.el.click();
         this.el.remove();
       }
-      else if (this.inputType === 'checker') {
+      else if (this.inputType === 'checker' && !this.hasLabelParent) {
         this.dispatchClick();
+      }
+    }
+  }
+
+  @Listen('keypress')
+  keyEventHandler(e: KeyboardEvent) {
+    if (this.inputType === 'input') {
+      return;
+    }
+    if (!(e.target instanceof HTMLInputElement)) {
+      let key = e.key.toLowerCase();
+      if (key === 'enter' || key === ' ') {
+        e.preventDefault();
+        if (this.inputType === 'button') {
+          this.host.parentElement.insertBefore(this.el, this.host);
+          this.el.click();
+          this.el.remove();
+        }
+        else if (this.inputType === 'checker') {
+          this.dispatchClick();
+        }
       }
     }
   }
@@ -93,13 +110,26 @@ export class SuiInput {
     if (this.inputType === 'button') {
       // hidden
       input.setAttribute('hidden', '');
+      if (this.type === 'reset') {
+        input.addEventListener('click', () => {
+          // manual reset for checked type inputs
+          let form = this.host.closest('form');
+          let radios = form.querySelectorAll('sui-input[type="radio"]');
+          radios.forEach((el: any) => {
+            el.checked = el.checkedDefault;
+          });
+          let checkbox = form.querySelectorAll('sui-input[type="checkbox"]');
+          checkbox.forEach((el: any) => {
+            el.checked = el.checkedDefault;
+          });
+        });
+      }
       return input;
     }
 
     else if (this.inputType === 'checker') {
       // hidden
       input.setAttribute('hidden', '');
-
       input.addEventListener('change', e => {
         this.checked = (e.target as HTMLInputElement).checked;
         // keep track of checked, update dom
@@ -110,9 +140,10 @@ export class SuiInput {
             if (
               (radios[i] instanceof HTMLInputElement) &&
               radios[i].getAttribute('type') === 'radio' &&
-              radios[i] !== e.target
+              !radios[i].isSameNode(input)
             ) {
-              radios[i].parentElement.removeAttribute('checked');
+              // radios[i].parentElement.removeAttribute('checked');
+              (radios[i].parentElement as any).checked = false;
             }
           }
         }
@@ -131,9 +162,9 @@ export class SuiInput {
   dummyHandle;
   componentDidLoad() {
     this.dummyHandle = dummyHandler.bind(this)({
-      bounceEvents: this.inputType === 'checker' ? ['blur', 'change', 'focus', 'invalid', 'input'] : null,
+      // bounceEvents: this.inputType === 'checker' ? ['blur', 'change', 'focus', 'invalid', 'input'] : null,
       excludeStyle: ['border', 'margin', 'padding', 'max', 'min'],
-      mirrorStyle: this.inputType === 'checker' ? null : this.inputType === 'input' ? (hostCss: CSSStyleDeclaration) => {
+      mirrorStyle: this.inputType === 'input' ? (hostCss: CSSStyleDeclaration) => {
         this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
 
         for (const [key, value] of Object.entries({
@@ -183,13 +214,19 @@ export class SuiInput {
     this.host.dispatchEvent(new CustomEvent('mounted'));
   }
 
+  disconnectedCallback() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+  
   render() {
     return (
       <Host tabindex={this.inputType === 'input' ? null : '0'} aria-role='input' disabled={this.disabled} required={this.required} value={this.value} type={this.type || 'text'} checked={this.checked}>
         <svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24" fill="currentColor">
           <polygon points="9.32,19.57 2.22,12.48 4.91,9.79 9.32,14.2 19.09,4.43 21.78,7.11     " />
         </svg>
-        <slot name={this.slotName} onSlotchange={() => { this.componentDidRender(); this.dummyHandle.init(); }}></slot>
+        <slot name={this.slotName} onSlotchange={() => { this.componentDidRender(); /* this.dummyHandle.init(); */ }}></slot>
         <span button-text={this.inputType === 'button' ? true : null}>
           {this.inputType === 'button' ? this.value || (this.type === 'submit' ? 'Submit' : 'Reset') : ''}
         </span>

@@ -24,10 +24,7 @@ export class SuiSelect {
   @Prop() required: boolean;
   @Prop() multiple: boolean;
 
-  @Prop()
-  el = (() => {
-    const select = document.createElement('select');
-    select.setAttribute('tabindex', '0');
+  initEl = (select = this.el) => {
     if (this.host.children.length) {
       let len = this.host.children.length;
       let got = false;
@@ -46,13 +43,25 @@ export class SuiSelect {
         }
       }
     }
-
-    let currOpt = select.getElementsByTagName('option')[select.selectedIndex || 0];
-    this.displayedValue = currOpt?.textContent || currOpt.value || '';
-    if (!this.value) {
+    let currOpt;
+    if (this.value) {
+      // set select value
+      select.value = this.value;
+      currOpt = select.getElementsByTagName('option')[select.selectedIndex || 0]; // get current selected option
+    }
+    else {
+      // set select default value
+      currOpt = select.getElementsByTagName('option')[select.selectedIndex || 0]; // get current selected option
       this.value = currOpt.value;
     }
 
+    this.displayedValue = currOpt?.textContent || currOpt.value || ''; // set value display
+  };
+  @Prop()
+  el = (() => {
+    const select = document.createElement('select');
+    select.setAttribute('tabindex', '0');
+    this.initEl(select);
     select.addEventListener('change', () => {
       if (select.value !== this.value) {
         this.value = select.value || '';
@@ -134,11 +143,17 @@ export class SuiSelect {
             return p ? `-${p - (this.multiple ? 2 : 0)}px` : '0px';
           }).join(' '), 'important');
       },
-      excludeAttribute: ['aria-role', 'value']
+      excludeAttribute: ['aria-role', 'value', 'tabindex']
     });
 
     // dispatch mounted event when finished loading
     this.host.dispatchEvent(new CustomEvent('mounted'));
+  }
+
+  disconnectedCallback() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
   }
 
   render() {
@@ -148,7 +163,7 @@ export class SuiSelect {
           <svg style={{ display: this.multiple ? 'none' : 'block' }} fill="currentColor" viewBox="0 -100 700 700" xmlns="http://www.w3.org/2000/svg">
             <path d="m81.957 144.91 252.97 305.17c4.7695 5.293 10.496 7.9336 17.16 7.9336 6.1875 0 11.676-2.6445 16.438-7.9453l250.12-305.17c6.1875-8.4844 7.3984-17.746 3.5742-27.82-3.8008-10.051-10.703-15.094-20.727-15.094l-202.93 0.003906h-300.16c-9.5352 0-16.438 5.0391-20.727 15.094-3.8008 10.078-2.3672 19.355 4.2852 27.828z" />
           </svg>
-          <slot onSlotchange={() => { this.componentDidRender(); }}></slot>
+          <slot onSlotchange={() => { this.initEl(); this.componentDidRender(); }}></slot>
           <span data-selected={this.displayedValue} style={{ display: this.multiple ? 'none' : 'flex', width: `calc(100% - ${this.multiple ? 0 : 0.75}em)` }}></span>
         </div>
       </Host>

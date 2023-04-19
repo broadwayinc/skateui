@@ -360,13 +360,7 @@ export function dummyHandler(options: any | {
   const setDummyAttribute = (attName: string, val: string) => {
     if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
       // skip settings 'hidden' | 'class' | 'id' | excluded attribute list
-
-      let cb: undefined | boolean | number;
-      // setAttribute is hijacked if there is return
-      if (!cb) {
-        this.el.setAttribute(attName, val);
-        // attribute update callback
-      }
+      this.el.setAttribute(attName, val);
     }
 
     if (mirrorStyle) {
@@ -453,7 +447,6 @@ export function dummyHandler(options: any | {
 
         let newValue = (m.target as HTMLElement).getAttribute(attributeName);
         let oldValue = m.oldValue;
-
         if (newValue === oldValue) {
           // skip same values
           continue;

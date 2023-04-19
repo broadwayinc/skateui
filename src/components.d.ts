@@ -14,7 +14,8 @@ export namespace Components {
         "minSize": number;
     }
     interface SuiInput {
-        "checked": boolean;
+        "checked": boolean | null;
+        "checkedDefault": boolean;
         "disabled": boolean;
         "el": HTMLInputElement;
         "required": boolean;
@@ -114,7 +115,8 @@ declare namespace LocalJSX {
         "minSize"?: number;
     }
     interface SuiInput {
-        "checked"?: boolean;
+        "checked"?: boolean | null;
+        "checkedDefault"?: boolean;
         "disabled"?: boolean;
         "el"?: HTMLInputElement;
         "required"?: boolean;

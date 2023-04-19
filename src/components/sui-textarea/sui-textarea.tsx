@@ -85,6 +85,12 @@ export class SuiTextarea {
     this.host.dispatchEvent(new CustomEvent('mounted'));
   }
 
+  disconnectedCallback() {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+
   render() {
     return (
       <Host disabled={this.disabled}>
