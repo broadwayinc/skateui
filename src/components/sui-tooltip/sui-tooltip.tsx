@@ -1,4 +1,4 @@
-import { Component, Host, h, Listen, State } from '@stencil/core';
+import { Component, Element, Host, h, Listen, State } from '@stencil/core';
 
 @Component({
   tag: 'sui-tooltip',
@@ -6,51 +6,53 @@ import { Component, Host, h, Listen, State } from '@stencil/core';
   shadow: true
 })
 export class SuiTooltip {
-  maxWidth = '100vw';
+  @Element() host: HTMLElement;
 
   @State()
-  classNames = 'sui-tooltip';
+  maxWidth = '100vw';
+  @State()
+  classNames = '';
   @State()
   tipBackgroundColor = 'transparent';
 
   @Listen('mouseenter')
-  setPosition(e) {
+  setPosition(e: MouseEvent) {
     let y = window.innerHeight / 2;
     let x = window.innerWidth / 2;
     let isBottom = e.clientY < y;
     let isLeft = e.clientX > x;
 
-    this.classNames = 'sui-tooltip';
+    this.classNames = '';
 
     if (isBottom) {
       this.classNames += ' bottom';
-    };
+    }
+    else {
+      this.classNames += ' top';
+    }
 
     if (isLeft) {
       this.classNames += ' left';
-      this.maxWidth = `${e.clientX}px`;
+      this.maxWidth = `${e.clientX - 16}px`;
     }
     else {
-      this.maxWidth = `${window.innerWidth - e.clientX}px`;
+      this.classNames += ' right';
+      this.maxWidth = `${window.innerWidth - e.clientX - 16}px`;
     }
 
-    let tip = e.target.querySelectorAll('[slot="tip"]');
-    if (isBottom) {
-      this.tipBackgroundColor = window.getComputedStyle(tip[0]).getPropertyValue('background-color');
-    }
-    else {
-      this.tipBackgroundColor = window.getComputedStyle(tip[tip.length - 1]).getPropertyValue('background-color');
-    }
+    let tip = this.host.querySelectorAll('[slot="tip"]');
+    this.tipBackgroundColor = window.getComputedStyle(tip[0]).getPropertyValue('background-color');
   }
   render() {
     return (
       <Host>
-        <div class={this.classNames}>
+        <div class={'sui-tooltip' + this.classNames}>
           <div class='sui-tool'>
             <slot name='tool' />
-          </div>
-          <div class='sui-tip' style={{ '--tip-max-width': this.maxWidth, '--tip-background-color': this.tipBackgroundColor }}>
-            <slot name='tip' />
+            <div class='sui-tip' style={{ '--tip-max-width': this.maxWidth, '--tip-background-color': this.tipBackgroundColor }}>
+              <slot name='tip' />
+            </div>
+            <div class={'tip-arrow' + this.classNames} style={{ '--tip-background-color': this.tipBackgroundColor }}></div>
           </div>
         </div>
       </Host>
