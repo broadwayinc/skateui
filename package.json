@@ -1,6 +1,6 @@
 {
   "name": "skateui",
-  "version": "0.1.136",
+  "version": "0.1.137",
   "description": "Vanilla HTML compatible custom UI components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -19,6 +19,7 @@
     "loader/"
   ],
   "scripts": {
+    "deploy": "git pull;npm run build;npm publish;curl \"https://purge.jsdelivr.net/npm/skateui@latest/dist/skateui/skateui.esm.js\"",
     "build": "stencil build --docs",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
