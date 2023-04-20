@@ -228,7 +228,7 @@ export class SuiInput {
 
   render() {
     return (
-      <Host tabindex={this.inputType === 'input' ? null : this.disabled ? '0' : null} aria-role='input' disabled={this.disabled} required={this.required} value={this.value} type={this.type || 'text'} checked={this.checked}>
+      <Host tabindex={this.inputType === 'input' ? null : this.disabled ? null : '0'} aria-role='input' disabled={this.disabled} required={this.required} value={this.value} type={this.type || 'text'} checked={this.checked}>
         <svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24" fill="currentColor">
           <polygon points="9.32,19.57 2.22,12.48 4.91,9.79 9.32,14.2 19.09,4.43 21.78,7.11     " />
         </svg>

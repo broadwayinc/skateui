@@ -67,7 +67,7 @@ export class SuiButton {
 
   render() {
     return (
-      <Host tabindex={this.disabled ? '0' : null} aria-role='button' disabled={this.disabled}>
+      <Host tabindex={this.disabled ? null : '0'} aria-role='button' disabled={this.disabled}>
         <slot></slot>
       </Host>
     );
