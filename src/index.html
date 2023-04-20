@@ -95,7 +95,7 @@
       </sui-input>
       <br><br>
       <label for="sui-input-checkbox">Checkbox</label>
-      <sui-input id='sui-input-checkbox' name="sui-input-checkbox" type="checkbox" value="checkbox" checked></sui-input>
+      <sui-input id='sui-input-checkbox' name="sui-input-checkbox" type="checkbox" value="checkbox" checked disabled></sui-input>
       <br><br>
       <label for="sui-input-checkbox-styled">Checkbox Styled</label>
       <sui-input id='sui-input-checkbox-styled' class='input-checkbox' name="sui-input-checkbox-styled" type="checkbox"
@@ -341,6 +341,11 @@
 
   sui-button {
     margin-bottom: 8px;
+    height: 200px;
+  }
+
+  sui-select {
+    height: 200px;
   }
 
   sui-button.outline {
@@ -370,6 +375,8 @@
 
   sui-input.sui-input-styled {
     color: rgba(0, 0, 0, 0.65);
+    height: 200px;
+    border: 4px red solid;
   }
 
   sui-input.sui-input-styled input::placeholder {

@@ -124,7 +124,7 @@ export class SuiSelect {
         }
 
         if (padding[0] || padding[2]) {
-          this.el.style.setProperty('height', `calc(100% + ${padding[0]}px + ${padding[2]}px)`, 'important');
+          this.el.style.setProperty('height', `calc(${hostCss['height']} + ${padding[0]}px + ${padding[2]}px)`, 'important');
         }
 
         else if (!this.multiple) {

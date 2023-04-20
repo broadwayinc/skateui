@@ -358,7 +358,7 @@ export function dummyHandler(options: any | {
   };
 
   const setDummyAttribute = (attName: string, val: string) => {
-    if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && !excludeAttribute.includes(attName)) {
+    if (attName !== 'hidden' && attName !== 'class' && attName !== 'id' && attName !== 'style' && !excludeAttribute.includes(attName)) {
       // skip settings 'hidden' | 'class' | 'id' | excluded attribute list
       this.el.setAttribute(attName, val);
     }
@@ -366,7 +366,7 @@ export function dummyHandler(options: any | {
     if (mirrorStyle) {
       const mirrorStyleBypass = [];
       // mirror styling
-      if (attName === 'style') {
+      if (attName === 'style' && mirrorStyle === true) {
         let styleProps = val.split(';');
         for (let s of styleProps) {
           if (!s) {
@@ -395,24 +395,23 @@ export function dummyHandler(options: any | {
 
       let hostStyle = getComputedStyle(this.host);
       if (typeof mirrorStyle === 'function') {
-        mirrorStyle(hostStyle);
+        // callback
+        return mirrorStyle(hostStyle);
       }
 
-      else {
-        // copy css styles
-        for (let s of mirrorStyle) {
-          if (!mirrorStyleBypass.includes(s)) {
-            if (!excludeStyle.includes(s) && (() => {
-              // exclude related styles ex) border-xxxx
-              for (let e of excludeStyle) {
-                if (e.includes(s + '-')) {
-                  return false;
-                }
+      // copy css styles
+      for (let s of mirrorStyle) {
+        if (!mirrorStyleBypass.includes(s)) {
+          if (!excludeStyle.includes(s) && (() => {
+            // exclude related styles ex) border-xxxx
+            for (let e of excludeStyle) {
+              if (e.includes(s + '-')) {
+                return false;
               }
-              return true;
-            })() && CSS.supports(s, hostStyle[s])) {
-              this.el.style.setProperty(s, hostStyle[s]);
             }
+            return true;
+          })() && CSS.supports(s, hostStyle[s])) {
+            this.el.style.setProperty(s, hostStyle[s]);
           }
         }
       }

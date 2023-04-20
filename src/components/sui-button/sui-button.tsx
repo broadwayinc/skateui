@@ -24,6 +24,10 @@ export class SuiButton {
 
   @Listen('click')
   clickEventHandler() {
+    if (this.disabled) {
+      return;
+    }
+    
     if (this.isFormButton) {
       this.host.parentElement.insertBefore(this.el, this.host);
       this.el.click();
@@ -33,6 +37,10 @@ export class SuiButton {
 
   @Listen('keypress')
   keyEventHandler(e: KeyboardEvent) {
+    if (this.disabled) {
+      return;
+    }
+    
     let key = e.key.toLowerCase();
     if (key === 'enter' || key === ' ') {
       // trigger click on enter

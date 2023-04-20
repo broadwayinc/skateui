@@ -54,6 +54,10 @@ export class SuiInput {
 
   @Listen('click')
   clickEventHandler(e: Event) {
+    if (this.disabled) {
+      return;
+    }
+
     if (!(e.target instanceof HTMLInputElement)) {
       if (this.inputType === 'button') {
         this.host.parentElement.insertBefore(this.el, this.host);
@@ -68,6 +72,10 @@ export class SuiInput {
 
   @Listen('keypress')
   keyEventHandler(e: KeyboardEvent) {
+    if (this.disabled) {
+      return;
+    }
+
     if (this.inputType === 'input') {
       return;
     }
@@ -170,10 +178,12 @@ export class SuiInput {
         for (const [key, value] of Object.entries({
           // set important styles
           // these value should not be editable
-          'box-sizing': 'border-box',
+          'box-sizing': 'content-box',
           'display': 'block',
           'font-size': 'inherit',
-          'line-height': 'inherit'
+          'line-height': 'inherit',
+          'height': hostCss['height'],
+          'width': '100%'
         })) {
           this.el.style.setProperty(key, value, 'important');
         }
@@ -193,7 +203,7 @@ export class SuiInput {
           return val;
         });
 
-        this.el.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
+        // this.el.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
 
         if (!needAdjustment) {
           this.el.style.setProperty('padding', '0', 'important');
@@ -202,6 +212,7 @@ export class SuiInput {
         }
 
         this.el.style.setProperty('padding', hostCss['padding'], 'important');
+
         this.el.style.setProperty('margin',
           padding.map(p => {
             return p ? `-${p}px` : '0px';
@@ -219,7 +230,7 @@ export class SuiInput {
       this.observer.disconnect();
     }
   }
-  
+
   render() {
     return (
       <Host tabindex={this.inputType === 'input' ? null : '0'} aria-role='input' disabled={this.disabled} required={this.required} value={this.value} type={this.type || 'text'} checked={this.checked}>

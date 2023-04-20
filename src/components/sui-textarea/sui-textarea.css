@@ -52,7 +52,7 @@
     overflow: hidden;
     border: none;
     outline: none;
-    box-sizing: border-box;
+    box-sizing: content-box;
     background-color: transparent;
     color: inherit;
     display: block;
