@@ -171,52 +171,47 @@ export class SuiInput {
   componentDidLoad() {
     this.dummyHandle = dummyHandler.bind(this)({
       // bounceEvents: this.inputType === 'checker' ? ['blur', 'change', 'focus', 'invalid', 'input'] : null,
-      excludeStyle: ['border', 'margin', 'padding', 'max', 'min'],
+      excludeStyle: ['border', 'margin', 'padding', 'max', 'min', 'width', 'height'],
       mirrorStyle: this.inputType === 'input' ? (hostCss: CSSStyleDeclaration) => {
         this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
 
         for (const [key, value] of Object.entries({
           // set important styles
           // these value should not be editable
-          'box-sizing': 'content-box',
+          'box-sizing': 'border-box',
           'display': 'block',
           'font-size': 'inherit',
-          'line-height': 'inherit',
-          'height': hostCss['height'],
-          'width': '100%'
+          'line-height': 'inherit'
         })) {
           this.el.style.setProperty(key, value, 'important');
         }
 
         // make text input fill the host
-        let needAdjustment = false;
+
         let padding = [
           hostCss['padding-top'],
           hostCss['padding-right'],
           hostCss['padding-bottom'],
           hostCss['padding-left']
-        ].map(p => {
-          let val = Number(p.replace('px', ''));
-          if (val && !needAdjustment) {
-            needAdjustment = true;
-          }
-          return val;
-        });
+        ];
 
-        // this.el.style.setProperty('width', `calc(100% + ${padding[1]}px + ${padding[3]}px)`, 'important');
+        // make text input fill the host
+        if (hostCss['box-sizing'] === 'border-box') {
+          this.el.style.setProperty('width', `calc(100% + ${padding[1]} + ${padding[3]})`, 'important');
+          this.el.style.setProperty('height', `calc(${hostCss['height']} - ${hostCss['border-top-width']} - ${hostCss['border-bottom-width']})`);
+        }
 
-        if (!needAdjustment) {
-          this.el.style.setProperty('padding', '0', 'important');
-          this.el.style.setProperty('margin', '0', 'important');
-          return;
+        else {
+          this.el.style.setProperty('width', '100%');
+          this.el.style.setProperty('height', hostCss['height']);
         }
 
         this.el.style.setProperty('padding', hostCss['padding'], 'important');
-
         this.el.style.setProperty('margin',
           padding.map(p => {
-            return p ? `-${p}px` : '0px';
+            return `-${p}`;
           }).join(' '), 'important');
+
       } : null,
       excludeAttribute: ['tabindex', 'aria-role'],
       moveIdToSlotElement: this.inputType !== 'button'

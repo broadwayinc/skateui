@@ -95,7 +95,8 @@
       </sui-input>
       <br><br>
       <label for="sui-input-checkbox">Checkbox</label>
-      <sui-input id='sui-input-checkbox' name="sui-input-checkbox" type="checkbox" value="checkbox" checked disabled></sui-input>
+      <sui-input id='sui-input-checkbox' name="sui-input-checkbox" type="checkbox" value="checkbox" checked
+        disabled></sui-input>
       <br><br>
       <label for="sui-input-checkbox-styled">Checkbox Styled</label>
       <sui-input id='sui-input-checkbox-styled' class='input-checkbox' name="sui-input-checkbox-styled" type="checkbox"
@@ -327,6 +328,10 @@
     /* font-size: 32px; */
   }
 
+  sui-textarea {
+    border: 4px solid red;
+  }
+
   pre {
     word-break: break-word;
     line-height: 1.5;
@@ -346,6 +351,10 @@
 
   sui-select {
     height: 200px;
+  }
+
+  sui-select:focus-within {
+    outline: red 2px solid;
   }
 
   sui-button.outline {

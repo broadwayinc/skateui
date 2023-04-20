@@ -100,48 +100,48 @@ export class SuiSelect {
       mirrorStyle: (hostCss: CSSStyleDeclaration) => {
         this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
         // make text input fill the host
-        let needAdjustment = false;
-        let padding = [
-          hostCss['padding-top'],
-          hostCss['padding-right'],
-          hostCss['padding-bottom'],
-          hostCss['padding-left']
-        ].map(p => {
-          let val = Number(p.replace('px', ''));
-          if (val && !needAdjustment) {
-            needAdjustment = true;
-          }
-          return val;
-        });
+        // let needAdjustment = false;
+        // let padding = [
+        //   hostCss['padding-top'],
+        //   hostCss['padding-right'],
+        //   hostCss['padding-bottom'],
+        //   hostCss['padding-left']
+        // ].map(p => {
+        //   let val = Number(p.replace('px', ''));
+        //   if (val && !needAdjustment) {
+        //     needAdjustment = true;
+        //   }
+        //   return val;
+        // });
 
         if (!this.multiple) {
           this.el.style.setProperty('opacity', '0', 'important');
         }
 
-        if (!needAdjustment) {
-          this.el.style.setProperty('margin', '0', 'important');
-          return;
+        let padding = [
+          hostCss['padding-top'],
+          hostCss['padding-right'],
+          hostCss['padding-bottom'],
+          hostCss['padding-left']
+        ];
+
+        // make text input fill the host
+        if (hostCss['box-sizing'] === 'border-box') {
+          this.el.style.setProperty('width', `calc(100% + ${padding[1]} + ${padding[3]})`, 'important');
+          this.el.style.setProperty('height', `calc(${hostCss['height']} - ${hostCss['border-top-width']} - ${hostCss['border-bottom-width']})`);
         }
 
-        if (padding[0] || padding[2]) {
-          this.el.style.setProperty('height', `calc(${hostCss['height']} + ${padding[0]}px + ${padding[2]}px)`, 'important');
-        }
-
-        else if (!this.multiple) {
-          this.el.style.setProperty('height', hostCss['height'], 'important');
-        }
-
-        if (padding[1] || padding[3]) {
-          let leftPadding = `${padding[3]}px`;
-          let rightPadding = `${padding[1]}px`;
-          this.el.style.setProperty('width', `calc(100% + ${leftPadding} + ${rightPadding})`, 'important');
+        else {
+          this.el.style.setProperty('width', '100%');
+          this.el.style.setProperty('height', hostCss['height']);
         }
 
         this.el.style.setProperty('padding', hostCss['padding'], 'important');
         this.el.style.setProperty('margin',
           padding.map(p => {
-            return p ? `-${p - (this.multiple ? 2 : 0)}px` : '0px';
+            return `-${p}`;
           }).join(' '), 'important');
+
       },
       excludeAttribute: ['aria-role', 'value', 'tabindex']
     });
