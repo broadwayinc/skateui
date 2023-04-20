@@ -27,7 +27,7 @@ export class SuiButton {
     if (this.disabled) {
       return;
     }
-    
+
     if (this.isFormButton) {
       this.host.parentElement.insertBefore(this.el, this.host);
       this.el.click();
@@ -40,7 +40,7 @@ export class SuiButton {
     if (this.disabled) {
       return;
     }
-    
+
     let key = e.key.toLowerCase();
     if (key === 'enter' || key === ' ') {
       // trigger click on enter
@@ -67,7 +67,7 @@ export class SuiButton {
 
   render() {
     return (
-      <Host tabindex='0' aria-role='button' disabled={this.disabled}>
+      <Host tabindex={this.disabled ? '0' : null} aria-role='button' disabled={this.disabled}>
         <slot></slot>
       </Host>
     );
