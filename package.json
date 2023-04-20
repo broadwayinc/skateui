@@ -1,7 +1,7 @@
 {
   "name": "skateui",
-  "version": "0.1.134",
-  "description": "Stencil Component Starter",
+  "version": "0.1.136",
+  "description": "Vanilla HTML compatible custom UI components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "es2015": "dist/esm/index.mjs",
@@ -12,7 +12,7 @@
   "unpkg": "dist/skateui/skateui.esm.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ionic-team/stencil-component-starter.git"
+    "url": "https://github.com/broadwayinc/skateui"
   },
   "files": [
     "dist/",
