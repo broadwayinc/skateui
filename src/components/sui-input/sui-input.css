@@ -70,6 +70,7 @@
     line-height: inherit;
 }
 
+
 :host([type=checkbox][checked]) svg {
     user-select: none;
     pointer-events: none;
@@ -123,6 +124,14 @@
         inset -0.5px -0.5px 0px rgba(255, 255, 255, 0.25);
     /* add press overlay */
     background-color: currentColor;
+}
+
+:host([type=radio][disabled]) {
+    background-color: hsla(0deg, 0%, 50%, 0.33);
+}
+
+:host([type=checkbox][disabled]) {
+    background-color: hsla(0deg, 0%, 50%, 0.33);
 }
 
 :host([type=reset]),

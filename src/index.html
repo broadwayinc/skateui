@@ -206,18 +206,10 @@
     <br>
     <sui-tooltip style="float: left;">
       <div slot="tool"
-        style="font-size: 1.2em; font-weight: bold; background-color: red;color:white;padding: .25em;border-radius: 1.2em;width: 1.2em;text-align: center;cursor: pointer;">
-        ?</div>
-      <div slot="tip" style="background-color: rgb(180, 180, 180);color:rgb(0, 0, 0);border-radius: 4px;padding:.5em;">
-        Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm
-        the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red
-        dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog
-        Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm
-        the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red
-        dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog
-        Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm
-        the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red
-        dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog
+        style="font-size: 1.2em; font-weight: bold; background-color: red;color:white;padding: .25em;cursor: pointer;">
+        Hover me to say HI</div>
+      <div slot="tip" style="background-color: black;color:white;padding:.5em;">
+        Hello
       </div>
     </sui-tooltip>
     <sui-tooltip style="float: right;">
@@ -243,8 +235,8 @@
   stylable &#x2713;
 
   Note:
-      - Need to use 'slot' attribute to define tool | tip
-      - Make sure you set tip width, if nesessary, max-width as well
+      - Need to use 'slot' attribute to define 'tool' | 'tip'
+      - Be sure to style your tip dialog. Especially the background color, text color and the paddings.
   </pre>
 
     <hr>

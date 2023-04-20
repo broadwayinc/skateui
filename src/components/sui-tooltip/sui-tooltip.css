@@ -12,6 +12,7 @@
 }
 
 :host>.sui-tooltip .sui-tip {
+  min-width: 100%;
   display: none;
   position: absolute;
   max-width: var(--tip-max-width);

@@ -9,8 +9,8 @@ export class SuiFlextext {
   @Element() host: HTMLElement;
   @Prop({ mutable: true }) minSize = 0;
   @Prop({ mutable: true }) maxSize = 72;
-  value: string;
   fontSize: number = null;
+
   computedStyle: CSSStyleDeclaration;
 
   componentWillLoad() {
@@ -23,10 +23,7 @@ export class SuiFlextext {
     if (isNaN(this.minSize)) {
       this.minSize = 0;
     }
-  }
 
-  componentDidLoad() {
-    this.value = this.host.textContent;
     this.computedStyle = window.getComputedStyle(this.host);
     this.fontSize = Number(this.computedStyle.fontSize.replace('px', ''));
 
@@ -37,26 +34,19 @@ export class SuiFlextext {
     if (this.minSize > this.maxSize) {
       this.maxSize = this.minSize;
     }
-
-    this.adjustSize();
-    window.addEventListener("resize", this.adjustSize);
   }
 
-  disconnectedCallback() {
-    window.removeEventListener('resize', this.adjustSize);
-  }
-
-  adjustSize = (function () {
+  adjustSize = () => {
     const lineHeightRatio = Number(this.computedStyle.lineHeight.replace('px', '')) / this.fontSize;
 
-    if (!this.value) {
+    if (!this.host.textContent) {
       this.fontSize = this.maxSize;
     }
 
     else {
       const scaleDown = () => {
         let height = parseFloat(this.computedStyle.height);
-        let howmanylines = height / (this.fontSize * lineHeightRatio);
+        let howmanylines = Math.round(height / (this.fontSize * lineHeightRatio));
 
         if (howmanylines > 1 && this.fontSize > this.minSize) {
           let minus = this.fontSize - 1;
@@ -73,7 +63,7 @@ export class SuiFlextext {
 
       const scaleUp = () => {
         let height = parseFloat(this.computedStyle.height);
-        let howmanylines = height / (this.fontSize * lineHeightRatio);
+        let howmanylines = Math.round(height / (this.fontSize * lineHeightRatio));
 
         if (howmanylines <= 1 && this.fontSize < this.maxSize) {
           let plus = this.fontSize + 1;
@@ -91,7 +81,17 @@ export class SuiFlextext {
       scaleUp();
       scaleDown();
     }
-  }).bind(this);
+  };
+
+  componentDidLoad() {
+    this.adjustSize();
+    window.addEventListener("resize", this.adjustSize.bind(this));
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('resize', this.adjustSize.bind(this));
+  }
+
 
   render() {
     return (
