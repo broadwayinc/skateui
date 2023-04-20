@@ -27,7 +27,7 @@ export class SuiTextarea {
 
   @Prop()
   el = (() => {
-    let value = this.value !== null && this.value !== undefined ? this.value.toString() : '';
+    let value = this.value ? this.value.toString() : '';
 
     // create new element
     const textarea = document.createElement('textarea');
@@ -51,6 +51,8 @@ export class SuiTextarea {
       textarea.style.setProperty(key, 'inherit', 'important');
     }
 
+    textarea.style.setProperty('height', '100%', 'important');
+    this.host.prepend(textarea);
     return textarea;
   })();
 
@@ -75,41 +77,12 @@ export class SuiTextarea {
     this.textValue = this.value;
 
     dummyHandler.bind(this)({
-      mirrorStyle: (hostCss: CSSStyleDeclaration) => {
-        let needAdjustment = false;
-        let padding = [
-          hostCss['padding-top'],
-          hostCss['padding-right'],
-          hostCss['padding-bottom'],
-          hostCss['padding-left']
-        ].map(p => {
-          let val = Number(p.replace('px', ''));
-          if (val && !needAdjustment) {
-            needAdjustment = true;
-          }
-          return val;
-        });
-
-        if (needAdjustment) {
-          this.el.style.setProperty('padding', `${hostCss['padding-top']} ${hostCss['padding-left']} 0 ${hostCss['padding-right']}`);
-          this.el.style.setProperty('margin',
-            padding.map(p => {
-              return p ? `-${p}px` : '0px';
-            }).join(' '), 'important');
-        }
-      },
       excludeAttribute: ['value', 'rows', 'cols'],
       moveIdToSlotElement: true
     });
 
     // dispatch mounted event when finished loading
     this.host.dispatchEvent(new CustomEvent('mounted'));
-  }
-
-  disconnectedCallback() {
-    if (this.observer) {
-      this.observer.disconnect();
-    }
   }
 
   render() {
