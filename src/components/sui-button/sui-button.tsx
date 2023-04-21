@@ -59,11 +59,11 @@ export class SuiButton {
     this.host.dispatchEvent(new CustomEvent('mounted'));
   }
 
-  disconnectedCallback() {
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-  }
+  // disconnectedCallback() {
+  //   if (this.observer) {
+  //     this.observer.disconnect();
+  //   }
+  // }
 
   render() {
     return (
