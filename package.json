@@ -1,6 +1,6 @@
 {
   "name": "skateui",
-  "version": "0.1.142",
+  "version": "0.1.143",
   "description": "Vanilla HTML compatible custom UI components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
