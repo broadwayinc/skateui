@@ -453,7 +453,7 @@ export function dummyHandler(options: any | {
         logger({ attributeName, newValue, oldValue });
         // ! do not change the order of execution below !
 
-        if (newValue === null) {
+        if (!newValue) {
           // attribute is removed
           this.el.removeAttribute(attributeName);
           continue;
