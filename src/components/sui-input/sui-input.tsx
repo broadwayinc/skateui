@@ -109,11 +109,11 @@ export class SuiInput {
     // slot name is to prevent users adding custom elements
     input.setAttribute('slot', this.slotName);
 
-    if (this.type && !this.availableTypes.includes(this.type)) {
-      // type customization is not available (yet)
-      this.host.prepend(input);
-      return input;
-    }
+    // if (this.type && !this.availableTypes.includes(this.type)) {
+    //   // type customization is not available (yet)
+    //   this.host.prepend(input);
+    //   return input;
+    // }
 
     if (this.inputType === 'button') {
       // hidden
