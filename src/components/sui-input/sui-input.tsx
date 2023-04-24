@@ -114,7 +114,7 @@ export class SuiInput {
     //   this.host.prepend(input);
     //   return input;
     // }
-
+    
     if (this.inputType === 'button') {
       // hidden
       input.setAttribute('hidden', '');

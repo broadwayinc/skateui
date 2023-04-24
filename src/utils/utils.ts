@@ -446,14 +446,16 @@ export function dummyHandler(options: any | {
 
         let newValue = (m.target as HTMLElement).getAttribute(attributeName);
         let oldValue = m.oldValue;
+
         if (newValue === oldValue) {
           // skip same values
           continue;
         }
+
         logger({ attributeName, newValue, oldValue });
         // ! do not change the order of execution below !
 
-        if (!newValue) {
+        if (newValue === null) {
           // attribute is removed
           this.el.removeAttribute(attributeName);
           continue;
