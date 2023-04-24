@@ -59,12 +59,6 @@ export class SuiButton {
     this.host.dispatchEvent(new CustomEvent('mounted'));
   }
 
-  // disconnectedCallback() {
-  //   if (this.observer) {
-  //     this.observer.disconnect();
-  //   }
-  // }
-
   render() {
     return (
       <Host tabindex={this.disabled ? null : '0'} aria-role='button' disabled={this.disabled}>

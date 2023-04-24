@@ -92,7 +92,6 @@ export class SuiFlextext {
     window.removeEventListener('resize', this.adjustSize.bind(this));
   }
 
-
   render() {
     return (
       <Host>

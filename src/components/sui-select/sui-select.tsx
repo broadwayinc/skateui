@@ -1,4 +1,4 @@
-import { Component, Host, h, Element, State, Prop, Watch } from '@stencil/core';
+import { Component, Host, h, Element, State, Prop, Watch, Method } from '@stencil/core';
 import { dummyHandler } from '../../utils/utils';
 
 @Component({
@@ -11,19 +11,29 @@ export class SuiSelect {
   observer: MutationObserver;
 
   @State() displayedValue: string;
-  @Prop({ mutable: true }) value: any;
+  @Prop({ mutable: true }) value: string;
   @Watch('value')
   valueHandler(n: string, o: string) {
     if (n !== o && this.el) {
-      this.el.value = n.toString();
+      if (!n) {
+        this.el.value = JSON.stringify(n);
+      }
+      else {
+        this.el.value = n.toString();
+      }
       let currOpt = this.el.getElementsByTagName('option')[this.el.selectedIndex || 0];
-      this.displayedValue = currOpt?.textContent || currOpt.value || '';
+      this.displayedValue = currOpt?.textContent || currOpt?.value || '';
     }
   }
   @Prop() disabled: boolean;
   @Prop() required: boolean;
   @Prop() multiple: boolean;
+  @Method()
+  async setValueDefault() {
+    this.value = this.valueDefault;
+  }
 
+  valueDefault = null;
   initEl = (select = this.el) => {
     if (this.host.children.length) {
       let len = this.host.children.length;
@@ -54,7 +64,7 @@ export class SuiSelect {
       currOpt = select.getElementsByTagName('option')[select.selectedIndex || 0]; // get current selected option
       this.value = currOpt.value;
     }
-
+    this.valueDefault = this.value;
     this.displayedValue = currOpt?.textContent || currOpt.value || ''; // set value display
   };
   @Prop()
@@ -96,23 +106,8 @@ export class SuiSelect {
 
   componentDidLoad() {
     dummyHandler.bind(this)({
-      // bounceEvents: ['blur', 'change', 'focus', 'invalid', 'input', 'contextmenu', 'reset', 'select', 'submit', 'keydown', 'keypress', 'keyup'],
       mirrorStyle: (hostCss: CSSStyleDeclaration) => {
         this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
-        // make text input fill the host
-        // let needAdjustment = false;
-        // let padding = [
-        //   hostCss['padding-top'],
-        //   hostCss['padding-right'],
-        //   hostCss['padding-bottom'],
-        //   hostCss['padding-left']
-        // ].map(p => {
-        //   let val = Number(p.replace('px', ''));
-        //   if (val && !needAdjustment) {
-        //     needAdjustment = true;
-        //   }
-        //   return val;
-        // });
 
         if (!this.multiple) {
           this.el.style.setProperty('opacity', '0', 'important');
@@ -143,22 +138,16 @@ export class SuiSelect {
           }).join(' '), 'important');
 
       },
-      excludeAttribute: ['aria-role', 'value', 'tabindex']
+      excludeAttribute: ['aria-role', 'tabindex', 'value']
     });
 
     // dispatch mounted event when finished loading
     this.host.dispatchEvent(new CustomEvent('mounted'));
   }
 
-  // disconnectedCallback() {
-  //   if (this.observer) {
-  //     this.observer.disconnect();
-  //   }
-  // }
-
   render() {
     return (
-      <Host aria-role='select' disabled={this.disabled} required={this.required} value={this.value}>
+      <Host aria-role='select' disabled={this.disabled} required={this.required} value={this.valueDefault}>
         <div>
           <svg style={{ display: this.multiple ? 'none' : 'block' }} fill="currentColor" viewBox="0 -100 700 700" xmlns="http://www.w3.org/2000/svg">
             <path d="m81.957 144.91 252.97 305.17c4.7695 5.293 10.496 7.9336 17.16 7.9336 6.1875 0 11.676-2.6445 16.438-7.9453l250.12-305.17c6.1875-8.4844 7.3984-17.746 3.5742-27.82-3.8008-10.051-10.703-15.094-20.727-15.094l-202.93 0.003906h-300.16c-9.5352 0-16.438 5.0391-20.727 15.094-3.8008 10.078-2.3672 19.355 4.2852 27.828z" />

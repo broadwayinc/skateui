@@ -15,12 +15,13 @@ export namespace Components {
     }
     interface SuiInput {
         "checked": boolean | null;
-        "checkedDefault": boolean;
         "disabled": boolean;
         "el": HTMLInputElement;
         "required": boolean;
+        "setCheckDefault": () => Promise<void>;
         "type": string;
         "value": any;
+        "valueDefault": any;
     }
     interface SuiNav {
         "autoHide": number;
@@ -36,7 +37,8 @@ export namespace Components {
         "el": HTMLSelectElement;
         "multiple": boolean;
         "required": boolean;
-        "value": any;
+        "setValueDefault": () => Promise<void>;
+        "value": string;
     }
     interface SuiTextarea {
         "disabled": boolean;
@@ -116,12 +118,12 @@ declare namespace LocalJSX {
     }
     interface SuiInput {
         "checked"?: boolean | null;
-        "checkedDefault"?: boolean;
         "disabled"?: boolean;
         "el"?: HTMLInputElement;
         "required"?: boolean;
         "type"?: string;
         "value"?: any;
+        "valueDefault"?: any;
     }
     interface SuiNav {
         "autoHide"?: number;
@@ -135,7 +137,7 @@ declare namespace LocalJSX {
         "el"?: HTMLSelectElement;
         "multiple"?: boolean;
         "required"?: boolean;
-        "value"?: any;
+        "value"?: string;
     }
     interface SuiTextarea {
         "disabled"?: boolean;

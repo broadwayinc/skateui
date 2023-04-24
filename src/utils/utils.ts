@@ -446,7 +446,6 @@ export function dummyHandler(options: any | {
 
         let newValue = (m.target as HTMLElement).getAttribute(attributeName);
         let oldValue = m.oldValue;
-
         if (newValue === oldValue) {
           // skip same values
           continue;

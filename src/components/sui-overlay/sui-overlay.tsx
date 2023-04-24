@@ -90,6 +90,10 @@ export class SuiOverlay {
     }
 
     const screen = document.getElementById(this.overlayId);
+    if (!screen) {
+      return;
+    }
+
     const el = (screen.firstChild as HTMLElement);
 
 
