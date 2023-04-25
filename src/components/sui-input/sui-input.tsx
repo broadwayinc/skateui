@@ -11,7 +11,7 @@ export class SuiInput {
   @Prop() value: any = null;
   @Watch('value')
   valueHandler(n: any) {
-    this.el.value = n;
+    this.el.value = n === null || n === undefined ? '' : n;
   }
 
   @Prop() disabled: boolean = false;
@@ -62,7 +62,7 @@ export class SuiInput {
   }
 
   @Prop()
-  valueDefault = this.value;
+  valueDefault = this.value === null || this.value === undefined ? '' : this.value;
 
   dispatchClick = () => {
     this.el.dispatchEvent(new MouseEvent('click', { bubbles: false }));

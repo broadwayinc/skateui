@@ -16,7 +16,7 @@ export class SuiSelect {
   valueHandler(n: string, o: string) {
     if (n !== o && this.el) {
       if (!n) {
-        this.el.value = JSON.stringify(n);
+        this.el.value = n === undefined ? '' : JSON.stringify(n);
       }
       else {
         this.el.value = n.toString();
