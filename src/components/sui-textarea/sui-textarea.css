@@ -52,7 +52,6 @@
     overflow: hidden;
     border: none;
     outline: none;
-    box-sizing: border-box;
     background-color: transparent;
     color: inherit;
     display: block;

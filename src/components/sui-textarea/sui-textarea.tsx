@@ -52,6 +52,7 @@ export class SuiTextarea {
     }
 
     textarea.style.setProperty('height', '100%', 'important');
+    textarea.style.setProperty('box-sizing', 'content-box', 'important');
     this.host.prepend(textarea);
     return textarea;
   })();
@@ -78,7 +79,25 @@ export class SuiTextarea {
 
     dummyHandler.bind(this)({
       excludeAttribute: ['value', 'rows', 'cols'],
-      moveIdToSlotElement: true
+      moveIdToSlotElement: true,
+      excludeStyle: ['border', 'margin', 'padding', 'max', 'min', 'width', 'height'],
+      mirrorStyle: (hostCss: CSSStyleDeclaration) => {
+        this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+        // make text input fill the host
+
+        let padding = [
+          hostCss['padding-top'],
+          hostCss['padding-right'],
+          hostCss['padding-bottom'],
+          hostCss['padding-left']
+        ];
+
+        this.el.style.setProperty('padding', hostCss['padding'], 'important');
+        this.el.style.setProperty('margin',
+          padding.map(p => {
+            return `-${p}`;
+          }).join(' '), 'important');
+      }
     });
 
     // dispatch mounted event when finished loading
