@@ -151,8 +151,8 @@ export const eventList = [
   ,
   // 'resize'
   // ,
-  'scroll'
-  ,
+  // 'scroll'
+  // ,
   'search'
   ,
   // 'securitypolicyviolation'
@@ -209,40 +209,22 @@ export const eventList = [
 export function cloneEvents(
   el: HTMLElement,
   options?: {
+    dispatchTo: HTMLElement,
     bypass?: string[],
-    dispatchTo?: HTMLElement,
     eventCallback?: { type: string; callback: (e: any) => any; };
   }) {
-  // clone events to hidden el
+  // clone events to another element
 
   // callback
-  let cb = null;
-  let { dispatchTo = null, eventCallback = null, bypass = [] } = options || {};
+  let { dispatchTo, eventCallback = null, bypass = [] } = options || {};
 
-  if (dispatchTo) {
-    cb = (ev: Event) => {
-      let new_ev = new Event(ev.type);
-      if (eventCallback && eventCallback.type === ev.type && typeof eventCallback.callback === 'function') {
-        eventCallback.callback(new_ev);
-      }
-      dispatchTo.dispatchEvent(new_ev);
-    };
-  }
-  else {
-    cb = (ev: Event) => {
-      if (eventCallback && eventCallback.type === ev.type && typeof eventCallback.callback === 'function') {
-        eventCallback.callback(ev);
-      }
-      else if (!ev.bubbles) {
-        // re dispatch unbubbled events
-        // ev.stopPropagation();
-        let new_ev = new Event(ev.type, {
-          bubbles: true
-        });
-        el.dispatchEvent(new_ev);
-      }
-    };
-  }
+  let cb = (ev: Event) => {
+    let new_ev = new Event(ev.type);
+    if (eventCallback && eventCallback.type === ev.type && typeof eventCallback.callback === 'function') {
+      eventCallback.callback(new_ev);
+    }
+    dispatchTo.dispatchEvent(new_ev);
+  };
 
   for (let name of eventList) {
     if (!bypass.includes(name)) {
