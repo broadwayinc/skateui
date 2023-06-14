@@ -83,6 +83,7 @@ export class SuiTextarea {
       excludeStyle: ['border', 'margin', 'padding', 'max', 'min', 'width', 'height'],
       mirrorStyle: (hostCss: CSSStyleDeclaration) => {
         this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
+        this.el.style.setProperty('min-height', hostCss['min-height'], 'important');
         // make text input fill the host
 
         let padding = [
