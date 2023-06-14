@@ -83,9 +83,8 @@ export class SuiTextarea {
       excludeStyle: ['border', 'margin', 'padding', 'max', 'min', 'width', 'height'],
       mirrorStyle: (hostCss: CSSStyleDeclaration) => {
         this.el.style.setProperty('border-radius', hostCss['border-radius'], 'important');
-        this.el.style.setProperty('min-height', hostCss['min-height'], 'important');
-        // make text input fill the host
 
+        // make text input fill the host
         let padding = [
           hostCss['padding-top'],
           hostCss['padding-right'],
@@ -98,6 +97,8 @@ export class SuiTextarea {
           padding.map(p => {
             return `-${p}`;
           }).join(' '), 'important');
+
+        this.el.style.setProperty('min-height', `calc(${hostCss['min-height']} - ${padding[0]} - ${padding[2]})`, 'important');
       }
     });
 
