@@ -1,6 +1,6 @@
 {
   "name": "skateui",
-  "version": "0.1.150",
+  "version": "0.1.151",
   "description": "Vanilla HTML compatible custom UI components",
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
@@ -27,13 +27,13 @@
     "generate": "stencil generate"
   },
   "dependencies": {
-    "@stencil/core": "^2.13.0"
+    "@stencil/core": "^2.22.3"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "jest": "^27.4.5",
     "jest-cli": "^27.4.5",
-    "puppeteer": "^19.3.0"
+    "puppeteer": "^20.7.1"
   },
   "license": "MIT"
 }
