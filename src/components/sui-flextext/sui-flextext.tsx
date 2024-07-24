@@ -38,7 +38,6 @@ export class SuiFlextext {
 
   adjustSize = () => {
     const lineHeightRatio = Number(this.computedStyle.lineHeight.replace('px', '')) / this.fontSize;
-
     if (!this.host.textContent) {
       this.fontSize = this.maxSize;
     }

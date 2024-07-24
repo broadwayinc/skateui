@@ -237,7 +237,7 @@ export function format(first: string, middle: string, last: string): string {
   return (first || '') + (middle ? ` ${middle}` : '') + (last ? ` ${last}` : '');
 }
 
-export function getElementAttributes(nodeMap: NamedNodeMap) {
+function getElementAttributes(nodeMap: NamedNodeMap) {
   if (nodeMap) {
     const length = nodeMap.length;
     return Object.keys(nodeMap).reduce((props, current) => {
