@@ -13,6 +13,13 @@
     
     but when refreshed, the quirks will go away.
 
+## Components:
+
+- sui-nav: Navbar that hides when scrolling down, and shows when scrolling up.
+- sui-flextext: Text that auto scales.
+- sui-tooltip: Tooltip that shows when hovering over an element.
+- sui-overlay: Fully customizable overlay that shows when clicked.
+- sui-textarea: Textarea that auto resizes.
 
 ## Example
 
@@ -28,6 +35,23 @@
     <sui-nav style='padding: .5em;background-color:blue;color:white'>
         <h2>Skate Navbar</h2>
     </sui-nav>
+
+    <br><br>
+
+    <sui-flextext>Hello my name is Baksa</sui-flextext>
+    
+    <br><br>
+
+    <sui-tooltip>
+      <div slot="tool"
+        style="font-size: 1.2em; font-weight: bold; background-color: red;color:white;padding: .25em;cursor: pointer;">
+        Hover me to say HI</div>
+      <div slot="tip" style="background-color: black;color:white;padding:.5em;">
+        Hello
+      </div>
+    </sui-tooltip>
+    
+    <br><br>
 
     <button onclick='overlay.open()'>Click me</button>
     <sui-overlay id="overlay" onclick="this.close()">
