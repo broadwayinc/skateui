@@ -16,9 +16,23 @@
 ## Components:
 
 - sui-nav: Navbar that hides when scrolling down, and shows when scrolling up.
+  Attributes:
+    - auto-hide: "true" | "false" | Number(Higher number means it will hide slower)
+
 - sui-flextext: Text that auto scales.
+  Attributes:
+    - min-size: number
+    - max-size: number
+  
 - sui-tooltip: Tooltip that shows when hovering over an element.
 - sui-overlay: Fully customizable overlay that shows when clicked.
+  Attributes:
+    - position: "top" | "bottom" | "left" | "right" | "center"(default)
+  
+  Properties:
+    - open(): Opens the overlay.
+    - close(): Closes the overlay.
+   
 - sui-textarea: Textarea that auto resizes.
 
 ## Example

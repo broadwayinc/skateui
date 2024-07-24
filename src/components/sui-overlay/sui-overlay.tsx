@@ -17,7 +17,8 @@ export class SuiOverlay {
       'right',
       'left',
       'right',
-      'bottom'
+      'bottom',
+      'top'
     ];
 
     if (!allowed_positions.includes(this.position)) {
