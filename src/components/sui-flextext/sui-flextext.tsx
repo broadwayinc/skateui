@@ -45,7 +45,7 @@ export class SuiFlextext {
     else {
       const scaleDown = () => {
         let height = parseFloat(this.computedStyle.height);
-        let howmanylines = Math.round(height / (this.fontSize * lineHeightRatio));
+        let howmanylines = height / (this.fontSize * lineHeightRatio);
 
         if (howmanylines > 1 && this.fontSize > this.minSize) {
           let minus = this.fontSize - 1;
@@ -62,7 +62,7 @@ export class SuiFlextext {
 
       const scaleUp = () => {
         let height = parseFloat(this.computedStyle.height);
-        let howmanylines = Math.round(height / (this.fontSize * lineHeightRatio));
+        let howmanylines = height / (this.fontSize * lineHeightRatio);
 
         if (howmanylines <= 1 && this.fontSize < this.maxSize) {
           let plus = this.fontSize + 1;
