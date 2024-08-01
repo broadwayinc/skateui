@@ -15,16 +15,15 @@
   min-width: 100%;
   display: none;
   position: absolute;
-  max-width: var(--tip-max-width);
   box-sizing: border-box;
-  bottom: calc(100% + .66em);
+  bottom: calc(100% + 8px);
   top: unset;
   left: 0;
   right: unset;
 }
 
 :host>.sui-tooltip.bottom .sui-tip {
-  top: calc(100% + .66em);
+  top: calc(100% + 8px);
   bottom: unset;
 }
 
@@ -52,21 +51,21 @@
 
 .tip-arrow.bottom {
   z-index: 1;
-  top: calc(100% + 2px);
+  top: calc(100% + 4px);
   bottom: unset;
-  border: 0.5em solid transparent;
+  border: 4px solid transparent;
   border-top-width: 0;
-  border-bottom-width: .66em;
+  border-bottom-width: 4px;
   border-bottom-color: var(--tip-background-color);
   ;
 }
 
 .tip-arrow.top {
   top: unset;
-  bottom: calc(100% + 2px);
-  border: 0.5em solid transparent;
+  bottom: calc(100% + 4px);
+  border: 4px solid transparent;
   border-bottom-width: 0;
-  border-top-width: .66em;
+  border-top-width: 4px;
   border-top-color: var(--tip-background-color);
 }
 

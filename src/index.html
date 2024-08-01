@@ -9,175 +9,142 @@
   <script nomodule src="/build/skateui.js"></script>
 </head>
 
-<body style="margin:0; width:100%;">
-  <div style="max-width: 64em;margin: 8px auto;">
+<body style="max-width:64em;margin:auto;padding:1rem;">
 
-    <h1>skate ui</h1>
+  <h1>skate ui</h1>
 
-    <pre>
-Objective:
-  - Provide components that are commonly desired in web development, yet not so easy to implement.
-  - UI component 100% compatible with vanilla HTML.
-  - Style should be easily customizable via css without implementing additional custom attributes.
+  Objective:
+  <ul>
+    <li>Provide components that are commonly desired in web development, yet not so easy to implement.</li>
+    <li>UI component to be 100% compatible with vanilla HTML.</li>
+    <li>Style should be easily customizable via css without implementing additional custom attributes.</li>
+  </ul>
 
-Known issues:
-  - skateui use getComputedStyle and mutationobserver internally.
-    when developing, depending on the os/browser, there can be some minor quirks when:
-      - trying to modify css styles directly from developers panel in web browsers.
-      - working on live reloads.
-    
-    but when refreshed, the quirks will go away.
+  <hr>
 
-    </pre>
+  <h2>sui-tooltip</h2>
 
-    <hr>
+  <br>
 
-    <h2>sui-tooltip</h2>
-
-    <br>
-    
-    <sui-tooltip style="float: left;">
-      <div slot="tool"
-        style="font-size: 1.2em; font-weight: bold; background-color: red;color:white;padding: .25em;cursor: pointer;">
-        Hover me to say HI</div>
-      <div slot="tip" style="background-color: black;color:white;padding:.5em;">
-        Hello
-      </div>
-    </sui-tooltip>
-    <sui-tooltip style="float: right;">
-      <div slot="tool"
-        style="font-size: 1.2em; font-weight: bold; background-color: blue;color:white;padding: .25em;border-radius: 1.2em;width: 1.2em;text-align: center;cursor: pointer;">
-        ?</div>
-      <div slot="tip"
-        style="background-color: blue;color:white;box-shadow: 0 0 0 4px red;border-radius: 4px;padding:.5em;width: 300px;max-width: 50vw;">
-        Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm
-        the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red
-        dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog
-        Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm
-        the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red
-        dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog
-        Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm
-        the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red
-        dialog Hello I'm the red dialog Hello I'm the red dialog Hello I'm the red dialog
-        <br><br>
-        <sui-button>Catch Me</sui-button>
-      </div>
-    </sui-tooltip>
-    
-    <br>
-    <br>
-    <br>
-    
-    <pre style="clear: both;">
-stylable &#x2713;
-
-Note:
-    - Need to use 'slot' attribute to define 'tool' | 'tip'
-    - Be sure to style your tip dialog. Especially the background color, text color and the paddings.
-  </pre>
-
-    <hr>
-
-    <h2>sui-nav</h2>
-    
-    <div style="width: 200px;height: 200px;border: 1px solid black;overflow-y: auto;">
-      <sui-nav auto-hide>sui-nav</sui-nav>
-      <div id='scContent' style="font-size: 0.8em;opacity:0.5;padding:0 8px;">
-        <p>Scroll down</p>
-        <script>
-          let len = 10;
-          while (len--) {
-            const p = scContent.firstElementChild.cloneNode(true);
-            scContent.append(p);
-          }
-        </script>
-      </div>
+  <sui-tooltip style="float: left;">
+    <div slot="tool" style="background-color: red;color:white;padding:4px;cursor: pointer;">?</div>
+    <div slot="tip" style="background-color: black;color:white;">
+      Hello
     </div>
+  </sui-tooltip>
 
-    <pre>
-stylable &#x2713;
-works any where including body &#x2713;
+  <sui-tooltip style="float: right;">
+    <div slot="tool" style="background-color: blue;color:white;padding:4px;cursor: pointer;">?</div>
+    <div slot="tip" style="background-color: red;color:white;padding:.5rem;border-radius: 6px;">Hello I'm the red dialog
+Hello I'm the red dialog
+the red dialog Hello I'm the red dialog Hello I'm
+dialog Hello I'm the red dialog Hello I'm the red
+Hello I'm the red dialog Hello I'm the red dialog
+    </div>
+  </sui-tooltip>
 
-Note:
-  - additional attribute "auto-hide" hides nav element when parent is scrolled.
-    "auto-hide" attribute can also have number value(greater than 0) for hiding movement curves.
-    ex) auto-hide="8" gives slower hiding, auto-hide='2' gives faster hiding.
-        when value is not gives default value is '3'
-    </pre>
-    
-    <hr>
+  <br>
+  <br>
+  <ul style="clear: both;">
+    <li>Use 'slot' attribute to define 'tool' | 'tip'</li>
+    <li>You can style your tip dialog.</li>
+  </ul>
 
-    <h2>sui-overlay</h2>
+  <hr>
 
-    <sui-overlay position="top" id="overlay" onclick="this.close()">
-      <div style="background: white; box-sizing: border-box; border: 4px solid; padding: 2em; text-align:center;">
-        <h1>Hello skate ui!</h1>
-        <p>This is your overlay</p>
-      </div>
-    </sui-overlay>
-    
-    <button onclick="overlay.open()">sui-overlay</button>
+  <h2>sui-nav</h2>
 
-    <pre>
-works any where within the page &#x2713;
-can nest anything &#x2713;
+  <div style="width: 200px;height: 200px;border: 1px solid black;overflow-y: auto;">
+    <sui-nav auto-hide style="background-color: blue;color:white;">sui-nav</sui-nav>
+    <div id='scContent' style="font-size: 0.8em;opacity:0.5;padding:0 8px;">
+      <p>Scroll down</p>
+      <script>
+        let len = 10;
+        while (len--) {
+          const p = scContent.firstElementChild.cloneNode(true);
+          scContent.append(p);
+        }
+      </script>
+    </div>
+  </div>
 
-Note:
-  - has additional attributes:
-    - transition-time (css time)
-    - position:
-        center | top | bottom | left | right
-
-  - Body should have margin:0; width:100%;
-  - Overlay color, color can be set by style="background-color: ... , color: ..."
+  <pre>
+works any where within the page.
+additional attribute "auto-hide" hides nav element when parent is scrolled.
+"auto-hide" attribute can also have number value(greater than 0) for hiding movement curves.
+ex) auto-hide="8" gives slower hiding, auto-hide='2' gives faster hiding.
+when value is not given, the default value is '3'
   </pre>
 
-    <hr>
-    
-    <h2>sui-flextext</h2>
-    
-    <sui-flextext>Hello my name is Baksa</sui-flextext>
-    
-    <pre>
+  <hr>
+
+  <h2>sui-overlay</h2>
+
+  <sui-overlay position="top" id="overlay" onclick="this.close()">
+    <div style="background: white; box-sizing: border-box; border: 4px solid; padding: 2em; text-align:center;">
+      <h1>Hello skate ui!</h1>
+      <p>This is your overlay</p>
+    </div>
+  </sui-overlay>
+
+  <button onclick="overlay.open()">sui-overlay</button>
+
+  <pre>
+Works any where within the page.
+Can nest anything.
+
+Attributes:
+  - transition-time (css time)
+  - position:
+      center | top | bottom | left | right
+
+Methods:
+  - open()
+    Opens the overlay
+  - close()
+    Closes the overlay
+
+Overlay color, color can be set by style="background-color: ... , color: ..."
+  </pre>
+
+  <hr>
+
+  <h2>sui-flextext</h2>
+
+  <sui-flextext max-size="250">Hello my name is Baksa</sui-flextext>
+
+  <pre>
 Flex text is a auto sized text.
 Text is expanded to the width of a parent.
 
-Note:
-  - has custom attribute min-size (default 72), max-size (defaults to current font size)
-    value should be number
-    </pre>
+Attributes:
+  - max-size (default 72)
+    Maximum size of the text. Value should be number.
+  - min-size
+    Minimum size of the text. Default is current font size.
+  </pre>
 
-    </pre>
-    
-    <hr>
-    
-    <h2>sui-textarea</h2>
-    <sui-textarea placeholder="placeholder"></sui-textarea>
-    <sui-textarea value="Text area value"></sui-textarea>
-    <sui-textarea style="min-height: 10em;white-space:pre;">Text area value nested,
-      White space pre,
-      min-height: 10em;
-    </sui-textarea>
-    <sui-textarea disabled>Disabled Textarea</sui-textarea>
-    <pre>
-Can vertically, horizontally expand  &#x2713;
+  <hr>
+
+  <h2>sui-textarea</h2>
+  <sui-textarea placeholder="placeholder"></sui-textarea>
+  <sui-textarea value="Text area value"></sui-textarea>
+  <sui-textarea style="min-height: 10em;white-space:pre;">Text area value nested,
+    White space pre,
+    min-height: 10em;
+  </sui-textarea>
+  <sui-textarea disabled>Disabled Textarea</sui-textarea>
+  <pre>
+Textbox that can vertically, horizontally expand.
 
 Note:
   - Attribute rows, cols does not work. Textarea width/height should be set by css.
   - If height is unset, textarea auto expands.
   - Use :focus-within to style focused textarea.
   - Remove box-shadow to remove outline.
-    </pre>
-  
-  </div>
+  </pre>
+
 </body>
-
-<script>
-  function inputForm(el) {
-    console.log(el);
-  }
-
-</script>
 
 <style>
   body {
@@ -189,79 +156,5 @@ Note:
     word-break: break-word;
     line-height: 1.5;
     font-size: 1.2em;
-  }
-
-  sui-nav {
-    background-color: #293FE6;
-    color: white;
-    box-sizing: border-box;
-  }
-
-  sui-button {
-    margin-bottom: 8px;
-  }
-
-  sui-select {
-    height: 200px;
-  }
-
-  sui-select:focus-within {
-    outline: red 2px solid;
-  }
-
-  sui-button.outline {
-    background-color: transparent;
-    color: #293FE6;
-    border: 2px solid;
-    box-shadow: none;
-  }
-
-  sui-button.text {
-    background-color: transparent;
-    color: #293FE6;
-    box-shadow: none;
-    border: none;
-    /* if you don't want focus styling */
-  }
-
-  label {
-    width: 10em;
-    display: inline-block;
-  }
-
-  sui-input.sui-input-styled {
-    background-color: bisque;
-  }
-
-  sui-input.sui-input-styled input::placeholder {
-    /* styling for pseudo elements */
-    color: green;
-  }
-
-  sui-input.sui-input-styled input:focus {
-    /* styling for focused */
-    outline-color: #293fe6a6;
-  }
-
-  sui-input.input-checkbox {
-    color: red;
-    border-radius: 100%;
-  }
-
-  sui-input.input-checkbox:focus {
-    outline-color: green;
-  }
-
-  sui-input.input-checkbox[checked] {
-    /* styling for checked */
-    background-color: red;
-    color: white;
-    border-color: red;
-  }
-
-  sui-input.input-radio {
-    /* custom styling */
-    color: red;
-    border-radius: 2px;
   }
 </style>

@@ -9,8 +9,6 @@ export class SuiTooltip {
   @Element() host: HTMLElement;
 
   @State()
-  maxWidth = '100vw';
-  @State()
   classNames = '';
   @State()
   tipBackgroundColor = 'transparent';
@@ -33,11 +31,9 @@ export class SuiTooltip {
 
     if (isLeft) {
       this.classNames += ' left';
-      this.maxWidth = `${e.clientX - 16}px`;
     }
     else {
       this.classNames += ' right';
-      this.maxWidth = `${window.innerWidth - e.clientX - 16}px`;
     }
 
     let tip = this.host.querySelectorAll('[slot="tip"]');
@@ -49,7 +45,7 @@ export class SuiTooltip {
         <div class={'sui-tooltip' + this.classNames}>
           <div class='sui-tool'>
             <slot name='tool' />
-            <div class='sui-tip' style={{ '--tip-max-width': this.maxWidth, '--tip-background-color': this.tipBackgroundColor }}>
+            <div class='sui-tip' style={{ '--tip-background-color': this.tipBackgroundColor }}>
               <slot name='tip' />
             </div>
             <div class={'tip-arrow' + this.classNames} style={{ '--tip-background-color': this.tipBackgroundColor }}></div>

@@ -18,7 +18,7 @@ export class SuiNav {
       // no given attribute
       return;
     }
-
+    
     if (!this.autoHide) {
       // attribute exists but empty value. set to default.
       this.autoHide = 3;
