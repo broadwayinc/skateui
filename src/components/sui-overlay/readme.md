@@ -19,6 +19,12 @@
 
 
 
+#### Parameters
+
+| Name | Type        | Description |
+| ---- | ----------- | ----------- |
+| `cb` | `() => any` |             |
+
 #### Returns
 
 Type: `Promise<void>`
@@ -28,6 +34,12 @@ Type: `Promise<void>`
 ### `open(cb?: () => any) => Promise<unknown>`
 
 
+
+#### Parameters
+
+| Name | Type        | Description |
+| ---- | ----------- | ----------- |
+| `cb` | `() => any` |             |
 
 #### Returns
 
