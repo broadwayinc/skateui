@@ -22,12 +22,16 @@ export class SuiFlextext {
       this.maxSize = 72;
     }
     if (isNaN(this.minSize)) {
-      this.minSize = this.fontSize;
+      this.minSize = 0;
     }
 
     this.computedStyle = window.getComputedStyle(this.host);
     this.fontSize = Number(this.computedStyle.fontSize.replace('px', ''));
 
+    if (this.minSize === 0) {
+      this.minSize = this.fontSize;
+    }
+    
     if (this.minSize > this.maxSize) {
       this.maxSize = this.minSize;
     }
