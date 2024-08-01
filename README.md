@@ -18,7 +18,7 @@
 - sui-nav: Navbar that hides when scrolling down, and shows when scrolling up.
   
   Attributes:
-    - auto-hide: "true" | "false" | Number(Higher number means it will hide slower)
+    - auto-hide: Number(Higher number means it will hide slower)
 
 - sui-flextext: Text that auto scales.
   
