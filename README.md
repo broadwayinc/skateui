@@ -5,38 +5,40 @@
   - UI component 100% compatible with vanilla HTML.
   - Style should be easily customizable via css without implementing additional custom attributes.
 
-## Known issues:
-  - skateui use getComputedStyle and mutationobserver internally.
-    when developing, depending on the os/browser, there can be some minor quirks when:
-      - trying to modify css styles directly from developers panel in web browsers.
-      - working on live reloads.
-    
-    but when refreshed, the quirks will go away.
-
 ## Components:
 
 - sui-nav: Navbar that hides when scrolling down, and shows when scrolling up.
   
   Attributes:
-    - auto-hide: Number(Higher number means it will hide slower)
+    - auto-hide: Number(Higher number means it will hide slower), default is 3.
 
 - sui-flextext: Text that auto scales.
   
   Attributes:
-    - min-size: number
-    - max-size: number
+    - min-size: number (Minimum font size allowed to scale down to)
+    - max-size: number (Maximum font size allowed to scale up to)
   
 - sui-tooltip: Tooltip that shows when hovering over an element.
+  
+  Slots:
+    - tool: Element that will be hovered over.
+    - tip: Element that will be shown as a tooltip.
+  
 - sui-overlay: Fully customizable overlay that shows when clicked.
   
   Attributes:
     - position: "top" | "bottom" | "left" | "right" | "center"(default)
+    - transition-time: CSS time value, default is 0.25s
   
-  Properties:
+  Methods:
     - open(): Opens the overlay.
     - close(): Closes the overlay.
    
 - sui-textarea: Textarea that auto resizes.
+
+  Note:
+    - Remove box-shadow to remove outline.
+    - Use :focus-within to style when focused.
 
 ## Example
 
