@@ -38,8 +38,10 @@ export class SuiFlextext {
   }
 
   adjustSize = () => {
+    console.log('adjustSize');
     let lineHeight = Number(this.computedStyle.lineHeight.replace('px', ''));
     lineHeight = isNaN(lineHeight) ? this.fontSize : lineHeight;
+    console.log(lineHeight, this.fontSize);
     let lineHeightRatio = lineHeight / this.fontSize;
     lineHeightRatio = lineHeightRatio > 1 ? lineHeightRatio : 1;
 
@@ -51,6 +53,8 @@ export class SuiFlextext {
       const scaleDown = () => {
         let height = parseFloat(this.computedStyle.height);
         let howmanylines = height / (this.fontSize * lineHeightRatio);
+        howmanylines = Math.floor(howmanylines * 100) / 100;
+
         if (howmanylines > 1 && this.fontSize > this.minSize) {
           let minus = this.fontSize - 1;
           this.fontSize = minus > this.minSize ? minus : this.minSize;
@@ -67,6 +71,7 @@ export class SuiFlextext {
       const scaleUp = () => {
         let height = parseFloat(this.computedStyle.height);
         let howmanylines = height / (this.fontSize * lineHeightRatio);
+        howmanylines = Math.floor(howmanylines * 100) / 100;
 
         if (howmanylines <= 1 && this.fontSize < this.maxSize) {
           let plus = this.fontSize + 1;
