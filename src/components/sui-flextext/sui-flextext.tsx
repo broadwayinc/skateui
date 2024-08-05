@@ -38,10 +38,8 @@ export class SuiFlextext {
   }
 
   adjustSize = () => {
-    console.log('adjustSize');
     let lineHeight = Number(this.computedStyle.lineHeight.replace('px', ''));
     lineHeight = isNaN(lineHeight) ? this.fontSize : lineHeight;
-    console.log(lineHeight, this.fontSize);
     let lineHeightRatio = lineHeight / this.fontSize;
     lineHeightRatio = lineHeightRatio > 1 ? lineHeightRatio : 1;
 
