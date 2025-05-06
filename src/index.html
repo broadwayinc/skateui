@@ -20,6 +20,170 @@
     <li>UI component to be 100% compatible with vanilla HTML.</li>
     <li>Style should be easily customizable via css without implementing additional custom attributes.</li>
   </ul>
+  <!-- <hr>
+  <h2>sui-button</h2>
+  <form onsubmit="console.log(this);return false;">
+    <sui-button onclick="console.log('onclick')">sui-button</sui-button>
+  </form>
+  <sui-button onclick="console.log('onclick')" disabled>Disabled</sui-button><br>
+  <sui-button class="text">Text</sui-button><br>
+  <sui-button class="outline">Outline</sui-button>
+  <pre>
+autofocus &#x2713;
+tabfocus (desktop) &#x2713;
+tabfocus enter &#x2713;
+content vertically aligned on min-height &#x2713;
+stylable &#x2713;
+works with forms &#x2713;
+
+Note:
+  - removed outline, text type button.
+  - these should be styled manually. (refer style)
+</pre>
+  <hr>
+  <h2>sui-input</h2>
+  <form id='inputForm' onsubmit="inputForm(this);">
+    <script>
+      for (let t of [
+        'text',
+        'email',
+        'search',
+        'tel',
+        'url',
+        'password',
+        'number',
+      ]) {
+        const inp = document.createElement('sui-input');
+        const label = document.createElement('label');
+        const id = `sui-input-${t}`;
+        label.setAttribute('for', id);
+        label.innerHTML = t;
+        inp.id = id;
+        inp.setAttribute('name', `sui-input-${t}`);
+        inp.setAttribute('type', t);
+        inp.setAttribute('placeholder', `sui-input (${t})`);
+        inputForm.append(label);
+        inputForm.append(inp);
+        inputForm.append(document.createElement('br'));
+        inputForm.append(document.createElement('br'));
+      }
+    </script>
+
+    <label for="sui-input-styled">Styled Input</label>
+    <sui-input class='sui-input-styled' id='sui-input-styled' name="styled" placeholder="sui-input (styled)">
+    </sui-input>
+    <br><br>
+    <label for="sui-input-disabled">Disabled input</label>
+    <sui-input id='sui-input-disabled' name="sui-input-disabled" disabled placeholder="sui-input (disabled)">
+    </sui-input>
+    <br><br>
+    <label for="sui-input-checkbox">Checkbox</label>
+    <sui-input id='sui-input-checkbox' name="sui-input-checkbox" type="checkbox" value="checkbox" checked
+      disabled></sui-input>
+    <br><br>
+    <label for="sui-input-checkbox-styled">Checkbox Styled</label>
+    <sui-input id='sui-input-checkbox-styled' class='input-checkbox' name="sui-input-checkbox-styled" type="checkbox"
+      value="checkbox styled"></sui-input>
+    <br><br>
+    <label for="sui-input-radio">Radio</label>
+    <sui-input id='sui-input-radio' name="sui-input-radio" type="radio" checked value="radio vanila"></sui-input>
+    <br><br>
+    <label for="sui-input-radio-styled">Radio Styled</label>
+    <sui-input id='sui-input-radio-styled' class='input-radio' name="sui-input-radio" type="radio"
+      value="radio styled">
+    </sui-input>
+    <br><br>
+    <sui-input type="reset"></sui-input>
+    <sui-input type="submit" value="Send"></sui-input>
+  </form>
+  <pre>
+autofocus &#x2713;
+tabfocus (desktop) &#x2713;
+vertically aligned text &#x2713;
+stylable (including pseudo elements) &#x2713;
+works with forms &#x2713;
+works with labels &#x2713;
+autofill highlights &#x2713;
+prevents nesting &#x2713;
+aligns with buttons &#x2713;
+submit / reset button &#x2713;
+focus tab-enter works with checkbox, radio &#x2713;
+
+Note:
+  - for inputs, id assigned to the host element will be reassigned to slot elements.
+    the reason for this is to make label 'for' attribute to be able to focus on the target input element.
+    so when styling inputs via css, use class instead of id.
+
+  - Available types (+more comming up):
+    'checkbox'
+    'radio'
+    'text'
+    'submit'
+    'email'
+    'search' 
+    'tel'
+    'url'
+    'password'
+    'number'
+    'reset'
+
+  - For, styling input specific pseudo elements of the text type inputs (ex. email, text, search...)
+    You need to target the underlaying input element inside the sui-input
+    sui-input input::placeholder
+    sui-input input:focus
+</pre>
+  <hr>
+  <h2>sui-select</h2>
+  <sui-select name="cars">
+    <option value="null" hidden selected>sui-select</option>
+    <optgroup label="Cars">
+      <option value="Saab Crab Man Car Saab Crab Man Car Saab Crab">Saab Crab Man Car Saab Crab Man Car Saab Crab
+      </option>
+      <option value="Opel">Opel</option>
+      <option value="Audi">Audi</option>
+    </optgroup>
+    <optgroup label="Food">
+      <option value="Pizza">Pizza</option>
+      <option value="Noodle">Noodle</option>
+      <option value="Burger">Burger</option>
+      <option value="Fried Rice">Fried Rice</option>
+    </optgroup>
+  </sui-select>
+  <br>
+  <br>
+  <sui-select name="cars" multiple size="8">
+    <option value="null" selected>sui-select multiple</option>
+    <optgroup label="Cars">
+      <option value="Saab">Saab</option>
+      <option value="Opel">Opel</option>
+      <option value="Audi">Audi</option>
+    </optgroup>
+    <optgroup label="Food">
+      <option value="Pizza">Pizza</option>
+      <option value="Noodle">Noodle</option>
+      <option value="Burger">Burger</option>
+      <option value="Fried Rice">Fried Rice</option>
+    </optgroup>
+  </sui-select>
+  <br>
+  <pre>
+option elements should work just like html &#x2713;
+select multiple &#x2713;
+shell is stylable &#x2713;
+size attribute works &#x2713;
+text ellipsis for long values &#x2713;
+
+Notes:
+  - For styling the focus state of the element use focus-within:
+    sui-select:focus-within
+
+Issues:
+  - Changing option element is not reactive.
+
+Working:
+  - Need custom design
+</pre>
+ -->
 
   <hr>
 
